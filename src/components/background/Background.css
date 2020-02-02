@@ -1,0 +1,17 @@
+.absoluteFill,
+.ReactSuperMario .Background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.ReactSuperMario .Background {
+  z-index: 1;
+  background-image: url('./bush.png');
+  background-color: #f8e0b0;
+  background-repeat: repeat-x;
+  background-position: left 0px bottom 0px;
+  transition: background-position 150ms ease-out;
+}
