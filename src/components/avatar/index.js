@@ -1,6 +1,6 @@
 import React from 'react'
-import './Background.css'
+import './Avatar.css'
 
 export default function Background (props) {
-  return <div className='Background' />
+  return <div className='Avatar' />
 }
