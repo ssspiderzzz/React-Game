@@ -14,5 +14,5 @@
   background-repeat: repeat-x, repeat-x, repeat-x;
   background-position: left 0px bottom -110px, left 0px bottom 60px,
     left 0px bottom 80px;
-  transition: background-position 150ms ease-out;
+  transition: background-position 200ms ease-out;
 }
