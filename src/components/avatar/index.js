@@ -6,13 +6,15 @@ export default function Avatar (props) {
   const [movement, setMovement] = useState({
     x: faceRight.x,
     y: faceRight.y,
-    moveOnXAxis: 0
+    moveOnXAxis: 0,
+    moveOnYAxis: 0
   })
 
   let position = {
     backgroundPositionX: movement.x + 'px',
     backgroundPositionY: movement.y + 'px',
-    left: movement.moveOnXAxis + 'px'
+    left: movement.moveOnXAxis + 'px',
+    bottom: movement.moveOnYAxis + 80 + 'px'
   }
 
   useEffect(() => {
@@ -80,32 +82,43 @@ export default function Avatar (props) {
         }
       })
     }
+
+    if (key.code === 'ArrowUp') {
+      setMovement(prev => {
+        return {
+          ...prev,
+          moveOnYAxis: prev.moveOnYAxis + 100
+        }
+      })
+      setTimeout(() => {
+        setMovement(prev => {
+          return {
+            ...prev,
+            moveOnYAxis: prev.moveOnYAxis - 100
+          }
+        })
+      }, 550)
+    }
   }
 
   function upHandler (key) {
     if (key.code === 'ArrowRight') {
-      clearTimeout()
-      setTimeout(() => {
-        setMovement(prev => {
-          return {
-            ...prev,
-            x: faceRight.x,
-            y: faceRight.y
-          }
-        })
-      }, 100)
+      setMovement(prev => {
+        return {
+          ...prev,
+          x: faceRight.x,
+          y: faceRight.y
+        }
+      })
     }
     if (key.code === 'ArrowLeft') {
-      clearTimeout()
-      setTimeout(() => {
-        setMovement(prev => {
-          return {
-            ...prev,
-            x: faceLeft.x,
-            y: faceLeft.y
-          }
-        })
-      }, 100)
+      setMovement(prev => {
+        return {
+          ...prev,
+          x: faceLeft.x,
+          y: faceLeft.y
+        }
+      })
     }
   }
 

@@ -4,7 +4,6 @@
   width: 120px;
   height: 130px;
   z-index: 2;
-  bottom: 80px;
   background-repeat: no-repeat;
-  transition: left 400ms ease-out, bottom 100ms ease-out;
+  transition: left 400ms ease-out, bottom 500ms ease-out;
 }
