@@ -12,7 +12,7 @@ export function downHandler (key, setMovement) {
           moveOnXAxis: prev.moveOnXAxis + actionRun
         }
       }
-      if (prev.moveOnXAxis < window.innerWidth + actionX) {
+      if (prev.moveOnXAxis < window.innerWidth + actionX - actionRun) {
         if (prev.x > actionX * 9) {
           return {
             ...prev,

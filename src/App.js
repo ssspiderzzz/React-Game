@@ -4,12 +4,7 @@ import history from './history'
 import Background from './components/background'
 import Avatar from './components/avatar'
 import './App.css'
-import {
-  actionX,
-  actionRun,
-  faceRight,
-  faceLeft
-} from './components/util/variables.js'
+import { faceRight } from './components/util/variables.js'
 import { downHandler, upHandler } from './components/control'
 
 export default function App (props) {
