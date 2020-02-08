@@ -78,6 +78,15 @@ export function downHandler (key, setMovement) {
       })
     }, 550)
   }
+
+  if (key.code === 'KeyX') {
+    setMovement(prev => {
+      return {
+        ...prev,
+        moveOnXAxis: prev.moveOnXAxis + actionRun * 5
+      }
+    })
+  }
 }
 
 export function upHandler (key, setMovement) {
