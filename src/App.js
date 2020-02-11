@@ -13,7 +13,8 @@ export default function App (props) {
     y: faceRight.y,
     moveOnXAxis: 0,
     moveOnYAxis: 0,
-    movingForward: false
+    movingForward: false,
+    facing: 'right'
   })
 
   useEffect(() => {

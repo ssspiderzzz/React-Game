@@ -5,8 +5,16 @@ export function downHandler (key, setMovement) {
   // let keys = {}
   // keys[key.code] = key.type == 'keydown'
   // console.log(keys)
+  if (key.code === 'ArrowRight') {
+    setMovement(prev => ({ ...prev, facing: 'right', movingForward: true }))
+  }
+
+  if (key.code === 'ArrowLeft') {
+    setMovement(prev => ({ ...prev, facing: 'left', movingForward: true }))
+  }
 
   if (key.code === 'ArrowRight') {
+    console.log(`second`)
     setMovement(prev => {
       if (prev.y === faceLeft.y) {
         return {
@@ -109,21 +117,20 @@ export function downHandler (key, setMovement) {
 
 export function upHandler (key, setMovement) {
   if (key.code === 'ArrowRight') {
-    setMovement(prev => {
-      return {
-        ...prev,
-        x: faceRight.x,
-        y: faceRight.y
-      }
-    })
+    setMovement(prev => ({
+      ...prev,
+      x: faceRight.x,
+      y: faceRight.y,
+      movingForward: false
+    }))
   }
+
   if (key.code === 'ArrowLeft') {
-    setMovement(prev => {
-      return {
-        ...prev,
-        x: faceLeft.x,
-        y: faceLeft.y
-      }
-    })
+    setMovement(prev => ({
+      ...prev,
+      x: faceLeft.x,
+      y: faceLeft.y,
+      movingForward: false
+    }))
   }
 }
