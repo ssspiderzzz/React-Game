@@ -5,26 +5,21 @@ export function downHandler (key, setMovement) {
   // let keys = {}
   // keys[key.code] = key.type == 'keydown'
   // console.log(keys)
-  if (key.code === 'ArrowRight') {
-    setMovement(prev => ({ ...prev, facing: 'right', movingForward: true }))
-  }
-
-  if (key.code === 'ArrowLeft') {
-    setMovement(prev => ({ ...prev, facing: 'left', movingForward: true }))
-  }
 
   if (key.code === 'ArrowRight') {
-    console.log(`second`)
     setMovement(prev => {
-      if (prev.y === faceLeft.y) {
+      if (prev.facing === 'left') {
         return {
           ...prev,
           x: faceRight.x + actionX,
           y: faceRight.y,
           moveOnXAxis: prev.moveOnXAxis + actionRun,
+          facing: 'right',
           movingForward: true
         }
       }
+
+      // Edge of the right screen
       if (prev.moveOnXAxis < window.innerWidth + actionX - actionRun) {
         if (prev.x > actionX * 9) {
           return {
@@ -49,15 +44,19 @@ export function downHandler (key, setMovement) {
 
   if (key.code === 'ArrowLeft') {
     setMovement(prev => {
-      if (prev.y === faceRight.y) {
+      console.log(prev.facing)
+      if (prev.facing === 'right') {
         return {
           ...prev,
           x: faceLeft.x - actionX,
           y: faceLeft.y,
           moveOnXAxis: prev.moveOnXAxis - actionRun,
+          facing: 'left',
           movingForward: true
         }
       }
+
+      // Edge of the left screen
       if (prev.moveOnXAxis > 0) {
         if (prev.x < 0) {
           return {
@@ -80,26 +79,35 @@ export function downHandler (key, setMovement) {
     })
   }
 
-  if (key.code === 'ArrowUp') {
+  if (key.code === 'ArrowUp' || key.code === 'Space') {
     setMovement(prev => {
-      if (prev.movingForward) {
-        return {
-          ...prev,
-          moveOnYAxis: prev.moveOnYAxis + 100,
-          moveOnXAxis: prev.moveOnXAxis + actionRun
+      // Single jump only
+      if (prev.moveOnYAxis === 0) {
+        if (prev.movingForward) {
+          return {
+            ...prev,
+            moveOnYAxis: prev.moveOnYAxis + 100,
+            moveOnXAxis: prev.moveOnXAxis + actionRun
+          }
+        } else {
+          return {
+            ...prev,
+            moveOnYAxis: prev.moveOnYAxis + 100
+          }
         }
       } else {
-        return {
-          ...prev,
-          moveOnYAxis: prev.moveOnYAxis + 100
-        }
+        return { ...prev }
       }
     })
     setTimeout(() => {
       setMovement(prev => {
-        return {
-          ...prev,
-          moveOnYAxis: prev.moveOnYAxis - 100
+        if (prev.moveOnYAxis !== 0) {
+          return {
+            ...prev,
+            moveOnYAxis: 0
+          }
+        } else {
+          return { ...prev }
         }
       })
     }, 550)
