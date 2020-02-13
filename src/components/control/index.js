@@ -83,11 +83,17 @@ export function downHandler (key, setMovement) {
     setMovement(prev => {
       // Single jump only
       if (prev.moveOnYAxis === 0) {
-        if (prev.movingForward) {
+        if (prev.movingForward && prev.facing === 'right') {
           return {
             ...prev,
             moveOnYAxis: prev.moveOnYAxis + 100,
             moveOnXAxis: prev.moveOnXAxis + actionRun
+          }
+        } else if (prev.movingForward && prev.facing === 'left') {
+          return {
+            ...prev,
+            moveOnYAxis: prev.moveOnYAxis + 100,
+            moveOnXAxis: prev.moveOnXAxis - actionRun
           }
         } else {
           return {
