@@ -14,7 +14,8 @@ export default function App (props) {
     moveOnXAxis: 0,
     moveOnYAxis: 0,
     movingForward: false,
-    facing: 'right'
+    facing: 'right',
+    xtest: 0
   })
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function App (props) {
     <div className='App'>
       <Router history={history}>
         <Background movement={movement} />
-        <Avatar movement={movement} />
+        <Avatar movement={movement} setMovement={setMovement} />
       </Router>
     </div>
   )
