@@ -24,7 +24,6 @@ export default function App (props) {
   }, [])
 
   useEffect(() => {
-    console.log(keys)
     control(keys, setMovement)
   }, [keys])
 
