@@ -1,10 +1,16 @@
 import { actionX, actionRun, faceRight, faceLeft } from '../util/variables.js'
 
 export function downHandler (key, setMovement) {
-  // console.log(key)
-  // let keys = {}
+  console.log(key)
+  setMovement(prev => ({
+    ...prev,
+    keys: { ...prev.keys, [key.code]: key.type == 'keydown' }
+  }))
   // keys[key.code] = key.type == 'keydown'
-  // console.log(keys)
+  setMovement(prev => {
+    console.log(prev.keys)
+    return { ...prev }
+  })
 
   if (key.code === 'ArrowRight') {
     setMovement(prev => {
@@ -135,7 +141,8 @@ export function upHandler (key, setMovement) {
       ...prev,
       x: faceRight.x,
       y: faceRight.y,
-      movingForward: false
+      movingForward: false,
+      keys: { ...prev.keys, [key.code]: false }
     }))
   }
 
@@ -144,7 +151,8 @@ export function upHandler (key, setMovement) {
       ...prev,
       x: faceLeft.x,
       y: faceLeft.y,
-      movingForward: false
+      movingForward: false,
+      keys: { ...prev.keys, [key.code]: false }
     }))
   }
 }

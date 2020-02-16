@@ -15,7 +15,8 @@ export default function App (props) {
     moveOnYAxis: 0,
     movingForward: false,
     facing: 'right',
-    xtest: 0
+    xtest: 0,
+    keys: {}
   })
 
   useEffect(() => {
