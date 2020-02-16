@@ -11,11 +11,22 @@ export default function Avatar (props) {
 
   console.log(props.movement.movingForward)
 
-  useEffect(() => {
+  var myVar = setInterval(setColor, 300)
+
+  function setColor () {
+    console.log(`setcolor`)
     props.setMovement(prev => ({
       ...prev,
       xtest: prev.xtest + 50
     }))
+  }
+
+  function stopColor () {
+    clearInterval(myVar)
+  }
+
+  useEffect(() => {
+    props.movement.movingForward ? setColor() : stopColor()
   }, [props.movement.movingForward])
 
   let position = {
