@@ -1,21 +1,14 @@
 import { actionX, actionRun, faceRight, faceLeft } from '../util/variables.js'
 
-export function downHandler (key, setMovement) {
-  // console.log(key)
-  // let keys = {}
-  // keys[key.code] = key.type == 'keydown'
-  // console.log(keys)
-
-  if (key.code === 'ArrowRight') {
+export function control (keys, setMovement) {
+  if (keys.ArrowRight) {
     setMovement(prev => {
-      if (prev.facing === 'left') {
+      if (prev.y === faceLeft.y) {
         return {
           ...prev,
           x: faceRight.x + actionX,
           y: faceRight.y,
-          moveOnXAxis: prev.moveOnXAxis + actionRun,
-          facing: 'right',
-          movingForward: true
+          moveOnXAxis: prev.moveOnXAxis + actionRun
         }
       }
 
@@ -25,15 +18,13 @@ export function downHandler (key, setMovement) {
           return {
             ...prev,
             x: prev.x + actionX,
-            moveOnXAxis: prev.moveOnXAxis + actionRun,
-            movingForward: true
+            moveOnXAxis: prev.moveOnXAxis + actionRun
           }
         } else {
           return {
             ...prev,
             x: 0,
-            moveOnXAxis: prev.moveOnXAxis + actionRun,
-            movingForward: true
+            moveOnXAxis: prev.moveOnXAxis + actionRun
           }
         }
       } else {
@@ -42,17 +33,14 @@ export function downHandler (key, setMovement) {
     })
   }
 
-  if (key.code === 'ArrowLeft') {
+  if (keys.ArrowLeft) {
     setMovement(prev => {
-      console.log(prev.facing)
-      if (prev.facing === 'right') {
+      if (prev.y === faceRight.y) {
         return {
           ...prev,
           x: faceLeft.x - actionX,
           y: faceLeft.y,
-          moveOnXAxis: prev.moveOnXAxis - actionRun,
-          facing: 'left',
-          movingForward: true
+          moveOnXAxis: prev.moveOnXAxis - actionRun
         }
       }
 
@@ -62,15 +50,13 @@ export function downHandler (key, setMovement) {
           return {
             ...prev,
             x: prev.x - actionX,
-            moveOnXAxis: prev.moveOnXAxis - actionRun,
-            movingForward: true
+            moveOnXAxis: prev.moveOnXAxis - actionRun
           }
         } else {
           return {
             ...prev,
             x: actionX * 9,
-            moveOnXAxis: prev.moveOnXAxis - actionRun,
-            movingForward: true
+            moveOnXAxis: prev.moveOnXAxis - actionRun
           }
         }
       } else {
@@ -79,7 +65,7 @@ export function downHandler (key, setMovement) {
     })
   }
 
-  if (key.code === 'ArrowUp' || key.code === 'Space') {
+  if (keys.ArrowUp || keys.Space) {
     setMovement(prev => {
       // Single jump only
       if (prev.moveOnYAxis === 0) {
@@ -119,7 +105,7 @@ export function downHandler (key, setMovement) {
     }, 550)
   }
 
-  if (key.code === 'KeyX') {
+  if (keys.KeyX) {
     setMovement(prev => {
       return {
         ...prev,
@@ -129,22 +115,34 @@ export function downHandler (key, setMovement) {
   }
 }
 
-export function upHandler (key, setMovement) {
-  if (key.code === 'ArrowRight') {
-    setMovement(prev => ({
-      ...prev,
-      x: faceRight.x,
-      y: faceRight.y,
-      movingForward: false
-    }))
-  }
+export function downHandler (key, setKeys) {
+  setKeys(prev => ({
+    ...prev,
+    [key.code]: key.type === 'keydown'
+  }))
+}
 
-  if (key.code === 'ArrowLeft') {
-    setMovement(prev => ({
-      ...prev,
-      x: faceLeft.x,
-      y: faceLeft.y,
-      movingForward: false
-    }))
-  }
+export function upHandler (key, setKeys, setMovement) {
+  setMovement(prev => {
+    switch (prev.y) {
+      case faceRight.y:
+        return {
+          ...prev,
+          x: faceRight.x,
+          y: faceRight.y
+        }
+      case faceLeft.y:
+        return {
+          ...prev,
+          x: faceLeft.x,
+          y: faceLeft.y
+        }
+      default:
+        return { ...prev }
+    }
+  })
+  setKeys(prev => ({
+    ...prev,
+    [key.code]: false
+  }))
 }
