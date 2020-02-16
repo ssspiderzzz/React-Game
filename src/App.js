@@ -5,24 +5,28 @@ import Background from './components/background'
 import Avatar from './components/avatar'
 import './App.css'
 import { faceRight } from './components/util/variables.js'
-import { downHandler, upHandler } from './components/control'
+import { downHandler, upHandler, control } from './components/control'
 
 export default function App (props) {
+  const [keys, setKeys] = useState({})
   const [movement, setMovement] = useState({
     x: faceRight.x,
     y: faceRight.y,
     moveOnXAxis: 0,
-    moveOnYAxis: 0,
-    movingForward: false,
-    facing: 'right',
-    xtest: 0,
-    keys: {}
+    moveOnYAxis: 0
   })
 
   useEffect(() => {
-    window.addEventListener('keydown', key => downHandler(key, setMovement))
-    window.addEventListener('keyup', key => upHandler(key, setMovement))
+    window.addEventListener('keydown', key => downHandler(key, setKeys))
+    window.addEventListener('keyup', key =>
+      upHandler(key, setKeys, setMovement)
+    )
   }, [])
+
+  useEffect(() => {
+    console.log(keys)
+    control(keys, setMovement)
+  }, [keys])
 
   return (
     <div className='App'>
