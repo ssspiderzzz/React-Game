@@ -58,6 +58,8 @@ export default function App (props) {
 
     // player
     this.player = this.physics.add.sprite(300, 300, 'spiderman').setScale(1, 1)
+    this.player.body.width = 60
+    this.player.body.height = 73
     this.player.body.collideWorldBounds = true
     this.anims.create({
       key: 'left',
@@ -100,15 +102,6 @@ export default function App (props) {
     this.platforms = this.physics.add.staticGroup()
 
     this.platforms
-      .create(200, 400, 'tiles', 13)
-      .setScale(1, 1)
-      .refreshBody()
-    this.platforms
-      .create(232, 400, 'tiles', 13)
-      .setScale(1, 1)
-      .refreshBody()
-
-    this.platforms
       .create(400, 600, 'tiles', 0)
       .setScale(5, 1)
       .refreshBody()
@@ -116,6 +109,11 @@ export default function App (props) {
     this.platforms
       .create(600, 300, 'tiles', 3)
       .setScale(7, 1)
+      .refreshBody()
+
+    this.platforms
+      .create(0, 752, 'tiles', 1)
+      .setScale(64, 1)
       .refreshBody()
 
     // controls
@@ -144,7 +142,6 @@ export default function App (props) {
     }
     if (this.cursors.space.isDown) {
       this.player.anims.play('atk', true)
-      this.player.body.setVelocityX(0)
     }
   }
 
