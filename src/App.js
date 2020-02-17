@@ -3,54 +3,100 @@ import Phaser from 'phaser'
 import { Router } from 'react-router-dom'
 import history from './history'
 import './App.css'
+import background from './assets/background.png'
+import spiderman from './assets/spiderman.png'
 
 export default function App (props) {
   useEffect(() => {}, [])
   var config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 768,
+    scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics: {
       default: 'arcade',
       arcade: {
-        gravity: { y: 200 }
+        gravity: { y: 300 }
       }
     },
     scene: {
       preload: preload,
-      create: create
+      create: create,
+      update: update
     }
   }
 
-  var Game = new Phaser.Game(config)
+  var game = new Phaser.Game(config)
 
   function preload () {
-    this.load.setBaseURL('http://labs.phaser.io')
+    this.load.crossOrigin = true
+    // this.load.setBaseURL('http://labs.phaser.io')
 
-    this.load.image('sky', 'assets/skies/space3.png')
-    this.load.image('logo', 'assets/sprites/phaser3-logo.png')
-    this.load.image('red', 'assets/particles/red.png')
-    this.load.image('starBig', 'assets/games/starstruck/star2.png')
+    this.load.image('background', background)
+    this.load.spritesheet('spiderman', spiderman, {
+      frameWidth: 80,
+      frameHeight: 80
+    })
+    // this.load.image('red', 'assets/particles/red.png')
   }
 
   function create () {
-    this.add.image(400, 300, 'sky')
+    let bg = this.add.image(0, 0, 'background').setOrigin(0, 0)
 
-    var particles = this.add.particles('red')
-
-    var emitter = particles.createEmitter({
-      speed: 100,
-      scale: { start: 1, end: 0 },
-      blendMode: 'ADD'
+    this.player = this.physics.add.sprite(300, 300, 'spiderman').setScale(1, 1)
+    this.player.body.collideWorldBounds = true
+    this.anims.create({
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('spiderman', {
+        start: 1,
+        end: 8
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+    this.anims.create({
+      key: 'right',
+      frames: this.anims.generateFrameNumbers('spiderman', {
+        start: 1,
+        end: 8
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+    this.anims.create({
+      key: 'idle',
+      frames: this.anims.generateFrameNumbers('spiderman', {
+        start: 0,
+        end: 0
+      }),
+      frameRate: 10,
+      repeat: -1
     })
 
-    var logo = this.physics.add.image(400, 100, 'starBig')
+    this.cursors = this.input.keyboard.createCursorKeys()
 
-    logo.setVelocity(100, 200)
-    logo.setBounce(1, 0.9)
-    logo.setCollideWorldBounds(true)
+    this.doublejump = 2
+  }
 
-    emitter.startFollow(logo)
+  function update () {
+    if (this.cursors.right.isDown) {
+      this.player.anims.play('right', true)
+      this.player.body.setVelocityX(300)
+    } else if (this.cursors.left.isDown) {
+      this.player.anims.play('left', true)
+      this.player.body.setVelocityX(-300)
+    } else {
+      this.player.anims.play('idle', true)
+      this.player.body.setVelocityX(0)
+    }
+
+    if (this.cursors.up.isDown) {
+      this.player.body.setVelocityY(-300)
+      console.log(this.doublejump)
+    }
   }
 
   return (
