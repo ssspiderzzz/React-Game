@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import Phaser from 'phaser'
 import { Router } from 'react-router-dom'
 import history from './history'
 import './App.css'
 import background from './assets/background.png'
 import spiderman from './assets/spiderman.png'
+import spiderman_reverse from './assets/spiderman_reverse.png'
+import tiles from './assets/tiles.png'
 
 export default function App (props) {
   useEffect(() => {}, [])
@@ -29,7 +31,7 @@ export default function App (props) {
     }
   }
 
-  var game = new Phaser.Game(config)
+  new Phaser.Game(config)
 
   function preload () {
     this.load.crossOrigin = true
@@ -40,19 +42,28 @@ export default function App (props) {
       frameWidth: 80,
       frameHeight: 80
     })
-    // this.load.image('red', 'assets/particles/red.png')
+    this.load.spritesheet('spiderman_reverse', spiderman_reverse, {
+      frameWidth: 80,
+      frameHeight: 80
+    })
+    this.load.spritesheet('tiles', tiles, {
+      frameWidth: 32,
+      frameHeight: 32
+    })
   }
 
   function create () {
-    let bg = this.add.image(0, 0, 'background').setOrigin(0, 0)
+    // background
+    this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+    // player
     this.player = this.physics.add.sprite(300, 300, 'spiderman').setScale(1, 1)
     this.player.body.collideWorldBounds = true
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('spiderman', {
-        start: 1,
-        end: 8
+      frames: this.anims.generateFrameNumbers('spiderman_reverse', {
+        start: 11,
+        end: 4
       }),
       frameRate: 10,
       repeat: -1
@@ -76,6 +87,19 @@ export default function App (props) {
       repeat: -1
     })
 
+    // platforms
+    this.platforms = this.physics.add.staticGroup()
+    this.platforms
+      .create(400, 600, 'tiles', 0)
+      .setScale(5, 1)
+      .refreshBody()
+
+    this.platforms
+      .create(600, 300, 'tiles', 3)
+      .setScale(7, 1)
+      .refreshBody()
+
+    // controls
     this.cursors = this.input.keyboard.createCursorKeys()
 
     this.doublejump = 2
