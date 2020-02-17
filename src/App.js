@@ -86,9 +86,28 @@ export default function App (props) {
       frameRate: 10,
       repeat: -1
     })
+    this.anims.create({
+      key: 'atk',
+      frames: this.anims.generateFrameNumbers('spiderman', {
+        start: 53,
+        end: 55
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
+
+    this.platforms
+      .create(200, 400, 'tiles', 13)
+      .setScale(1, 1)
+      .refreshBody()
+    this.platforms
+      .create(232, 400, 'tiles', 13)
+      .setScale(1, 1)
+      .refreshBody()
+
     this.platforms
       .create(400, 600, 'tiles', 0)
       .setScale(5, 1)
@@ -101,6 +120,8 @@ export default function App (props) {
 
     // controls
     this.cursors = this.input.keyboard.createCursorKeys()
+
+    this.physics.add.collider(this.player, this.platforms)
 
     this.doublejump = 2
   }
@@ -120,6 +141,10 @@ export default function App (props) {
     if (this.cursors.up.isDown) {
       this.player.body.setVelocityY(-300)
       console.log(this.doublejump)
+    }
+    if (this.cursors.space.isDown) {
+      this.player.anims.play('atk', true)
+      this.player.body.setVelocityX(0)
     }
   }
 
