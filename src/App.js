@@ -21,7 +21,7 @@ export default function App (props) {
     physics: {
       default: 'arcade',
       arcade: {
-        gravity: { y: 300 }
+        gravity: { y: 500 }
       }
     },
     scene: {
@@ -58,17 +58,9 @@ export default function App (props) {
 
     // player
     this.player = this.physics.add.sprite(300, 300, 'spiderman').setScale(1, 1)
-    this.player.body.setSize(60, 65, 60, 65)
+    this.player.body.setSize(55, 65, 10, 10)
     this.player.body.collideWorldBounds = true
-    this.anims.create({
-      key: 'left',
-      frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-        start: 11,
-        end: 4
-      }),
-      frameRate: 10,
-      repeat: -1
-    })
+    this.player.facing = 'right'
     this.anims.create({
       key: 'right',
       frames: this.anims.generateFrameNumbers('spiderman', {
@@ -79,7 +71,16 @@ export default function App (props) {
       repeat: -1
     })
     this.anims.create({
-      key: 'idle',
+      key: 'left',
+      frames: this.anims.generateFrameNumbers('spiderman_reverse', {
+        start: 10,
+        end: 3
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+    this.anims.create({
+      key: 'idle_right',
       frames: this.anims.generateFrameNumbers('spiderman', {
         start: 0,
         end: 0
@@ -88,10 +89,28 @@ export default function App (props) {
       repeat: -1
     })
     this.anims.create({
-      key: 'atk',
+      key: 'idle_left',
+      frames: this.anims.generateFrameNumbers('spiderman_reverse', {
+        start: 11,
+        end: 11
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+    this.anims.create({
+      key: 'atk_right',
       frames: this.anims.generateFrameNumbers('spiderman', {
         start: 53,
-        end: 55
+        end: 53
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+    this.anims.create({
+      key: 'atk_left',
+      frames: this.anims.generateFrameNumbers('spiderman_reverse', {
+        start: 54,
+        end: 54
       }),
       frameRate: 10,
       repeat: -1
@@ -101,17 +120,29 @@ export default function App (props) {
     this.platforms = this.physics.add.staticGroup()
 
     this.platforms
-      .create(400, 600, 'tiles', 0)
+      .create(1024 / 2, 600, 'tiles', 0)
+      .setScale(8, 1)
+      .refreshBody()
+    this.platforms
+      .create(160, 500, 'tiles', 0)
       .setScale(10, 1)
       .refreshBody()
     this.platforms
-      .create(0, 500, 'tiles', 0)
-      .setScale(8, 1)
+      .create(1024 - 160, 500, 'tiles', 0)
+      .setScale(10, 1)
       .refreshBody()
 
     this.platforms
-      .create(600, 400, 'tiles', 3)
-      .setScale(7, 1)
+      .create(1024 / 2, 400, 'tiles', 3)
+      .setScale(3, 1)
+      .refreshBody()
+    this.platforms
+      .create((32 * 6) / 2, 300, 'tiles', 3)
+      .setScale(6, 1)
+      .refreshBody()
+    this.platforms
+      .create(1024 - (32 * 6) / 2, 300, 'tiles', 3)
+      .setScale(6, 1)
       .refreshBody()
 
     this.platforms
@@ -124,27 +155,40 @@ export default function App (props) {
 
     this.physics.add.collider(this.player, this.platforms)
 
-    this.doublejump = 2
+    this.doublejump = false
   }
 
   function update () {
     if (this.cursors.right.isDown) {
       this.player.anims.play('right', true)
       this.player.body.setVelocityX(300)
+      this.player.facing = 'right'
     } else if (this.cursors.left.isDown) {
       this.player.anims.play('left', true)
       this.player.body.setVelocityX(-300)
+      this.player.facing = 'left'
     } else {
-      this.player.anims.play('idle', true)
+      if (this.player.facing === 'right')
+        this.player.anims.play('idle_right', true)
+      if (this.player.facing === 'left')
+        this.player.anims.play('idle_left', true)
       this.player.body.setVelocityX(0)
     }
 
-    if (this.cursors.up.isDown) {
-      this.player.body.setVelocityY(-300)
-      console.log(this.doublejump)
+    if (this.cursors.up.isDown && !this.doublejump) {
+      this.player.body.setVelocityY(-400)
+      this.doublejump = true
     }
+
+    if (this.player.body.touching.down) {
+      this.doublejump = false
+    }
+
     if (this.cursors.space.isDown) {
-      this.player.anims.play('atk', true)
+      if (this.player.facing === 'right')
+        this.player.anims.play('atk_right', true)
+      if (this.player.facing === 'left')
+        this.player.anims.play('atk_left', true)
     }
   }
 
