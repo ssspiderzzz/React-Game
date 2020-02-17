@@ -58,8 +58,7 @@ export default function App (props) {
 
     // player
     this.player = this.physics.add.sprite(300, 300, 'spiderman').setScale(1, 1)
-    this.player.body.width = 60
-    this.player.body.height = 73
+    this.player.body.setSize(60, 65, 60, 65)
     this.player.body.collideWorldBounds = true
     this.anims.create({
       key: 'left',
@@ -103,11 +102,15 @@ export default function App (props) {
 
     this.platforms
       .create(400, 600, 'tiles', 0)
-      .setScale(5, 1)
+      .setScale(10, 1)
+      .refreshBody()
+    this.platforms
+      .create(0, 500, 'tiles', 0)
+      .setScale(8, 1)
       .refreshBody()
 
     this.platforms
-      .create(600, 300, 'tiles', 3)
+      .create(600, 400, 'tiles', 3)
       .setScale(7, 1)
       .refreshBody()
 
