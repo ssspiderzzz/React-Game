@@ -224,8 +224,9 @@ export default function App (props) {
     this.physics.add.collider(this.webs, this.platforms, event => {
       // console.log(event)
     })
-    this.physics.add.overlap(this.webs, this.coins, event => {
+    this.physics.add.overlap(this.webs, this.coins, (web, coin) => {
       this.money++
+      coin.disableBody(true, true)
       console.log(this.money)
     })
 
