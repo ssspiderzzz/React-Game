@@ -183,7 +183,7 @@ export default function App (props) {
       frameRate: 5,
       repeat: 0
     })
-    this.web.body.velocity.x = 200
+    this.web.body.velocity.x = 300
     this.web.anims.play('web', true)
 
     // platforms
@@ -264,7 +264,7 @@ export default function App (props) {
         this.player.anims.play('atk_right', true)
         this.web.x = this.player.x + 16
         this.web.y = this.player.y
-        this.web.body.velocity.x = 200
+        this.web.body.velocity.x = 300
         this.web.anims.play('web', true)
       }
 
@@ -272,7 +272,7 @@ export default function App (props) {
         this.player.anims.play('atk_left', true)
         this.web.x = this.player.x - 16
         this.web.y = this.player.y
-        this.web.body.velocity.x = -200
+        this.web.body.velocity.x = -300
         this.web.anims.play('web', true)
       }
     }
