@@ -8,6 +8,7 @@ import spiderman from './assets/spiderman.png'
 import spiderman_reverse from './assets/spiderman_reverse.png'
 import tiles from './assets/tiles.png'
 import coin from './assets/coin.png'
+import slime from './assets/slime.png'
 
 export default function App (props) {
   useEffect(() => {}, [])
@@ -53,6 +54,10 @@ export default function App (props) {
     this.load.spritesheet('coin', coin, {
       frameWidth: 84,
       frameHeight: 84
+    })
+    this.load.spritesheet('slime', slime, {
+      frameWidth: 32,
+      frameHeight: 33
     })
   }
 
@@ -121,7 +126,6 @@ export default function App (props) {
     })
 
     // coin
-    // this.coin = this.physics.add.sprite(600, 300, 'coin').setScale(0.5, 0.5)
     this.coins = this.physics.add.group({
       key: 'coin',
       repeat: 10,
@@ -143,6 +147,21 @@ export default function App (props) {
       coin.setBounceY(Phaser.Math.FloatBetween(0.9, 1))
       coin.setBounceX(Phaser.Math.FloatBetween(0.9, 1))
     })
+
+    // slime
+    this.slime = this.physics.add.sprite(500, 600, 'slime').setScale(4, 4)
+    this.slime.body.collideWorldBounds = true
+    this.anims.create({
+      key: 'slime',
+      frames: this.anims.generateFrameNumbers('slime', {
+        start: 20,
+        end: 29
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+    this.slime.anims.play('slime', true)
+    // this.player.body.setSize(55, 65, 10, 10)
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
@@ -184,6 +203,8 @@ export default function App (props) {
     this.physics.add.collider(this.player, this.platforms)
     this.physics.add.collider(this.coins, this.platforms)
     this.physics.add.collider(this.coins, this.player)
+    this.physics.add.collider(this.slime, this.platforms)
+    this.physics.add.collider(this.slime, this.player)
 
     this.doublejump = false
   }
