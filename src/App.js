@@ -7,6 +7,7 @@ import background from './assets/background.png'
 import spiderman from './assets/spiderman.png'
 import spiderman_reverse from './assets/spiderman_reverse.png'
 import tiles from './assets/tiles.png'
+import coin from './assets/coin.png'
 
 export default function App (props) {
   useEffect(() => {}, [])
@@ -35,7 +36,6 @@ export default function App (props) {
 
   function preload () {
     this.load.crossOrigin = true
-    // this.load.setBaseURL('http://labs.phaser.io')
 
     this.load.image('background', background)
     this.load.spritesheet('spiderman', spiderman, {
@@ -50,6 +50,10 @@ export default function App (props) {
       frameWidth: 32,
       frameHeight: 32
     })
+    this.load.spritesheet('coin', coin, {
+      frameWidth: 84,
+      frameHeight: 84
+    })
   }
 
   function create () {
@@ -57,7 +61,7 @@ export default function App (props) {
     this.add.image(0, 0, 'background').setOrigin(0, 0)
 
     // player
-    this.player = this.physics.add.sprite(300, 300, 'spiderman').setScale(1, 1)
+    this.player = this.physics.add.sprite(100, 200, 'spiderman').setScale(1, 1)
     this.player.body.setSize(55, 65, 10, 10)
     this.player.body.collideWorldBounds = true
     this.player.facing = 'right'
@@ -116,6 +120,29 @@ export default function App (props) {
       repeat: -1
     })
 
+    // coin
+    // this.coin = this.physics.add.sprite(600, 300, 'coin').setScale(0.5, 0.5)
+    this.coins = this.physics.add.group({
+      key: 'coin',
+      repeat: 10,
+      setXY: { x: 20, y: 0, stepX: 100 }
+    })
+    this.anims.create({
+      key: 'coin_spin',
+      frames: this.anims.generateFrameNumbers('coin', {
+        start: 0,
+        end: 5
+      }),
+      frameRate: 10,
+      repeat: -1
+    })
+    this.coins.children.iterate(coin => {
+      coin.body.collideWorldBounds = true
+      coin.anims.play('coin_spin', true)
+      coin.setScale(0.5, 0.5)
+      coin.setBounceY(Phaser.Math.FloatBetween(0.9, 1))
+    })
+
     // platforms
     this.platforms = this.physics.add.staticGroup()
 
@@ -154,6 +181,8 @@ export default function App (props) {
     this.cursors = this.input.keyboard.createCursorKeys()
 
     this.physics.add.collider(this.player, this.platforms)
+    this.physics.add.collider(this.coins, this.platforms)
+    this.physics.add.collider(this.coins, this.player)
 
     this.doublejump = false
   }
