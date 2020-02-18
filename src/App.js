@@ -9,6 +9,7 @@ import spiderman_reverse from './assets/spiderman_reverse.png'
 import tiles from './assets/tiles.png'
 import coin from './assets/coin.png'
 import slime from './assets/slime.png'
+import spiderandweb from './assets/spiderandweb.png'
 
 export default function App (props) {
   useEffect(() => {}, [])
@@ -57,7 +58,11 @@ export default function App (props) {
     })
     this.load.spritesheet('slime', slime, {
       frameWidth: 32,
-      frameHeight: 33
+      frameHeight: 32
+    })
+    this.load.spritesheet('web', spiderandweb, {
+      frameWidth: 32,
+      frameHeight: 32
     })
   }
 
@@ -163,6 +168,22 @@ export default function App (props) {
     this.slime.anims.play('slime', true)
     // this.player.body.setSize(55, 65, 10, 10)
 
+    // web
+    this.webs = this.physics.add.group()
+    this.webs.children.iterate(web => {
+      // this.web = this.physics.add.sprite(500, 200, 'web').setScale(2, 2)
+      web.body.collideWorldBounds = true
+      web.anims.create({
+        key: 'web',
+        frames: this.anims.generateFrameNumbers('web', {
+          start: 63,
+          end: 69
+        }),
+        frameRate: 1,
+        repeat: -1
+      })
+    })
+
     // platforms
     this.platforms = this.physics.add.staticGroup()
 
@@ -205,6 +226,7 @@ export default function App (props) {
     this.physics.add.collider(this.coins, this.player)
     this.physics.add.collider(this.slime, this.platforms)
     this.physics.add.collider(this.slime, this.player)
+    this.physics.add.collider(this.webs, this.platforms)
 
     this.doublejump = false
   }
@@ -236,10 +258,17 @@ export default function App (props) {
     }
 
     if (this.cursors.space.isDown) {
-      if (this.player.facing === 'right')
+      if (this.player.facing === 'right') {
         this.player.anims.play('atk_right', true)
-      if (this.player.facing === 'left')
+        console.log(this.player.x)
+        console.log(this.player.y)
+
+        this.webs.setXY(this.player.x, this.player.y)
+      }
+
+      if (this.player.facing === 'left') {
         this.player.anims.play('atk_left', true)
+      }
     }
   }
 
