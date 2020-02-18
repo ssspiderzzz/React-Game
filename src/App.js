@@ -62,7 +62,7 @@ export default function App (props) {
     })
     this.load.spritesheet('web', spiderandweb, {
       frameWidth: 32,
-      frameHeight: 32
+      frameHeight: 33
     })
   }
 
@@ -166,14 +166,9 @@ export default function App (props) {
       repeat: -1
     })
     this.slime.anims.play('slime', true)
-    // this.player.body.setSize(55, 65, 10, 10)
 
     // web
-    this.web = this.physics.add
-      .sprite(this.player.x + 16, this.player.y, 'web')
-      .setScale(1.5, 1.5)
-    this.web.body.collideWorldBounds = true
-    this.web.body.allowGravity = false
+    this.webs = this.physics.add.group()
     this.anims.create({
       key: 'web',
       frames: this.anims.generateFrameNumbers('web', {
@@ -183,8 +178,6 @@ export default function App (props) {
       frameRate: 5,
       repeat: 0
     })
-
-    this.websss = this.physics.add.group()
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
@@ -228,8 +221,15 @@ export default function App (props) {
     this.physics.add.collider(this.coins, this.player)
     this.physics.add.collider(this.slime, this.platforms)
     this.physics.add.collider(this.slime, this.player)
-    this.physics.add.collider(this.web, this.platforms)
+    this.physics.add.collider(this.webs, this.platforms, event => {
+      // console.log(event)
+    })
+    this.physics.add.overlap(this.webs, this.coins, event => {
+      this.money++
+      console.log(this.money)
+    })
 
+    this.money = 0
     this.doublejump = false
   }
 
@@ -262,28 +262,36 @@ export default function App (props) {
     if (this.cursors.space.isDown) {
       if (this.player.facing === 'right') {
         this.player.anims.play('atk_right', true)
-        this.websss.create(this.player.x + 16, this.player.y, 'web')
-        this.websss.children.iterate(web => {
-          web.body.collideWorldBounds = true
-          web.body.allowGravity = false
-          web.anims.play('web', true)
-          web.body.velocity.x = 300
-          web.setScale(1.5, 1.5)
-        })
-        // this.web.x = this.player.x + 16
-        // this.web.y = this.player.y
-        // this.web.body.velocity.x = 300
-        // this.web.anims.play('web', true)
+        let newWeb_right = this.webs.create(
+          this.player.x + 20,
+          this.player.y + 20,
+          'web'
+        )
+        webShooter(newWeb_right, 350)
       }
 
       if (this.player.facing === 'left') {
         this.player.anims.play('atk_left', true)
-        this.web.x = this.player.x - 16
-        this.web.y = this.player.y
-        this.web.body.velocity.x = -300
-        this.web.anims.play('web', true)
+        let newWeb_left = this.webs.create(
+          this.player.x - 20,
+          this.player.y + 20,
+          'web'
+        )
+        webShooter(newWeb_left, -350)
       }
     }
+  }
+
+  function webShooter (web, shootSpeed) {
+    web.body.setSize(15, 15, 5, 5)
+    web.body.collideWorldBounds = true
+    web.body.allowGravity = false
+    web.anims.play('web', true)
+    web.body.velocity.x = shootSpeed
+    web.setScale(1.5, 1.5)
+    setInterval(() => {
+      web.destroy()
+    }, 1000)
   }
 
   return (
