@@ -183,8 +183,8 @@ export default function App (props) {
       frameRate: 5,
       repeat: 0
     })
-    this.web.body.velocity.x = 300
-    this.web.anims.play('web', true)
+
+    this.websss = this.physics.add.group()
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
@@ -262,10 +262,18 @@ export default function App (props) {
     if (this.cursors.space.isDown) {
       if (this.player.facing === 'right') {
         this.player.anims.play('atk_right', true)
-        this.web.x = this.player.x + 16
-        this.web.y = this.player.y
-        this.web.body.velocity.x = 300
-        this.web.anims.play('web', true)
+        this.websss.create(this.player.x + 16, this.player.y, 'web')
+        this.websss.children.iterate(web => {
+          web.body.collideWorldBounds = true
+          web.body.allowGravity = false
+          web.anims.play('web', true)
+          web.body.velocity.x = 300
+          web.setScale(1.5, 1.5)
+        })
+        // this.web.x = this.player.x + 16
+        // this.web.y = this.player.y
+        // this.web.body.velocity.x = 300
+        // this.web.anims.play('web', true)
       }
 
       if (this.player.facing === 'left') {
