@@ -141,6 +141,7 @@ export default function App (props) {
       coin.anims.play('coin_spin', true)
       coin.setScale(0.5, 0.5)
       coin.setBounceY(Phaser.Math.FloatBetween(0.9, 1))
+      coin.setBounceX(Phaser.Math.FloatBetween(0.9, 1))
     })
 
     // platforms
