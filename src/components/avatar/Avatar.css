@@ -1,9 +1,0 @@
-.Avatar {
-  background-image: url('./link.png');
-  position: absolute;
-  width: 120px;
-  height: 130px;
-  z-index: 2;
-  background-repeat: no-repeat;
-  transition: left 400ms ease-out, bottom 500ms ease-out;
-}
