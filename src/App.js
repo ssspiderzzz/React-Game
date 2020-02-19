@@ -62,7 +62,7 @@ export default function App (props) {
     })
     this.load.spritesheet('web', spiderandweb, {
       frameWidth: 32,
-      frameHeight: 32
+      frameHeight: 33
     })
   }
 
@@ -154,26 +154,22 @@ export default function App (props) {
     })
 
     // slime
-    this.slime = this.physics.add.sprite(500, 600, 'slime').setScale(4, 4)
+    this.slime = this.physics.add.sprite(500, 600, 'slime').setScale(2, 2)
     this.slime.body.collideWorldBounds = true
     this.anims.create({
       key: 'slime',
       frames: this.anims.generateFrameNumbers('slime', {
-        start: 20,
-        end: 29
+        start: 0,
+        end: 2
       }),
-      frameRate: 10,
-      repeat: -1
+      frameRate: 5,
+      repeat: -1,
+      yoyo: true
     })
     this.slime.anims.play('slime', true)
-    // this.player.body.setSize(55, 65, 10, 10)
 
     // web
-    this.web = this.physics.add
-      .sprite(this.player.x + 16, this.player.y, 'web')
-      .setScale(1.5, 1.5)
-    this.web.body.collideWorldBounds = true
-    this.web.body.allowGravity = false
+    this.webs = this.physics.add.group()
     this.anims.create({
       key: 'web',
       frames: this.anims.generateFrameNumbers('web', {
@@ -183,8 +179,6 @@ export default function App (props) {
       frameRate: 5,
       repeat: 0
     })
-    this.web.body.velocity.x = 300
-    this.web.anims.play('web', true)
 
     // platforms
     this.platforms = this.physics.add.staticGroup()
@@ -228,9 +222,34 @@ export default function App (props) {
     this.physics.add.collider(this.coins, this.player)
     this.physics.add.collider(this.slime, this.platforms)
     this.physics.add.collider(this.slime, this.player)
-    this.physics.add.collider(this.web, this.platforms)
+    this.physics.add.collider(this.webs, this.platforms)
+    this.physics.add.overlap(this.webs, this.coins, (web, coin) => {
+      this.money++
+      this.moneyChange = true
+      coin.disableBody(true, true)
+    })
+    this.physics.add.overlap(this.webs, this.slime, (web, slime) => {
+      if (slime.body.touching.left) this.slime.body.x -= 1
+      if (slime.body.touching.right) this.slime.body.x += 1
+      this.slimeHP--
+      console.log(this.slimeHP)
+    })
 
+    this.slimeHP = 1000
+    this.money = 0
+    this.moneyChange = false
     this.doublejump = false
+
+    // static text
+    this.collection = this.physics.add.staticGroup()
+    this.collection
+      .create(25, 25, 'coin', 0)
+      .setScale(0.3, 0.3)
+      .refreshBody()
+    this.collectionText = this.add.text(60, 7, this.money, {
+      fontFamily: '"Roboto Condensed"',
+      fontSize: 33
+    })
   }
 
   function update () {
@@ -262,20 +281,49 @@ export default function App (props) {
     if (this.cursors.space.isDown) {
       if (this.player.facing === 'right') {
         this.player.anims.play('atk_right', true)
-        this.web.x = this.player.x + 16
-        this.web.y = this.player.y
-        this.web.body.velocity.x = 300
-        this.web.anims.play('web', true)
+        let newWeb_right = this.webs.create(
+          this.player.x + 20,
+          this.player.y + 20,
+          'web'
+        )
+        webShooter(newWeb_right, 350)
       }
 
       if (this.player.facing === 'left') {
         this.player.anims.play('atk_left', true)
-        this.web.x = this.player.x - 16
-        this.web.y = this.player.y
-        this.web.body.velocity.x = -300
-        this.web.anims.play('web', true)
+        let newWeb_left = this.webs.create(
+          this.player.x - 20,
+          this.player.y + 20,
+          'web'
+        )
+        webShooter(newWeb_left, -350)
       }
     }
+
+    if (this.moneyChange) {
+      this.moneyChange = false
+      this.collectionText.destroy()
+      this.collectionText = this.add.text(60, 7, this.money, {
+        fontFamily: '"Roboto Condensed"',
+        fontSize: 33
+      })
+    }
+
+    if (this.slimeHP <= 0) {
+      this.slime.disableBody(true, true)
+    }
+  }
+
+  function webShooter (web, shootSpeed) {
+    web.body.setSize(15, 15, 5, 5)
+    web.body.collideWorldBounds = true
+    web.body.allowGravity = false
+    web.anims.play('web', true)
+    web.body.velocity.x = shootSpeed
+    web.setScale(1.5, 1.5)
+    setInterval(() => {
+      web.destroy()
+    }, 1000)
   }
 
   return (
