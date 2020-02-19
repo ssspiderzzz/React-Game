@@ -71,7 +71,7 @@ export default function App (props) {
     this.add.image(0, 0, 'background').setOrigin(0, 0)
 
     // player
-    this.player = this.physics.add.sprite(100, 200, 'spiderman').setScale(1, 1)
+    this.player = this.physics.add.sprite(100, 400, 'spiderman').setScale(1, 1)
     this.player.body.setSize(55, 65, 10, 10)
     this.player.body.collideWorldBounds = true
     this.player.facing = 'right'
