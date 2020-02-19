@@ -163,7 +163,8 @@ export default function App (props) {
         end: 2
       }),
       frameRate: 5,
-      repeat: -1
+      repeat: -1,
+      yoyo: true
     })
     this.slime.anims.play('slime', true)
 
@@ -228,11 +229,13 @@ export default function App (props) {
       coin.disableBody(true, true)
     })
     this.physics.add.overlap(this.webs, this.slime, (web, slime) => {
+      if (slime.body.touching.left) this.slime.body.x -= 1
+      if (slime.body.touching.right) this.slime.body.x += 1
       this.slimeHP--
-      this.slime.body.x -= 2
+      console.log(this.slimeHP)
     })
 
-    this.slimeHP = 100
+    this.slimeHP = 1000
     this.money = 0
     this.moneyChange = false
     this.doublejump = false
@@ -304,6 +307,10 @@ export default function App (props) {
         fontFamily: '"Roboto Condensed"',
         fontSize: 33
       })
+    }
+
+    if (this.slimeHP <= 0) {
+      this.slime.disableBody(true, true)
     }
   }
 
