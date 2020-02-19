@@ -165,10 +165,10 @@ export default function create () {
   this.physics.add.overlap(this.webs, this.slime, (web, slime) => {
     if (slime.body.touching.left) this.slime.body.x -= 1
     if (slime.body.touching.right) this.slime.body.x += 1
-    this.slimeHP--
+    this.value -= 0.1
+    draw(this)
   })
 
-  this.slimeHP = 1000
   this.money = 0
   this.moneyChange = false
   this.doublejump = false
@@ -184,31 +184,35 @@ export default function create () {
     fontSize: 33
   })
 
-  this.bar = new Phaser.GameObjects.Graphics(this)
-  this.x = this.slime.x
-  this.y = this.slime.y - 50
+  this.bar = this.add.graphics()
   this.value = 100
   this.p = 76 / 100
-  this.bar.clear()
+}
+
+function draw (scene) {
+  scene.x = scene.slime.x - 32
+  scene.y = scene.slime.y - 50
+
+  scene.bar.clear()
 
   //  BG
-  this.bar.fillStyle(0x000000)
-  this.bar.fillRect(this.x, this.y, 80, 16)
+  scene.bar.fillStyle(0x000000)
+  scene.bar.fillRect(scene.x, scene.y, 80, 16)
 
   //  Health
 
-  this.bar.fillStyle(0xffffff)
-  this.bar.fillRect(this.x + 2, this.y + 2, 76, 12)
+  scene.bar.fillStyle(0xffffff)
+  scene.bar.fillRect(scene.x + 2, scene.y + 2, 76, 12)
 
-  if (this.value < 30) {
-    this.bar.fillStyle(0xff0000)
+  if (scene.value < 30) {
+    scene.bar.fillStyle(0xff0000)
   } else {
-    this.bar.fillStyle(0x00ff00)
+    scene.bar.fillStyle(0x00ff00)
   }
 
-  var d = Math.floor(this.p * this.value)
+  var d = Math.floor(scene.p * scene.value)
 
-  this.bar.fillRect(this.x + 2, this.y + 2, d, 12)
+  scene.bar.fillRect(scene.x + 2, scene.y + 2, d, 12)
 
-  this.add.existing(this.bar)
+  scene.add.existing(scene.bar)
 }

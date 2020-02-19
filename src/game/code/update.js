@@ -54,7 +54,7 @@ export default function update () {
     })
   }
 
-  if (this.slimeHP <= 0) {
+  if (this.value <= 0) {
     this.slime.disableBody(true, true)
   }
 }
