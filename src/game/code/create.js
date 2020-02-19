@@ -67,8 +67,8 @@ export default function create () {
   // coin
   this.coins = this.physics.add.group({
     key: 'coin',
-    repeat: 10,
-    setXY: { x: 20, y: 0, stepX: 100 }
+    repeat: 9,
+    setXY: { x: 20, y: 0, stepX: 110 }
   })
   this.anims.create({
     key: 'coin_spin',
@@ -183,4 +183,32 @@ export default function create () {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
   })
+
+  this.bar = new Phaser.GameObjects.Graphics(this)
+  this.x = this.slime.x
+  this.y = this.slime.y - 50
+  this.value = 100
+  this.p = 76 / 100
+  this.bar.clear()
+
+  //  BG
+  this.bar.fillStyle(0x000000)
+  this.bar.fillRect(this.x, this.y, 80, 16)
+
+  //  Health
+
+  this.bar.fillStyle(0xffffff)
+  this.bar.fillRect(this.x + 2, this.y + 2, 76, 12)
+
+  if (this.value < 30) {
+    this.bar.fillStyle(0xff0000)
+  } else {
+    this.bar.fillStyle(0x00ff00)
+  }
+
+  var d = Math.floor(this.p * this.value)
+
+  this.bar.fillRect(this.x + 2, this.y + 2, d, 12)
+
+  this.add.existing(this.bar)
 }
