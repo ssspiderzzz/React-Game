@@ -165,7 +165,7 @@ export default function create () {
     if (slime.body.touching.left) this.slime.body.x -= 0.1
     if (slime.body.touching.right) this.slime.body.x += 0.1
     this.value -= 0.1
-    drawHealthBar(this)
+    drawHealthBar(this, this.slime)
   })
 
   this.money = 0
@@ -188,9 +188,9 @@ export default function create () {
   this.p = 76 / 100
 }
 
-function drawHealthBar (scene) {
-  scene.x = scene.slime.x - 40
-  scene.y = scene.slime.y - 50
+function drawHealthBar (scene, object) {
+  scene.x = object.x - 40
+  scene.y = object.y - 50
 
   scene.bar.clear()
 
