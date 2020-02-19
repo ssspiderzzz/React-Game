@@ -155,7 +155,6 @@ export default function create () {
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.coins, this.player)
   this.physics.add.collider(this.slime, this.platforms)
-  this.physics.add.collider(this.slime, this.player)
   this.physics.add.collider(this.webs, this.platforms)
   this.physics.add.overlap(this.webs, this.coins, (web, coin) => {
     this.money++
@@ -163,10 +162,10 @@ export default function create () {
     coin.disableBody(true, true)
   })
   this.physics.add.overlap(this.webs, this.slime, (web, slime) => {
-    if (slime.body.touching.left) this.slime.body.x -= 1
-    if (slime.body.touching.right) this.slime.body.x += 1
+    if (slime.body.touching.left) this.slime.body.x -= 0.1
+    if (slime.body.touching.right) this.slime.body.x += 0.1
     this.value -= 0.1
-    draw(this)
+    drawHealthBar(this)
   })
 
   this.money = 0
@@ -189,8 +188,8 @@ export default function create () {
   this.p = 76 / 100
 }
 
-function draw (scene) {
-  scene.x = scene.slime.x - 32
+function drawHealthBar (scene) {
+  scene.x = scene.slime.x - 40
   scene.y = scene.slime.y - 50
 
   scene.bar.clear()
