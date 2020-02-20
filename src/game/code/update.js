@@ -1,17 +1,38 @@
+import drawHealthBar from './drawHealthBar'
+
 export default function update () {
-  if (this.cursors.right.isDown) {
-    this.player.anims.play('right', true)
-    this.player.body.setVelocityX(300)
-    this.player.facing = 'right'
-  } else if (this.cursors.left.isDown) {
-    this.player.anims.play('left', true)
-    this.player.body.setVelocityX(-300)
-    this.player.facing = 'left'
-  } else {
-    if (this.player.facing === 'right')
-      this.player.anims.play('idle_right', true)
-    if (this.player.facing === 'left') this.player.anims.play('idle_left', true)
-    this.player.body.setVelocityX(0)
+  if (this.knockBack && this.knockBackOrient) {
+    if (this.knockBackOrient === 'right') {
+      this.player.body.setVelocityX(200)
+      this.player.body.setVelocityY(-200)
+    }
+    if (this.knockBackOrient === 'left') {
+      this.player.body.setVelocityX(-200)
+      this.player.body.setVelocityY(-200)
+    }
+    setTimeout(() => {
+      this.knockBack = false
+    }, 1000)
+    this.knockBackOrient = false
+  }
+  if (!this.knockBack) {
+    if (this.cursors.right.isDown) {
+      this.player.anims.play('right', true)
+      this.player.body.setVelocityX(300)
+      this.player.facing = 'right'
+    } else if (this.cursors.left.isDown) {
+      this.player.anims.play('left', true)
+      this.player.body.setVelocityX(-300)
+      this.player.facing = 'left'
+    } else {
+      if (this.player.facing === 'right') {
+        this.player.anims.play('idle_right', true)
+      }
+      if (this.player.facing === 'left') {
+        this.player.anims.play('idle_left', true)
+      }
+      this.player.body.setVelocityX(0)
+    }
   }
 
   if (this.cursors.up.isDown && !this.doublejump) {
@@ -58,6 +79,13 @@ export default function update () {
     this.slime.disableBody(true, true)
     this.bar.destroy()
   }
+
+  if (this.slime.body.enable) {
+    if (this.randomMoving === 'right') this.slime.body.setVelocityX(200)
+    if (this.randomMoving === 'left') this.slime.body.setVelocityX(-200)
+    randomMove(this.slime)
+    drawHealthBar(this, this.slime)
+  }
 }
 
 function webShooter (web, shootSpeed) {
@@ -70,4 +98,20 @@ function webShooter (web, shootSpeed) {
   setInterval(() => {
     web.destroy()
   }, 1000)
+}
+
+function randomMove (object) {
+  //randomise the movement
+  let droidmover = Math.random()
+  let changeChance = Math.random()
+  //simple if statement to choose if and which way the droid moves
+  if (changeChance < 0.04) {
+    if (droidmover >= 0.5) {
+      object.body.velocity.x = 100
+    } else if (droidmover < 0.5) {
+      object.body.velocity.x = -100
+    } else {
+      object.body.velocity.x = 0
+    }
+  }
 }

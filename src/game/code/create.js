@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import drawHealthBar from './drawHealthBar'
 
 export default function create () {
   // background
@@ -167,6 +168,16 @@ export default function create () {
     this.value -= 0.1
     drawHealthBar(this, this.slime)
   })
+  this.physics.add.collider(this.player, this.slime, (player, slime) => {
+    if (player.body.touching.left) {
+      this.knockBack = true
+      this.knockBackOrient = 'right'
+    }
+    if (player.body.touching.right) {
+      this.knockBack = true
+      this.knockBackOrient = 'left'
+    }
+  })
 
   this.money = 0
   this.moneyChange = false
@@ -186,32 +197,4 @@ export default function create () {
   this.bar = this.add.graphics()
   this.value = 100
   this.p = 76 / 100
-}
-
-function drawHealthBar (scene, object) {
-  scene.x = object.x - 40
-  scene.y = object.y - 50
-
-  scene.bar.clear()
-
-  //  BG
-  scene.bar.fillStyle(0x000000)
-  scene.bar.fillRect(scene.x, scene.y, 80, 16)
-
-  //  Health
-
-  scene.bar.fillStyle(0xffffff)
-  scene.bar.fillRect(scene.x + 2, scene.y + 2, 76, 12)
-
-  if (scene.value < 30) {
-    scene.bar.fillStyle(0xff0000)
-  } else {
-    scene.bar.fillStyle(0x00ff00)
-  }
-
-  var d = Math.floor(scene.p * scene.value)
-
-  scene.bar.fillRect(scene.x + 2, scene.y + 2, d, 12)
-
-  scene.add.existing(scene.bar)
 }
