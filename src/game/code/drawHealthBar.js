@@ -1,27 +1,29 @@
 export default function drawHealthBar (scene, object) {
-  scene.x = object.x - 40
-  scene.y = object.y - 50
+  if (object.hp < 100) {
+    let x = object.x - 40
+    let y = object.y - 50
 
-  scene.bar.clear()
+    object.bar.clear()
 
-  //  BG
-  scene.bar.fillStyle(0x000000)
-  scene.bar.fillRect(scene.x, scene.y, 80, 16)
+    //  BG
+    object.bar.fillStyle(0x000000)
+    object.bar.fillRect(x, y, 80, 16)
 
-  //  Health
+    //  Health
 
-  scene.bar.fillStyle(0xffffff)
-  scene.bar.fillRect(scene.x + 2, scene.y + 2, 76, 12)
+    object.bar.fillStyle(0xffffff)
+    object.bar.fillRect(x + 2, y + 2, 76, 12)
 
-  if (scene.value < 30) {
-    scene.bar.fillStyle(0xff0000)
-  } else {
-    scene.bar.fillStyle(0x00ff00)
+    if (object.hp < 30) {
+      object.bar.fillStyle(0xff0000)
+    } else {
+      object.bar.fillStyle(0x00ff00)
+    }
+
+    var d = Math.floor((76 / 100) * object.hp)
+
+    object.bar.fillRect(x + 2, y + 2, d, 12)
+
+    scene.add.existing(object.bar)
   }
-
-  var d = Math.floor(scene.p * scene.value)
-
-  scene.bar.fillRect(scene.x + 2, scene.y + 2, d, 12)
-
-  scene.add.existing(scene.bar)
 }

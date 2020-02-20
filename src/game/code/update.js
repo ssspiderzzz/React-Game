@@ -1,6 +1,9 @@
 import drawHealthBar from './drawHealthBar'
 
 export default function update () {
+  drawHealthBar(this, this.player)
+  drawHealthBar(this, this.slime)
+
   if (this.knockBack && this.knockBackOrient) {
     if (this.knockBackOrient === 'right') {
       this.player.body.setVelocityX(200)
@@ -12,9 +15,10 @@ export default function update () {
     }
     setTimeout(() => {
       this.knockBack = false
-    }, 1000)
+    }, 900)
     this.knockBackOrient = false
   }
+
   if (!this.knockBack) {
     if (this.cursors.right.isDown) {
       this.player.anims.play('right', true)
@@ -75,16 +79,15 @@ export default function update () {
     })
   }
 
-  if (this.value <= 0 && this.slime.body.enable) {
+  if (this.slime.hp <= 0 && this.slime.body.enable) {
     this.slime.disableBody(true, true)
-    this.bar.destroy()
+    this.slime.bar.destroy()
   }
 
   if (this.slime.body.enable) {
     if (this.randomMoving === 'right') this.slime.body.setVelocityX(200)
     if (this.randomMoving === 'left') this.slime.body.setVelocityX(-200)
     randomMove(this.slime)
-    drawHealthBar(this, this.slime)
   }
 }
 

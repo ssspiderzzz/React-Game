@@ -1,5 +1,4 @@
 import Phaser from 'phaser'
-import drawHealthBar from './drawHealthBar'
 
 export default function create () {
   // background
@@ -84,8 +83,8 @@ export default function create () {
     coin.body.collideWorldBounds = true
     coin.anims.play('coin_spin', true)
     coin.setScale(0.5, 0.5)
-    coin.setBounceY(Phaser.Math.FloatBetween(0.9, 1))
-    coin.setBounceX(Phaser.Math.FloatBetween(0.9, 1))
+    coin.setBounceY(Phaser.Math.FloatBetween(0.6, 0.6))
+    coin.setBounceX(Phaser.Math.FloatBetween(0.6, 0.6))
   })
 
   // slime
@@ -165,8 +164,7 @@ export default function create () {
   this.physics.add.overlap(this.webs, this.slime, (web, slime) => {
     if (slime.body.touching.left) this.slime.body.x -= 0.1
     if (slime.body.touching.right) this.slime.body.x += 0.1
-    this.value -= 0.1
-    drawHealthBar(this, this.slime)
+    this.slime.hp -= 0.1
   })
   this.physics.add.collider(this.player, this.slime, (player, slime) => {
     if (player.body.touching.left) {
@@ -177,6 +175,7 @@ export default function create () {
       this.knockBack = true
       this.knockBackOrient = 'left'
     }
+    this.player.hp -= Math.floor(Math.random() * 10) + 10
   })
 
   this.money = 0
@@ -194,7 +193,8 @@ export default function create () {
     fontSize: 33
   })
 
-  this.bar = this.add.graphics()
-  this.value = 100
-  this.p = 76 / 100
+  this.slime.bar = this.add.graphics()
+  this.slime.hp = 100
+  this.player.bar = this.add.graphics()
+  this.player.hp = 100
 }
