@@ -54,7 +54,7 @@ export default function update () {
     })
   }
 
-  if (this.value <= 0) {
+  if (this.value <= 0 && this.slime.body.enable) {
     this.slime.disableBody(true, true)
     this.bar.destroy()
   }
