@@ -6,6 +6,7 @@ export default function create () {
 
   // player
   this.player = this.physics.add.sprite(100, 400, 'spiderman').setScale(1, 1)
+  this.player.alive = true
   this.player.body.setSize(55, 65, 10, 10)
   this.player.body.collideWorldBounds = true
   this.player.facing = 'right'
@@ -61,6 +62,24 @@ export default function create () {
       end: 54
     }),
     frameRate: 10,
+    repeat: -1
+  })
+  this.anims.create({
+    key: 'ghost_right',
+    frames: this.anims.generateFrameNumbers('spiderman', {
+      start: 120,
+      end: 121
+    }),
+    frameRate: 5,
+    repeat: -1
+  })
+  this.anims.create({
+    key: 'ghost_left',
+    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
+      start: 131,
+      end: 130
+    }),
+    frameRate: 5,
     repeat: -1
   })
 
@@ -183,8 +202,8 @@ export default function create () {
   this.doublejump = false
 
   // static text
-  this.collection = this.physics.add.staticGroup()
-  this.collection
+  this.moneyIcon = this.physics.add.staticGroup()
+  this.moneyIcon
     .create(25, 25, 'coin', 0)
     .setScale(0.3, 0.3)
     .refreshBody()
