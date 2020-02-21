@@ -10,6 +10,8 @@ export default function create () {
   this.player.body.setSize(55, 65, 10, 10)
   this.player.body.collideWorldBounds = true
   this.player.facing = 'right'
+  this.player.bar = this.add.graphics()
+  this.player.hp = 100
   this.anims.create({
     key: 'right',
     frames: this.anims.generateFrameNumbers('spiderman', {
@@ -220,7 +222,4 @@ export default function create () {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
   })
-
-  this.player.bar = this.add.graphics()
-  this.player.hp = 100
 }

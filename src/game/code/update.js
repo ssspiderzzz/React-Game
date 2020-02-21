@@ -77,17 +77,15 @@ export default function update () {
       fontSize: 33
     })
   }
-  this.slimes.children.iterate(slime => {
-    drawHealthBar(this, slime)
-    if (slime.hp <= 0 && slime.body.enable) {
-      slime.disableBody(true, true)
-      slime.bar.destroy()
-    }
 
+  this.slimes.children.iterate(slime => {
     if (slime.body.enable) {
-      if (this.randomMoving === 'right') slime.body.setVelocityX(200)
-      if (this.randomMoving === 'left') slime.body.setVelocityX(-200)
+      drawHealthBar(this, slime)
       randomMove(slime)
+      if (slime.hp <= 0) {
+        slime.disableBody(true, true)
+        slime.bar.destroy()
+      }
     }
   })
 
