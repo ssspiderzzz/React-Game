@@ -102,6 +102,7 @@ export default function update () {
     if (this.player.facing === 'left') {
       this.player.anims.play('ghost_left', true)
     }
+    console.log(this.physics)
     setTimeout(() => {
       this.player.body.setVelocityX(0)
       this.player.body.setVelocityY(-10)

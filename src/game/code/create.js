@@ -185,6 +185,7 @@ export default function create () {
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.coins, this.player)
   this.physics.add.collider(this.slimes, this.platforms)
+  this.physics.add.collider(this.slimes, this.slimes)
   this.physics.add.collider(this.webs, this.platforms)
   this.physics.add.overlap(this.webs, this.coins, (web, coin) => {
     this.money++
