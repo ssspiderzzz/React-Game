@@ -192,8 +192,8 @@ export default function create () {
     coin.disableBody(true, true)
   })
   this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
-    if (slime.body.touching.left) slime.body.x -= 0.1
-    if (slime.body.touching.right) slime.body.x += 0.1
+    if (slime.body.touching.left) slime.body.x += 0.1
+    if (slime.body.touching.right) slime.body.x -= 0.1
     slime.hp -= 0.1
   })
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {

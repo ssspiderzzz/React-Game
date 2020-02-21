@@ -78,16 +78,18 @@ export default function update () {
     })
   }
 
-  this.slimes.children.iterate(slime => {
-    if (slime.body.enable) {
-      drawHealthBar(this, slime)
-      randomMove(slime)
-      if (slime.hp <= 0) {
-        slime.disableBody(true, true)
-        slime.bar.destroy()
+  if (this.slimes.children.size > 0) {
+    this.slimes.children.iterate(slime => {
+      if (slime.body.enable) {
+        drawHealthBar(this, slime)
+        randomMove(slime)
+        if (slime.hp <= 0) {
+          slime.disableBody(true, true)
+          slime.bar.destroy()
+        }
       }
-    }
-  })
+    })
+  }
 
   if (this.player.hp <= 0 && this.player.alive) {
     // when hp drop to 0, make player immobile
@@ -103,7 +105,7 @@ export default function update () {
     setTimeout(() => {
       this.player.body.setVelocityX(0)
       this.player.body.setVelocityY(-10)
-    }, 100)
+    }, 500)
   }
 }
 
