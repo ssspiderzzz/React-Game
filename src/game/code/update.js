@@ -2,7 +2,6 @@ import drawHealthBar from './drawHealthBar'
 
 export default function update () {
   drawHealthBar(this, this.player)
-  drawHealthBar(this, this.slime)
 
   if (this.knockBack && this.knockBackOrient) {
     if (this.knockBackOrient === 'right') {
@@ -78,17 +77,19 @@ export default function update () {
       fontSize: 33
     })
   }
+  this.slimes.children.iterate(slime => {
+    drawHealthBar(this, slime)
+    if (slime.hp <= 0 && slime.body.enable) {
+      slime.disableBody(true, true)
+      slime.bar.destroy()
+    }
 
-  if (this.slime.hp <= 0 && this.slime.body.enable) {
-    this.slime.disableBody(true, true)
-    this.slime.bar.destroy()
-  }
-
-  if (this.slime.body.enable) {
-    if (this.randomMoving === 'right') this.slime.body.setVelocityX(200)
-    if (this.randomMoving === 'left') this.slime.body.setVelocityX(-200)
-    randomMove(this.slime)
-  }
+    if (slime.body.enable) {
+      if (this.randomMoving === 'right') slime.body.setVelocityX(200)
+      if (this.randomMoving === 'left') slime.body.setVelocityX(-200)
+      randomMove(slime)
+    }
+  })
 
   if (this.player.hp <= 0 && this.player.alive) {
     // when hp drop to 0, make player immobile
@@ -104,7 +105,7 @@ export default function update () {
     setTimeout(() => {
       this.player.body.setVelocityX(0)
       this.player.body.setVelocityY(-10)
-    }, 1001)
+    }, 100)
   }
 }
 
