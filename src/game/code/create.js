@@ -6,9 +6,12 @@ export default function create () {
 
   // player
   this.player = this.physics.add.sprite(100, 400, 'spiderman').setScale(1, 1)
+  this.player.alive = true
   this.player.body.setSize(55, 65, 10, 10)
   this.player.body.collideWorldBounds = true
   this.player.facing = 'right'
+  this.player.bar = this.add.graphics()
+  this.player.hp = 100
   this.anims.create({
     key: 'right',
     frames: this.anims.generateFrameNumbers('spiderman', {
@@ -63,6 +66,24 @@ export default function create () {
     frameRate: 10,
     repeat: -1
   })
+  this.anims.create({
+    key: 'ghost_right',
+    frames: this.anims.generateFrameNumbers('spiderman', {
+      start: 120,
+      end: 121
+    }),
+    frameRate: 5,
+    repeat: -1
+  })
+  this.anims.create({
+    key: 'ghost_left',
+    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
+      start: 131,
+      end: 130
+    }),
+    frameRate: 5,
+    repeat: -1
+  })
 
   // coin
   this.coins = this.physics.add.group({
@@ -87,9 +108,12 @@ export default function create () {
     coin.setBounceX(Phaser.Math.FloatBetween(0.6, 0.6))
   })
 
-  // slime
-  this.slime = this.physics.add.sprite(500, 600, 'slime').setScale(2, 2)
-  this.slime.body.collideWorldBounds = true
+  // slimes
+  this.slimes = this.physics.add.group({
+    key: 'slimes',
+    repeat: 2,
+    setXY: { x: 100, y: 650, stepX: 412 }
+  })
   this.anims.create({
     key: 'slime',
     frames: this.anims.generateFrameNumbers('slime', {
@@ -100,7 +124,13 @@ export default function create () {
     repeat: -1,
     yoyo: true
   })
-  this.slime.anims.play('slime', true)
+  this.slimes.children.iterate(slime => {
+    slime.bar = this.add.graphics()
+    slime.hp = 100
+    slime.body.collideWorldBounds = true
+    slime.anims.play('slime', true)
+    slime.setScale(2, 2)
+  })
 
   // web
   this.webs = this.physics.add.group()
@@ -154,19 +184,19 @@ export default function create () {
   this.physics.add.collider(this.player, this.platforms)
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.coins, this.player)
-  this.physics.add.collider(this.slime, this.platforms)
+  this.physics.add.collider(this.slimes, this.platforms)
   this.physics.add.collider(this.webs, this.platforms)
   this.physics.add.overlap(this.webs, this.coins, (web, coin) => {
     this.money++
     this.moneyChange = true
     coin.disableBody(true, true)
   })
-  this.physics.add.overlap(this.webs, this.slime, (web, slime) => {
-    if (slime.body.touching.left) this.slime.body.x -= 0.1
-    if (slime.body.touching.right) this.slime.body.x += 0.1
-    this.slime.hp -= 0.1
+  this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
+    if (slime.body.touching.left) slime.body.x += 0.1
+    if (slime.body.touching.right) slime.body.x -= 0.1
+    slime.hp -= 0.1
   })
-  this.physics.add.collider(this.player, this.slime, (player, slime) => {
+  this.physics.add.collider(this.player, this.slimes, (player, slime) => {
     if (player.body.touching.left) {
       this.knockBack = true
       this.knockBackOrient = 'right'
@@ -183,8 +213,8 @@ export default function create () {
   this.doublejump = false
 
   // static text
-  this.collection = this.physics.add.staticGroup()
-  this.collection
+  this.moneyIcon = this.physics.add.staticGroup()
+  this.moneyIcon
     .create(25, 25, 'coin', 0)
     .setScale(0.3, 0.3)
     .refreshBody()
@@ -192,9 +222,4 @@ export default function create () {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
   })
-
-  this.slime.bar = this.add.graphics()
-  this.slime.hp = 100
-  this.player.bar = this.add.graphics()
-  this.player.hp = 100
 }

@@ -2,7 +2,6 @@ import drawHealthBar from './drawHealthBar'
 
 export default function update () {
   drawHealthBar(this, this.player)
-  drawHealthBar(this, this.slime)
 
   if (this.knockBack && this.knockBackOrient) {
     if (this.knockBackOrient === 'right') {
@@ -19,7 +18,7 @@ export default function update () {
     this.knockBackOrient = false
   }
 
-  if (!this.knockBack) {
+  if (!this.knockBack && this.player.alive) {
     if (this.cursors.right.isDown) {
       this.player.anims.play('right', true)
       this.player.body.setVelocityX(300)
@@ -37,36 +36,36 @@ export default function update () {
       }
       this.player.body.setVelocityX(0)
     }
-  }
 
-  if (this.cursors.up.isDown && !this.doublejump) {
-    this.player.body.setVelocityY(-400)
-    this.doublejump = true
-  }
-
-  if (this.player.body.touching.down) {
-    this.doublejump = false
-  }
-
-  if (this.cursors.space.isDown) {
-    if (this.player.facing === 'right') {
-      this.player.anims.play('atk_right', true)
-      let newWeb_right = this.webs.create(
-        this.player.x + 20,
-        this.player.y + 20,
-        'web'
-      )
-      webShooter(newWeb_right, 350)
+    if (this.cursors.up.isDown && !this.doublejump) {
+      this.player.body.setVelocityY(-400)
+      this.doublejump = true
     }
 
-    if (this.player.facing === 'left') {
-      this.player.anims.play('atk_left', true)
-      let newWeb_left = this.webs.create(
-        this.player.x - 20,
-        this.player.y + 20,
-        'web'
-      )
-      webShooter(newWeb_left, -350)
+    if (this.player.body.touching.down && this.doublejump) {
+      this.doublejump = false
+    }
+
+    if (this.cursors.space.isDown) {
+      if (this.player.facing === 'right') {
+        this.player.anims.play('atk_right', true)
+        let newWeb_right = this.webs.create(
+          this.player.x + 20,
+          this.player.y + 20,
+          'web'
+        )
+        webShooter(newWeb_right, 350)
+      }
+
+      if (this.player.facing === 'left') {
+        this.player.anims.play('atk_left', true)
+        let newWeb_left = this.webs.create(
+          this.player.x - 20,
+          this.player.y + 20,
+          'web'
+        )
+        webShooter(newWeb_left, -350)
+      }
     }
   }
 
@@ -79,15 +78,34 @@ export default function update () {
     })
   }
 
-  if (this.slime.hp <= 0 && this.slime.body.enable) {
-    this.slime.disableBody(true, true)
-    this.slime.bar.destroy()
+  if (this.slimes.children.size > 0) {
+    this.slimes.children.iterate(slime => {
+      if (slime.body.enable) {
+        drawHealthBar(this, slime)
+        randomMove(slime)
+        if (slime.hp <= 0) {
+          slime.disableBody(true, true)
+          slime.bar.destroy()
+        }
+      }
+    })
   }
 
-  if (this.slime.body.enable) {
-    if (this.randomMoving === 'right') this.slime.body.setVelocityX(200)
-    if (this.randomMoving === 'left') this.slime.body.setVelocityX(-200)
-    randomMove(this.slime)
+  if (this.player.hp <= 0 && this.player.alive) {
+    // when hp drop to 0, make player immobile
+    this.player.alive = false
+    this.player.body.allowGravity = false
+    this.player.bar.destroy()
+    if (this.player.facing === 'right') {
+      this.player.anims.play('ghost_right', true)
+    }
+    if (this.player.facing === 'left') {
+      this.player.anims.play('ghost_left', true)
+    }
+    setTimeout(() => {
+      this.player.body.setVelocityX(0)
+      this.player.body.setVelocityY(-10)
+    }, 500)
   }
 }
 
