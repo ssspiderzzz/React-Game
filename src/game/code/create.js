@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import drawDamageText from './drawDamageText'
 
 export default function create () {
   // background
@@ -206,7 +207,9 @@ export default function create () {
       this.knockBack = true
       this.knockBackOrient = 'left'
     }
-    this.player.hp -= Math.floor(Math.random() * 10) + 10
+    let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
+    this.player.hp -= floatSlimeDmg
+    drawDamageText(this, player, floatSlimeDmg)
   })
 
   this.money = 0
