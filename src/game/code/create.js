@@ -6,7 +6,7 @@ export default function create () {
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
   // player
-  this.player = this.physics.add.sprite(100, 400, 'spiderman').setScale(1, 1)
+  this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)
   this.player.alive = true
   this.player.body.setSize(55, 65, 10, 10)
   this.player.body.collideWorldBounds = true
@@ -111,12 +111,14 @@ export default function create () {
 
   // slimes
   this.slimes = this.physics.add.group({
-    key: 'slimes',
+    key: 'slime_blue',
     repeat: 2,
     setXY: { x: 100, y: 650, stepX: 412 }
   })
+  this.slimes.create(160, 450, 'slime_red')
+  this.slimes.create(864, 450, 'slime_red')
   this.anims.create({
-    key: 'slime',
+    key: 'slime_blue',
     frames: this.anims.generateFrameNumbers('slime', {
       start: 0,
       end: 2
@@ -125,12 +127,27 @@ export default function create () {
     repeat: -1,
     yoyo: true
   })
-  this.slimes.children.iterate(slime => {
+  this.anims.create({
+    key: 'slime_red',
+    frames: this.anims.generateFrameNumbers('slime', {
+      start: 9,
+      end: 11
+    }),
+    frameRate: 5,
+    repeat: -1,
+    yoyo: true
+  })
+  this.slimes.children.iterate((slime, index) => {
     slime.bar = this.add.graphics()
     slime.hp = 100
     slime.body.collideWorldBounds = true
-    slime.anims.play('slime', true)
     slime.setScale(2, 2)
+    if (index < 3) {
+      slime.anims.play('slime_blue', true)
+    }
+    if (index === 3 || index === 4) {
+      slime.anims.play('slime_red', true)
+    }
   })
 
   // web

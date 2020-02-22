@@ -102,7 +102,6 @@ export default function update () {
     if (this.player.facing === 'left') {
       this.player.anims.play('ghost_left', true)
     }
-    console.log(this.physics)
     setTimeout(() => {
       this.player.body.setVelocityX(0)
       this.player.body.setVelocityY(-10)
@@ -125,9 +124,9 @@ function webShooter (web, shootSpeed) {
 function randomMove (object) {
   //randomise the movement
   let droidmover = Math.random()
-  let changeChance = Math.random()
+  let turnChance = Math.random()
   //simple if statement to choose if and which way the droid moves
-  if (changeChance < 0.04) {
+  if (turnChance < 0.03) {
     if (droidmover >= 0.5) {
       object.body.velocity.x = 100
     } else if (droidmover < 0.5) {
