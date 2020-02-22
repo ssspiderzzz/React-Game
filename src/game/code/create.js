@@ -240,6 +240,10 @@ export default function create () {
     slime.hp -= 0.1
   })
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
+    let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
+    this.player.hp -= floatSlimeDmg
+    drawDamageText(this, player, floatSlimeDmg)
+
     if (player.body.touching.left) {
       this.knockBack = true
       this.knockBackOrient = 'right'
@@ -248,9 +252,24 @@ export default function create () {
       this.knockBack = true
       this.knockBackOrient = 'left'
     }
-    let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
-    this.player.hp -= floatSlimeDmg
-    drawDamageText(this, player, floatSlimeDmg)
+    if (player.body.touching.down) {
+      this.knockBack = true
+      if (floatSlimeDmg % 2 === 0) this.knockBackOrient = 'right'
+      if (floatSlimeDmg % 2 === 1) this.knockBackOrient = 'left'
+    }
+
+    if (this.knockBackOrient === 'right') {
+      this.player.body.setVelocityX(200)
+      this.player.body.setVelocityY(-200)
+    }
+    if (this.knockBackOrient === 'left') {
+      this.player.body.setVelocityX(-200)
+      this.player.body.setVelocityY(-200)
+    }
+    setTimeout(() => {
+      this.knockBack = false
+    }, 900)
+    this.knockBackOrient = false
   })
 
   this.money = 0

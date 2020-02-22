@@ -3,21 +3,6 @@ import drawHealthBar from './drawHealthBar'
 export default function update () {
   drawHealthBar(this, this.player)
 
-  if (this.knockBack && this.knockBackOrient) {
-    if (this.knockBackOrient === 'right') {
-      this.player.body.setVelocityX(200)
-      this.player.body.setVelocityY(-200)
-    }
-    if (this.knockBackOrient === 'left') {
-      this.player.body.setVelocityX(-200)
-      this.player.body.setVelocityY(-200)
-    }
-    setTimeout(() => {
-      this.knockBack = false
-    }, 900)
-    this.knockBackOrient = false
-  }
-
   if (!this.knockBack && this.player.alive) {
     if (this.cursors.right.isDown) {
       this.player.anims.play('right', true)

@@ -1,5 +1,5 @@
 export default function drawHealthBar (scene, object) {
-  if (object.hp < 100) {
+  if (object.hp > 0 && object.hp < 100) {
     let x = object.x - 40
     let y = object.y - 50
 
