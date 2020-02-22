@@ -196,6 +196,29 @@ export default function create () {
     .setScale(64, 1)
     .refreshBody()
 
+  // invisible walls
+  this.invisibleWalls = this.physics.add.staticGroup()
+  this.invisibleWalls
+    .create(320, 470, 'tiles', 1)
+    .setScale(1, 1)
+    .setAlpha(0)
+    .refreshBody()
+  this.invisibleWalls
+    .create(704, 470, 'tiles', 1)
+    .setScale(1, 1)
+    .setAlpha(0)
+    .refreshBody()
+  this.invisibleWalls
+    .create(320, 736, 'tiles', 1)
+    .setScale(1, 1)
+    .setAlpha(0)
+    .refreshBody()
+  this.invisibleWalls
+    .create(704, 736, 'tiles', 1)
+    .setScale(1, 1)
+    .setAlpha(0)
+    .refreshBody()
+
   // controls
   this.cursors = this.input.keyboard.createCursorKeys()
 
@@ -204,6 +227,7 @@ export default function create () {
   this.physics.add.collider(this.coins, this.player)
   this.physics.add.collider(this.slimes, this.platforms)
   this.physics.add.collider(this.slimes, this.slimes)
+  this.physics.add.collider(this.slimes, this.invisibleWalls)
   this.physics.add.collider(this.webs, this.platforms)
   this.physics.add.overlap(this.webs, this.coins, (web, coin) => {
     this.money++
