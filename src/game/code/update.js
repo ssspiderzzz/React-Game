@@ -1,59 +1,84 @@
 import drawHealthBar from './drawHealthBar'
 
 export default function update () {
-  drawHealthBar(this, this.player)
+  // player
+  if (this.player.alive) {
+    drawHealthBar(this, this.player)
 
-  if (!this.knockBack && this.player.alive) {
-    if (this.cursors.right.isDown) {
-      this.player.anims.play('right', true)
-      this.player.body.setVelocityX(300)
-      this.player.facing = 'right'
-    } else if (this.cursors.left.isDown) {
-      this.player.anims.play('left', true)
-      this.player.body.setVelocityX(-300)
-      this.player.facing = 'left'
-    } else {
-      if (this.player.facing === 'right') {
-        this.player.anims.play('idle_right', true)
-      }
-      if (this.player.facing === 'left') {
-        this.player.anims.play('idle_left', true)
-      }
-      this.player.body.setVelocityX(0)
-    }
-
-    if (this.cursors.up.isDown && !this.doublejump) {
-      this.player.body.setVelocityY(-400)
-      this.doublejump = true
-    }
-
-    if (this.player.body.touching.down && this.doublejump) {
-      this.doublejump = false
-    }
-
-    if (this.cursors.space.isDown) {
-      if (this.player.facing === 'right') {
-        this.player.anims.play('atk_right', true)
-        let newWeb_right = this.webs.create(
-          this.player.x + 20,
-          this.player.y + 20,
-          'web'
-        )
-        webShooter(newWeb_right, 350)
+    // player runs and stands
+    if (!this.knockBack) {
+      if (this.cursors.right.isDown) {
+        this.player.anims.play('right', true)
+        this.player.body.setVelocityX(300)
+        this.player.facing = 'right'
+      } else if (this.cursors.left.isDown) {
+        this.player.anims.play('left', true)
+        this.player.body.setVelocityX(-300)
+        this.player.facing = 'left'
+      } else {
+        if (this.player.facing === 'right') {
+          this.player.anims.play('idle_right', true)
+        }
+        if (this.player.facing === 'left') {
+          this.player.anims.play('idle_left', true)
+        }
+        this.player.body.setVelocityX(0)
       }
 
-      if (this.player.facing === 'left') {
-        this.player.anims.play('atk_left', true)
-        let newWeb_left = this.webs.create(
-          this.player.x - 20,
-          this.player.y + 20,
-          'web'
-        )
-        webShooter(newWeb_left, -350)
+      // player jumps
+      if (this.cursors.up.isDown && !this.doublejump) {
+        this.player.body.setVelocityY(-400)
+        this.doublejump = true
+      }
+
+      if (this.player.body.touching.down && this.doublejump) {
+        this.doublejump = false
+      }
+
+      // player shoots
+      if (this.cursors.space.isDown) {
+        if (this.player.facing === 'right') {
+          this.player.anims.play('atk_right', true)
+          let newWeb_right = this.webs.create(
+            this.player.x + 20,
+            this.player.y + 20,
+            'web'
+          )
+          webShooter(newWeb_right, 350)
+        }
+
+        if (this.player.facing === 'left') {
+          this.player.anims.play('atk_left', true)
+          let newWeb_left = this.webs.create(
+            this.player.x - 20,
+            this.player.y + 20,
+            'web'
+          )
+          webShooter(newWeb_left, -350)
+        }
+      }
+
+      // player dies
+      // when hp drop to 0, make player immobile
+      if (this.player.hp <= 0) {
+        this.player.alive = false
+        this.player.body.allowGravity = false
+        this.player.bar.destroy()
+        if (this.player.facing === 'right') {
+          this.player.anims.play('ghost_right', true)
+        }
+        if (this.player.facing === 'left') {
+          this.player.anims.play('ghost_left', true)
+        }
+        setTimeout(() => {
+          this.player.body.setVelocityX(0)
+          this.player.body.setVelocityY(-10)
+        }, 500)
       }
     }
   }
 
+  // coins
   if (this.moneyChange) {
     this.moneyChange = false
     this.collectionText.destroy()
@@ -63,6 +88,7 @@ export default function update () {
     })
   }
 
+  // slimes
   if (this.slimes.children.size > 0) {
     this.slimes.children.iterate(slime => {
       if (slime.body.enable) {
@@ -74,23 +100,6 @@ export default function update () {
         }
       }
     })
-  }
-
-  if (this.player.hp <= 0 && this.player.alive) {
-    // when hp drop to 0, make player immobile
-    this.player.alive = false
-    this.player.body.allowGravity = false
-    this.player.bar.destroy()
-    if (this.player.facing === 'right') {
-      this.player.anims.play('ghost_right', true)
-    }
-    if (this.player.facing === 'left') {
-      this.player.anims.play('ghost_left', true)
-    }
-    setTimeout(() => {
-      this.player.body.setVelocityX(0)
-      this.player.body.setVelocityY(-10)
-    }, 500)
   }
 }
 

@@ -12,5 +12,4 @@ export default function drawDamageText (scene, object, dmg) {
   setTimeout(() => {
     dmgText.destroy()
   }, 1000)
-  console.log(dmgText)
 }
