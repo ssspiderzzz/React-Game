@@ -14,10 +14,6 @@ export default function preload () {
     frameWidth: 80,
     frameHeight: 80
   })
-  this.load.spritesheet('spiderman_reverse', spiderman_reverse, {
-    frameWidth: 80,
-    frameHeight: 80
-  })
   this.load.spritesheet('tiles', tiles, {
     frameWidth: 32,
     frameHeight: 32

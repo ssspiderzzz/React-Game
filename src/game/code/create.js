@@ -14,7 +14,7 @@ export default function create () {
   this.player.bar = this.add.graphics()
   this.player.hp = 100
   this.anims.create({
-    key: 'right',
+    key: 'walk',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 1,
       end: 8
@@ -23,16 +23,7 @@ export default function create () {
     repeat: -1
   })
   this.anims.create({
-    key: 'left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 10,
-      end: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'idle_right',
+    key: 'idle',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 0,
       end: 0
@@ -41,16 +32,7 @@ export default function create () {
     repeat: -1
   })
   this.anims.create({
-    key: 'idle_left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 11,
-      end: 11
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'atk_right',
+    key: 'attack',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 53,
       end: 53
@@ -59,28 +41,10 @@ export default function create () {
     repeat: -1
   })
   this.anims.create({
-    key: 'atk_left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 54,
-      end: 54
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'ghost_right',
+    key: 'ghost',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 120,
       end: 121
-    }),
-    frameRate: 5,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'ghost_left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 131,
-      end: 130
     }),
     frameRate: 5,
     repeat: -1

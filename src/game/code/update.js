@@ -8,19 +8,23 @@ export default function update () {
     // player runs and stands
     if (!this.knockBack) {
       if (this.cursors.right.isDown) {
-        this.player.anims.play('right', true)
+        this.player.anims.play('walk', true)
+        this.player.flipX = false
         this.player.body.setVelocityX(300)
         this.player.facing = 'right'
       } else if (this.cursors.left.isDown) {
-        this.player.anims.play('left', true)
+        this.player.anims.play('walk', true)
+        this.player.flipX = true
         this.player.body.setVelocityX(-300)
         this.player.facing = 'left'
       } else {
         if (this.player.facing === 'right') {
-          this.player.anims.play('idle_right', true)
+          this.player.flipX = false
+          this.player.anims.play('idle', true)
         }
         if (this.player.facing === 'left') {
-          this.player.anims.play('idle_left', true)
+          this.player.flipX = true
+          this.player.anims.play('idle', true)
         }
         this.player.body.setVelocityX(0)
       }
@@ -38,7 +42,8 @@ export default function update () {
       // player shoots
       if (this.cursors.space.isDown) {
         if (this.player.facing === 'right') {
-          this.player.anims.play('atk_right', true)
+          this.player.anims.play('attack', true)
+          this.player.flipX = false
           let newWeb_right = this.webs.create(
             this.player.x + 20,
             this.player.y + 20,
@@ -48,7 +53,8 @@ export default function update () {
         }
 
         if (this.player.facing === 'left') {
-          this.player.anims.play('atk_left', true)
+          this.player.anims.play('attack', true)
+          this.player.flipX = true
           let newWeb_left = this.webs.create(
             this.player.x - 20,
             this.player.y + 20,
@@ -65,10 +71,12 @@ export default function update () {
         this.player.body.allowGravity = false
         this.player.bar.destroy()
         if (this.player.facing === 'right') {
-          this.player.anims.play('ghost_right', true)
+          this.player.anims.play('gohst', true)
+          this.player.flipX = false
         }
         if (this.player.facing === 'left') {
-          this.player.anims.play('ghost_left', true)
+          this.player.anims.play('ghost', true)
+          this.player.flipX = true
         }
         setTimeout(() => {
           this.player.body.setVelocityX(0)
