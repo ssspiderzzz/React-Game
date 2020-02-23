@@ -116,14 +116,24 @@ export default function create () {
 
   // web
   this.webs = this.physics.add.group()
+  this.webs_hit = this.physics.add.group()
   this.anims.create({
     key: 'web',
     frames: this.anims.generateFrameNumbers('web', {
       start: 63,
       end: 68
     }),
-    frameRate: 5,
+    frameRate: 6,
     repeat: 0
+  })
+  this.anims.create({
+    key: 'web_hit',
+    frames: this.anims.generateFrameNumbers('web', {
+      start: 66,
+      end: 68
+    }),
+    frameRate: 5,
+    repeat: 1
   })
 
   // platforms
@@ -199,24 +209,33 @@ export default function create () {
     coin.disableBody(true, true)
   })
   this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
-    if (slime.body.touching.left) slime.body.x += 0.1
-    if (slime.body.touching.right) slime.body.x -= 0.1
-    slime.hp -= 0.1
+    // if (slime.body.touching.left) slime.body.x += 0.1
+    // if (slime.body.touching.right) slime.body.x -= 0.1
+    let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
+    newWeb_hit.body.allowGravity = false
+    newWeb_hit.body.setSize(15, 15, 5, 5)
+    newWeb_hit.setScale(2, 2)
+    newWeb_hit.anims.play('web_hit', true)
+    setTimeout(() => {
+      newWeb_hit.destroy()
+    }, 800)
+    web.disableBody(true, true)
+    slime.hp -= 1
   })
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
     let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
     this.player.hp -= floatSlimeDmg
     drawDamageText(this, player, floatSlimeDmg)
 
-    if (player.body.touching.left) {
+    if (slime.body.touching.right) {
       this.knockBack = true
       this.knockBackOrient = 'right'
     }
-    if (player.body.touching.right) {
+    if (slime.body.touching.left) {
       this.knockBack = true
       this.knockBackOrient = 'left'
     }
-    if (player.body.touching.down) {
+    if (slime.body.touching.up) {
       this.knockBack = true
       if (floatSlimeDmg % 2 === 0) this.knockBackOrient = 'right'
       if (floatSlimeDmg % 2 === 1) this.knockBackOrient = 'left'
@@ -232,7 +251,7 @@ export default function create () {
     }
     setTimeout(() => {
       this.knockBack = false
-    }, 900)
+    }, 850)
     this.knockBackOrient = false
   })
 

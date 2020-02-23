@@ -49,7 +49,7 @@ export default function update () {
             this.player.y + 20,
             'web'
           )
-          webShooter(newWeb_right, 350)
+          webShooter(newWeb_right, 450)
         }
 
         if (this.player.facing === 'left') {
@@ -60,7 +60,7 @@ export default function update () {
             this.player.y + 20,
             'web'
           )
-          webShooter(newWeb_left, -350)
+          webShooter(newWeb_left, -450)
         }
       }
 
@@ -120,7 +120,7 @@ function webShooter (web, shootSpeed) {
   web.setScale(1.5, 1.5)
   setInterval(() => {
     web.destroy()
-  }, 1000)
+  }, 800)
 }
 
 function randomMove (object) {
