@@ -1,6 +1,5 @@
 import background from '../../assets/background.png'
 import spiderman from '../../assets/spiderman.png'
-import spiderman_reverse from '../../assets/spiderman_reverse.png'
 import tiles from '../../assets/tiles.png'
 import coin from '../../assets/coin.png'
 import slime from '../../assets/slime.png'
