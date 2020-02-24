@@ -106,13 +106,15 @@ export default function create () {
     slime.hp = 100
     slime.body.collideWorldBounds = true
     slime.setScale(2, 2)
-    console.log(slime)
     if (index < 3) {
       slime.anims.play('slime_blue', true)
+      slime.slimeType = 'blue'
     }
     if (index === 3 || index === 4) {
       slime.anims.play('slime_red', true)
+      slime.slimeType = 'red'
     }
+    console.log(slime)
   })
 
   // web
@@ -266,6 +268,47 @@ export default function create () {
     }, 850)
     this.knockBackOrient = false
   })
+
+  this.physics.add.collider(
+    this.player,
+    this.red_projectiles,
+    (player, red_projectile) => {
+      let floatProjectileDmg = Math.floor(Math.random() * 1) + 1
+      this.player.hp -= floatProjectileDmg
+      drawDamageText(this, player, floatProjectileDmg)
+
+      if (red_projectile.body.touching.right) {
+        this.knockBack = true
+        this.knockBackOrient = 'right'
+      }
+      if (red_projectile.body.touching.left) {
+        this.knockBack = true
+        this.knockBackOrient = 'left'
+      }
+      if (
+        red_projectile.body.touching.up ||
+        red_projectile.body.touching.down
+      ) {
+        this.knockBack = true
+        if (floatProjectileDmg % 2 === 0) this.knockBackOrient = 'right'
+        if (floatProjectileDmg % 2 === 1) this.knockBackOrient = 'left'
+      }
+
+      if (this.knockBackOrient === 'right') {
+        this.player.body.setVelocityX(200)
+        this.player.body.setVelocityY(-200)
+      }
+      if (this.knockBackOrient === 'left') {
+        this.player.body.setVelocityX(-200)
+        this.player.body.setVelocityY(-200)
+      }
+      setTimeout(() => {
+        this.knockBack = false
+      }, 850)
+      this.knockBackOrient = false
+      red_projectile.disableBody(true, true)
+    }
+  )
 
   this.money = 0
   this.moneyChange = false

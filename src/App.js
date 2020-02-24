@@ -6,7 +6,7 @@ import './App.css'
 import { config } from './game'
 
 export default function App (props) {
-  let game = new Phaser.Game(config)
+  new Phaser.Game(config)
 
   return (
     <div className='App'>

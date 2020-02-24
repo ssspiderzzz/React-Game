@@ -75,7 +75,7 @@ export default function update () {
         this.player.body.allowGravity = false
         this.player.bar.destroy()
         if (this.player.facing === 'right') {
-          this.player.anims.play('gohst', true)
+          this.player.anims.play('ghost', true)
           this.player.flipX = false
         }
         if (this.player.facing === 'left') {
@@ -106,6 +106,19 @@ export default function update () {
       if (slime.body.enable) {
         drawHealthBar(this, slime)
         randomMove(slime)
+        // red slime can fire projectile
+        if (slime.slimeType === 'red') {
+          let direction
+          let fireRate = Math.random()
+          if (slime.body.x < this.player.body.x) {
+            direction = 'right'
+          } else {
+            direction = 'left'
+          }
+          if (fireRate < 0.005) {
+            redProjectile(this, slime, direction)
+          }
+        }
         if (slime.hp <= 0) {
           // let dieXY = { x: slime.body.x, y: slime.body.y }
           slime.disableBody(true, true)
@@ -117,7 +130,7 @@ export default function update () {
 }
 
 function webShooter (web, shootSpeed) {
-  web.body.setSize(15, 15, 5, 5)
+  web.body.setSize(30, 15, 5, 5)
   web.body.collideWorldBounds = true
   web.body.allowGravity = false
   web.anims.play('web', true)
@@ -144,29 +157,30 @@ function randomMove (object) {
   }
 }
 
-function redProjectile (scene, direction) {
+function redProjectile (scene, slime, direction) {
   let plusX
-  let plusY
   let velocityX
+  let flipX
   if (direction === 'right') {
     plusX = 20
-    plusY = 20
-    velocityX = 100
+    velocityX = 150
+    flipX = false
   }
   if (direction === 'left') {
     plusX = -20
-    plusY = -20
-    velocityX = -100
+    velocityX = -150
+    flipX = true
   }
   let newProjectile = scene.red_projectiles.create(
-    scene.player.x + plusX,
-    scene.player.y + plusY,
+    slime.body.x + plusX,
+    slime.body.y + 30,
     'red_projectiles'
   )
-  newProjectile.body.setSize(15, 15, 5, 5)
+  // newProjectile.body.setSize(15, 15, 5, 5)
   newProjectile.body.collideWorldBounds = true
   newProjectile.body.allowGravity = false
+  newProjectile.flipX = flipX
   newProjectile.anims.play('red_projectile', true)
   newProjectile.body.velocity.x = velocityX
-  newProjectile.setScale(0.3, 0.3)
+  newProjectile.setScale(0.5, 0.2)
 }
