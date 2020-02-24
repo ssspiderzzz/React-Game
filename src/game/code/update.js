@@ -103,6 +103,7 @@ export default function update () {
         drawHealthBar(this, slime)
         randomMove(slime)
         if (slime.hp <= 0) {
+          // let dieXY = { x: slime.body.x, y: slime.body.y }
           slime.disableBody(true, true)
           slime.bar.destroy()
         }

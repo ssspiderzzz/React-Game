@@ -6,10 +6,19 @@ import './App.css'
 import { config } from './game'
 
 export default function App (props) {
-  new Phaser.Game(config)
+  let game = new Phaser.Game(config)
 
   return (
     <div className='App'>
+      {/* <button
+        onClick={() => {
+          console.log(game)
+          game.restart()
+          console.log(game)
+        }}
+      >
+        Restart
+      </button> */}
       <Router history={history}></Router>
     </div>
   )

@@ -106,6 +106,7 @@ export default function create () {
     slime.hp = 100
     slime.body.collideWorldBounds = true
     slime.setScale(2, 2)
+    console.log(slime)
     if (index < 3) {
       slime.anims.play('slime_blue', true)
     }
@@ -209,12 +210,10 @@ export default function create () {
     coin.disableBody(true, true)
   })
   this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
-    // if (slime.body.touching.left) slime.body.x += 0.1
-    // if (slime.body.touching.right) slime.body.x -= 0.1
     let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
     newWeb_hit.body.allowGravity = false
     newWeb_hit.body.setSize(15, 15, 5, 5)
-    newWeb_hit.setScale(2, 2)
+    newWeb_hit.setScale(1.5, 1.5)
     newWeb_hit.anims.play('web_hit', true)
     setTimeout(() => {
       newWeb_hit.destroy()
