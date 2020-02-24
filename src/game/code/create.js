@@ -14,7 +14,7 @@ export default function create () {
   this.player.bar = this.add.graphics()
   this.player.hp = 100
   this.anims.create({
-    key: 'right',
+    key: 'walk',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 1,
       end: 8
@@ -23,16 +23,7 @@ export default function create () {
     repeat: -1
   })
   this.anims.create({
-    key: 'left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 10,
-      end: 3
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'idle_right',
+    key: 'idle',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 0,
       end: 0
@@ -41,16 +32,7 @@ export default function create () {
     repeat: -1
   })
   this.anims.create({
-    key: 'idle_left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 11,
-      end: 11
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'atk_right',
+    key: 'attack',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 53,
       end: 53
@@ -59,28 +41,10 @@ export default function create () {
     repeat: -1
   })
   this.anims.create({
-    key: 'atk_left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 54,
-      end: 54
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'ghost_right',
+    key: 'ghost',
     frames: this.anims.generateFrameNumbers('spiderman', {
       start: 120,
       end: 121
-    }),
-    frameRate: 5,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'ghost_left',
-    frames: this.anims.generateFrameNumbers('spiderman_reverse', {
-      start: 131,
-      end: 130
     }),
     frameRate: 5,
     repeat: -1
@@ -144,19 +108,44 @@ export default function create () {
     slime.setScale(2, 2)
     if (index < 3) {
       slime.anims.play('slime_blue', true)
+      slime.slimeType = 'blue'
     }
     if (index === 3 || index === 4) {
       slime.anims.play('slime_red', true)
+      slime.slimeType = 'red'
     }
+    console.log(slime)
   })
 
   // web
   this.webs = this.physics.add.group()
+  this.webs_hit = this.physics.add.group()
   this.anims.create({
     key: 'web',
     frames: this.anims.generateFrameNumbers('web', {
       start: 63,
       end: 68
+    }),
+    frameRate: 6,
+    repeat: 0
+  })
+  this.anims.create({
+    key: 'web_hit',
+    frames: this.anims.generateFrameNumbers('web', {
+      start: 66,
+      end: 68
+    }),
+    frameRate: 5,
+    repeat: 1
+  })
+
+  // red projectile from slime
+  this.red_projectiles = this.physics.add.group()
+  this.anims.create({
+    key: 'red_projectile',
+    frames: this.anims.generateFrameNumbers('red_projectile', {
+      start: 0,
+      end: 5
     }),
     frameRate: 5,
     repeat: 0
@@ -220,6 +209,7 @@ export default function create () {
     .refreshBody()
 
   // controls
+  this.keyX = this.input.keyboard.addKey('X')
   this.cursors = this.input.keyboard.createCursorKeys()
 
   this.physics.add.collider(this.player, this.platforms)
@@ -235,23 +225,90 @@ export default function create () {
     coin.disableBody(true, true)
   })
   this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
-    if (slime.body.touching.left) slime.body.x += 0.1
-    if (slime.body.touching.right) slime.body.x -= 0.1
-    slime.hp -= 0.1
+    let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
+    newWeb_hit.body.allowGravity = false
+    newWeb_hit.body.setSize(15, 15, 5, 5)
+    newWeb_hit.setScale(1.5, 1.5)
+    newWeb_hit.anims.play('web_hit', true)
+    setTimeout(() => {
+      newWeb_hit.destroy()
+    }, 800)
+    web.disableBody(true, true)
+    slime.hp -= 1
   })
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
-    if (player.body.touching.left) {
-      this.knockBack = true
-      this.knockBackOrient = 'right'
-    }
-    if (player.body.touching.right) {
-      this.knockBack = true
-      this.knockBackOrient = 'left'
-    }
     let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
     this.player.hp -= floatSlimeDmg
     drawDamageText(this, player, floatSlimeDmg)
+
+    if (slime.body.touching.right) {
+      this.knockBack = true
+      this.knockBackOrient = 'right'
+    }
+    if (slime.body.touching.left) {
+      this.knockBack = true
+      this.knockBackOrient = 'left'
+    }
+    if (slime.body.touching.up) {
+      this.knockBack = true
+      if (floatSlimeDmg % 2 === 0) this.knockBackOrient = 'right'
+      if (floatSlimeDmg % 2 === 1) this.knockBackOrient = 'left'
+    }
+
+    if (this.knockBackOrient === 'right') {
+      this.player.body.setVelocityX(200)
+      this.player.body.setVelocityY(-200)
+    }
+    if (this.knockBackOrient === 'left') {
+      this.player.body.setVelocityX(-200)
+      this.player.body.setVelocityY(-200)
+    }
+    setTimeout(() => {
+      this.knockBack = false
+    }, 850)
+    this.knockBackOrient = false
   })
+
+  this.physics.add.collider(
+    this.player,
+    this.red_projectiles,
+    (player, red_projectile) => {
+      let floatProjectileDmg = Math.floor(Math.random() * 1) + 1
+      this.player.hp -= floatProjectileDmg
+      drawDamageText(this, player, floatProjectileDmg)
+
+      if (red_projectile.body.touching.right) {
+        this.knockBack = true
+        this.knockBackOrient = 'right'
+      }
+      if (red_projectile.body.touching.left) {
+        this.knockBack = true
+        this.knockBackOrient = 'left'
+      }
+      if (
+        red_projectile.body.touching.up ||
+        red_projectile.body.touching.down
+      ) {
+        this.knockBack = true
+        if (floatProjectileDmg % 2 === 0) this.knockBackOrient = 'right'
+        if (floatProjectileDmg % 2 === 1) this.knockBackOrient = 'left'
+      }
+
+      if (this.knockBackOrient === 'right') {
+        this.player.body.setVelocityX(200)
+        this.player.body.setVelocityY(-200)
+      }
+      if (this.knockBackOrient === 'left') {
+        this.player.body.setVelocityX(-200)
+        this.player.body.setVelocityY(-200)
+      }
+      setTimeout(() => {
+        this.knockBack = false
+      }, 850)
+      this.knockBackOrient = false
+      red_projectile.disableBody(true, true)
+    }
+  )
 
   this.money = 0
   this.moneyChange = false

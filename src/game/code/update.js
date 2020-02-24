@@ -1,74 +1,96 @@
 import drawHealthBar from './drawHealthBar'
 
 export default function update () {
-  drawHealthBar(this, this.player)
+  // player
+  if (this.player.alive) {
+    drawHealthBar(this, this.player)
 
-  if (this.knockBack && this.knockBackOrient) {
-    if (this.knockBackOrient === 'right') {
-      this.player.body.setVelocityX(200)
-      this.player.body.setVelocityY(-200)
+    // player runs and stands
+    if (!this.knockBack) {
+      if (this.cursors.right.isDown) {
+        this.player.anims.play('walk', true)
+        this.player.flipX = false
+        this.player.body.setVelocityX(300)
+        this.player.facing = 'right'
+      } else if (this.cursors.left.isDown) {
+        this.player.anims.play('walk', true)
+        this.player.flipX = true
+        this.player.body.setVelocityX(-300)
+        this.player.facing = 'left'
+      } else {
+        if (this.player.facing === 'right') {
+          this.player.flipX = false
+          this.player.anims.play('idle', true)
+        }
+        if (this.player.facing === 'left') {
+          this.player.flipX = true
+          this.player.anims.play('idle', true)
+        }
+        this.player.body.setVelocityX(0)
+      }
+
+      // player jumps
+      if (this.cursors.up.isDown && !this.doublejump) {
+        this.player.body.setVelocityY(-400)
+        this.doublejump = true
+      }
+
+      if (this.player.body.touching.down && this.doublejump) {
+        this.doublejump = false
+      }
+
+      // player shoots
+      if (this.cursors.space.isDown) {
+        if (this.player.facing === 'right') {
+          this.player.anims.play('attack', true)
+          this.player.flipX = false
+          let newWeb_right = this.webs.create(
+            this.player.x + 20,
+            this.player.y + 20,
+            'web'
+          )
+          webShooter(newWeb_right, 450)
+        }
+
+        if (this.player.facing === 'left') {
+          this.player.anims.play('attack', true)
+          this.player.flipX = true
+          let newWeb_left = this.webs.create(
+            this.player.x - 20,
+            this.player.y + 20,
+            'web'
+          )
+          webShooter(newWeb_left, -450)
+        }
+      }
+
+      if (this.keyX.isDown) {
+        redProjectile(this, this.player.facing)
+      }
+
+      // player dies
+      // when hp drop to 0, make player immobile
+      if (this.player.hp <= 0) {
+        this.player.alive = false
+        this.player.body.allowGravity = false
+        this.player.bar.destroy()
+        if (this.player.facing === 'right') {
+          this.player.anims.play('ghost', true)
+          this.player.flipX = false
+        }
+        if (this.player.facing === 'left') {
+          this.player.anims.play('ghost', true)
+          this.player.flipX = true
+        }
+        setTimeout(() => {
+          this.player.body.setVelocityX(0)
+          this.player.body.setVelocityY(-10)
+        }, 500)
+      }
     }
-    if (this.knockBackOrient === 'left') {
-      this.player.body.setVelocityX(-200)
-      this.player.body.setVelocityY(-200)
-    }
-    setTimeout(() => {
-      this.knockBack = false
-    }, 900)
-    this.knockBackOrient = false
   }
 
-  if (!this.knockBack && this.player.alive) {
-    if (this.cursors.right.isDown) {
-      this.player.anims.play('right', true)
-      this.player.body.setVelocityX(300)
-      this.player.facing = 'right'
-    } else if (this.cursors.left.isDown) {
-      this.player.anims.play('left', true)
-      this.player.body.setVelocityX(-300)
-      this.player.facing = 'left'
-    } else {
-      if (this.player.facing === 'right') {
-        this.player.anims.play('idle_right', true)
-      }
-      if (this.player.facing === 'left') {
-        this.player.anims.play('idle_left', true)
-      }
-      this.player.body.setVelocityX(0)
-    }
-
-    if (this.cursors.up.isDown && !this.doublejump) {
-      this.player.body.setVelocityY(-400)
-      this.doublejump = true
-    }
-
-    if (this.player.body.touching.down && this.doublejump) {
-      this.doublejump = false
-    }
-
-    if (this.cursors.space.isDown) {
-      if (this.player.facing === 'right') {
-        this.player.anims.play('atk_right', true)
-        let newWeb_right = this.webs.create(
-          this.player.x + 20,
-          this.player.y + 20,
-          'web'
-        )
-        webShooter(newWeb_right, 350)
-      }
-
-      if (this.player.facing === 'left') {
-        this.player.anims.play('atk_left', true)
-        let newWeb_left = this.webs.create(
-          this.player.x - 20,
-          this.player.y + 20,
-          'web'
-        )
-        webShooter(newWeb_left, -350)
-      }
-    }
-  }
-
+  // coins
   if (this.moneyChange) {
     this.moneyChange = false
     this.collectionText.destroy()
@@ -78,39 +100,37 @@ export default function update () {
     })
   }
 
+  // slimes
   if (this.slimes.children.size > 0) {
     this.slimes.children.iterate(slime => {
       if (slime.body.enable) {
         drawHealthBar(this, slime)
         randomMove(slime)
+        // red slime can fire projectile
+        if (slime.slimeType === 'red') {
+          let direction
+          let fireRate = Math.random()
+          if (slime.body.x < this.player.body.x) {
+            direction = 'right'
+          } else {
+            direction = 'left'
+          }
+          if (fireRate < 0.005) {
+            redProjectile(this, slime, direction)
+          }
+        }
         if (slime.hp <= 0) {
+          // let dieXY = { x: slime.body.x, y: slime.body.y }
           slime.disableBody(true, true)
           slime.bar.destroy()
         }
       }
     })
   }
-
-  if (this.player.hp <= 0 && this.player.alive) {
-    // when hp drop to 0, make player immobile
-    this.player.alive = false
-    this.player.body.allowGravity = false
-    this.player.bar.destroy()
-    if (this.player.facing === 'right') {
-      this.player.anims.play('ghost_right', true)
-    }
-    if (this.player.facing === 'left') {
-      this.player.anims.play('ghost_left', true)
-    }
-    setTimeout(() => {
-      this.player.body.setVelocityX(0)
-      this.player.body.setVelocityY(-10)
-    }, 500)
-  }
 }
 
 function webShooter (web, shootSpeed) {
-  web.body.setSize(15, 15, 5, 5)
+  web.body.setSize(30, 15, 5, 5)
   web.body.collideWorldBounds = true
   web.body.allowGravity = false
   web.anims.play('web', true)
@@ -118,7 +138,7 @@ function webShooter (web, shootSpeed) {
   web.setScale(1.5, 1.5)
   setInterval(() => {
     web.destroy()
-  }, 1000)
+  }, 800)
 }
 
 function randomMove (object) {
@@ -135,4 +155,32 @@ function randomMove (object) {
       object.body.velocity.x = 0
     }
   }
+}
+
+function redProjectile (scene, slime, direction) {
+  let plusX
+  let velocityX
+  let flipX
+  if (direction === 'right') {
+    plusX = 20
+    velocityX = 150
+    flipX = false
+  }
+  if (direction === 'left') {
+    plusX = -20
+    velocityX = -150
+    flipX = true
+  }
+  let newProjectile = scene.red_projectiles.create(
+    slime.body.x + plusX,
+    slime.body.y + 30,
+    'red_projectiles'
+  )
+  // newProjectile.body.setSize(15, 15, 5, 5)
+  newProjectile.body.collideWorldBounds = true
+  newProjectile.body.allowGravity = false
+  newProjectile.flipX = flipX
+  newProjectile.anims.play('red_projectile', true)
+  newProjectile.body.velocity.x = velocityX
+  newProjectile.setScale(0.5, 0.2)
 }

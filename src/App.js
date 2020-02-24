@@ -10,6 +10,15 @@ export default function App (props) {
 
   return (
     <div className='App'>
+      {/* <button
+        onClick={() => {
+          console.log(game)
+          game.restart()
+          console.log(game)
+        }}
+      >
+        Restart
+      </button> */}
       <Router history={history}></Router>
     </div>
   )
