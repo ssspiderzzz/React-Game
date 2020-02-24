@@ -137,6 +137,18 @@ export default function create () {
     repeat: 1
   })
 
+  // red projectile from slime
+  this.red_projectiles = this.physics.add.group()
+  this.anims.create({
+    key: 'red_projectile',
+    frames: this.anims.generateFrameNumbers('red_projectile', {
+      start: 0,
+      end: 5
+    }),
+    frameRate: 5,
+    repeat: 0
+  })
+
   // platforms
   this.platforms = this.physics.add.staticGroup()
 
@@ -195,6 +207,7 @@ export default function create () {
     .refreshBody()
 
   // controls
+  this.keyX = this.input.keyboard.addKey('X')
   this.cursors = this.input.keyboard.createCursorKeys()
 
   this.physics.add.collider(this.player, this.platforms)

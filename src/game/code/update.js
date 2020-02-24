@@ -64,6 +64,20 @@ export default function update () {
         }
       }
 
+      if (this.keyX.isDown) {
+        let newProjectile = this.red_projectiles.create(
+          this.player.x + 20,
+          this.player.y + 20,
+          'red_projectiles'
+        )
+        newProjectile.body.setSize(15, 15, 5, 5)
+        newProjectile.body.collideWorldBounds = true
+        newProjectile.body.allowGravity = false
+        newProjectile.anims.play('red_projectile', true)
+        newProjectile.body.velocity.x = 100
+        newProjectile.setScale(0.3, 0.3)
+      }
+
       // player dies
       // when hp drop to 0, make player immobile
       if (this.player.hp <= 0) {
