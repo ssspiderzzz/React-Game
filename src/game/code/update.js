@@ -65,17 +65,7 @@ export default function update () {
       }
 
       if (this.keyX.isDown) {
-        let newProjectile = this.red_projectiles.create(
-          this.player.x + 20,
-          this.player.y + 20,
-          'red_projectiles'
-        )
-        newProjectile.body.setSize(15, 15, 5, 5)
-        newProjectile.body.collideWorldBounds = true
-        newProjectile.body.allowGravity = false
-        newProjectile.anims.play('red_projectile', true)
-        newProjectile.body.velocity.x = 100
-        newProjectile.setScale(0.3, 0.3)
+        redProjectile(this, this.player.facing)
       }
 
       // player dies
@@ -152,4 +142,31 @@ function randomMove (object) {
       object.body.velocity.x = 0
     }
   }
+}
+
+function redProjectile (scene, direction) {
+  let plusX
+  let plusY
+  let velocityX
+  if (direction === 'right') {
+    plusX = 20
+    plusY = 20
+    velocityX = 100
+  }
+  if (direction === 'left') {
+    plusX = -20
+    plusY = -20
+    velocityX = -100
+  }
+  let newProjectile = scene.red_projectiles.create(
+    scene.player.x + plusX,
+    scene.player.y + plusY,
+    'red_projectiles'
+  )
+  newProjectile.body.setSize(15, 15, 5, 5)
+  newProjectile.body.collideWorldBounds = true
+  newProjectile.body.allowGravity = false
+  newProjectile.anims.play('red_projectile', true)
+  newProjectile.body.velocity.x = velocityX
+  newProjectile.setScale(0.3, 0.3)
 }
