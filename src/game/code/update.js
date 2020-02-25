@@ -103,7 +103,7 @@ export default function update () {
   // slimes
   if (this.slimes.children.size > 0) {
     this.slimes.children.iterate(slime => {
-      if (slime.body.enable) {
+      if (slime) {
         drawHealthBar(this, slime)
         randomMove(slime)
         // red slime can fire projectile
@@ -123,6 +123,7 @@ export default function update () {
           // let dieXY = { x: slime.body.x, y: slime.body.y }
           slime.disableBody(true, true)
           slime.bar.destroy()
+          slime.destroy()
         }
       }
     })
@@ -176,8 +177,8 @@ function redProjectile (scene, slime, direction) {
     slime.body.y + 30,
     'red_projectiles'
   )
-  // newProjectile.body.setSize(15, 15, 5, 5)
-  newProjectile.body.collideWorldBounds = true
+  newProjectile.setSize(90, 110, 0, 0).setOffset(35, 25)
+  // newProjectile.body.collideWorldBounds = true
   newProjectile.body.allowGravity = false
   newProjectile.flipX = flipX
   newProjectile.anims.play('red_projectile', true)
