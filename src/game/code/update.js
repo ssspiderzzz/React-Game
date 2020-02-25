@@ -65,7 +65,7 @@ export default function update () {
       }
 
       if (this.keyX.isDown) {
-        redProjectile(this, this.player.facing)
+        //do nothing
       }
 
       // player dies
