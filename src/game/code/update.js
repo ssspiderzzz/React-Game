@@ -103,7 +103,7 @@ export default function update () {
   // slimes
   if (this.slimes.children.size > 0) {
     this.slimes.children.iterate(slime => {
-      if (slime.body.enable) {
+      if (slime) {
         drawHealthBar(this, slime)
         randomMove(slime)
         // red slime can fire projectile

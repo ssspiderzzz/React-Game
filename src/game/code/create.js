@@ -274,7 +274,7 @@ export default function create () {
     this.player,
     this.red_projectiles,
     (player, red_projectile) => {
-      let floatProjectileDmg = Math.floor(Math.random() * 1) + 1
+      let floatProjectileDmg = Math.floor(Math.random() * 20) + 15
       this.player.hp -= floatProjectileDmg
       drawDamageText(this, player, floatProjectileDmg)
 
