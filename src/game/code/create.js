@@ -223,6 +223,7 @@ export default function create () {
     this.money++
     this.moneyChange = true
     coin.disableBody(true, true)
+    coin.destroy()
   })
   this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
     let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
@@ -307,6 +308,7 @@ export default function create () {
       }, 850)
       this.knockBackOrient = false
       red_projectile.disableBody(true, true)
+      red_projectile.destroy()
     }
   )
 

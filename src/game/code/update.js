@@ -123,6 +123,7 @@ export default function update () {
           // let dieXY = { x: slime.body.x, y: slime.body.y }
           slime.disableBody(true, true)
           slime.bar.destroy()
+          slime.destroy()
         }
       }
     })
@@ -176,8 +177,8 @@ function redProjectile (scene, slime, direction) {
     slime.body.y + 30,
     'red_projectiles'
   )
-  // newProjectile.body.setSize(15, 15, 5, 5)
-  newProjectile.body.collideWorldBounds = true
+  newProjectile.setSize(90, 110, 0, 0).setOffset(35, 25)
+  // newProjectile.body.collideWorldBounds = true
   newProjectile.body.allowGravity = false
   newProjectile.flipX = flipX
   newProjectile.anims.play('red_projectile', true)
