@@ -49,7 +49,7 @@ export default function update () {
             this.player.y + 20,
             'web'
           )
-          webShooter(newWeb_right, 450)
+          shootWeb(newWeb_right, 450)
         }
 
         if (this.player.facing === 'left') {
@@ -60,7 +60,7 @@ export default function update () {
             this.player.y + 20,
             'web'
           )
-          webShooter(newWeb_left, -450)
+          shootWeb(newWeb_left, -450)
         }
       }
 
@@ -115,8 +115,8 @@ export default function update () {
           } else {
             direction = 'left'
           }
-          if (fireRate < 0.005) {
-            redProjectile(this, slime, direction)
+          if (fireRate < 0.003) {
+            shootProjectile(this, slime, direction)
           }
         }
         if (slime.hp <= 0) {
@@ -130,7 +130,7 @@ export default function update () {
   }
 }
 
-function webShooter (web, shootSpeed) {
+function shootWeb (web, shootSpeed) {
   web.body.setSize(30, 15, 5, 5)
   web.body.collideWorldBounds = true
   web.body.allowGravity = false
@@ -158,7 +158,7 @@ function randomMove (object) {
   }
 }
 
-function redProjectile (scene, slime, direction) {
+function shootProjectile (scene, slime, direction) {
   let plusX
   let velocityX
   let flipX
