@@ -90,7 +90,7 @@ export default function update () {
     }
   }
 
-  // coins
+  // collecting coins
   if (this.moneyChange) {
     this.moneyChange = false
     this.collectionText.destroy()

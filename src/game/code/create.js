@@ -114,7 +114,6 @@ export default function create () {
       slime.anims.play('slime_red', true)
       slime.slimeType = 'red'
     }
-    console.log(slime)
   })
 
   // web
@@ -325,5 +324,10 @@ export default function create () {
   this.collectionText = this.add.text(60, 7, this.money, {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
+  })
+  let restartButton = this.add.text(900, 20, 'Restart', { fontSize: 22 })
+  restartButton.setInteractive()
+  restartButton.on('pointerdown', () => {
+    this.scene.restart()
   })
 }
