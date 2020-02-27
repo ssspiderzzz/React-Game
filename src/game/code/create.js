@@ -331,3 +331,14 @@ export default function create () {
     this.scene.restart()
   })
 }
+
+// Dr. Stephen Strange : I went forward in time... to view alternate futures.
+// To see all the possible outcomes of the coming conflict.
+
+// Peter Quill : How many did you see?
+
+// Dr. Stephen Strange : Fourteen million six hundred and five.
+
+// Tony Stark : How many did we win?
+
+// Dr. Stephen Strange : ...One.

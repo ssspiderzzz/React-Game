@@ -67,26 +67,26 @@ export default function update () {
       if (this.keyX.isDown) {
         //do nothing
       }
+    }
 
-      // player dies
-      // when hp drop to 0, make player immobile
-      if (this.player.hp <= 0) {
-        this.player.alive = false
-        this.player.body.allowGravity = false
-        this.player.bar.destroy()
-        if (this.player.facing === 'right') {
-          this.player.anims.play('ghost', true)
-          this.player.flipX = false
-        }
-        if (this.player.facing === 'left') {
-          this.player.anims.play('ghost', true)
-          this.player.flipX = true
-        }
-        setTimeout(() => {
-          this.player.body.setVelocityX(0)
-          this.player.body.setVelocityY(-10)
-        }, 500)
+    // player dies
+    // when hp drop to 0, make player immobile
+    if (this.player.hp <= 0) {
+      this.player.alive = false
+      this.player.body.allowGravity = false
+      this.player.bar.destroy()
+      if (this.player.facing === 'right') {
+        this.player.anims.play('ghost', true)
+        this.player.flipX = false
       }
+      if (this.player.facing === 'left') {
+        this.player.anims.play('ghost', true)
+        this.player.flipX = true
+      }
+      setTimeout(() => {
+        this.player.body.setVelocityX(0)
+        this.player.body.setVelocityY(-10)
+      }, 500)
     }
   }
 
