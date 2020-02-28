@@ -5,6 +5,18 @@ export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+  this.anims.create({
+    key: 'everything',
+    frames: this.anims.generateFrameNames('ironman'),
+    frameRate: 5,
+    repeat: -1
+  })
+  this.ironman = this.physics.add
+    .sprite(300, 300, 'ironman')
+    .setScale(2, 2)
+    .play('everything')
+  this.ironman.body.allowGravity = false
+
   // player
   this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)
   this.player.alive = true

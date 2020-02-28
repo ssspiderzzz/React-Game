@@ -5,6 +5,8 @@ import coin from '../../assets/coin.png'
 import slime from '../../assets/slime.png'
 import spiderandweb from '../../assets/spiderandweb.png'
 import red_projectile from '../../assets/red_projectile.png'
+import ironmanJson from '../../assets/characters/spritesheet.json'
+import ironman from '../../assets/characters/spritesheet.png'
 
 export default function preload () {
   this.load.crossOrigin = true
@@ -34,4 +36,5 @@ export default function preload () {
     frameWidth: 153,
     frameHeight: 153
   })
+  this.load.atlas('ironman', ironman, ironmanJson)
 }
