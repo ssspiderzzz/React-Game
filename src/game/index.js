@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import SceneA from './SceneA'
 import SceneB from './SceneB'
 
 export let config = {
@@ -24,5 +25,5 @@ export let config = {
     }
   },
 
-  scene: [SceneB]
+  scene: [SceneA, SceneB]
 }

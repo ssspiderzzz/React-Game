@@ -365,12 +365,12 @@ export default function create () {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
   })
-  let restartButton = this.add.text(700, 20, 'Restart', { fontSize: 22 })
+  let restartButton = this.add.text(750, 20, 'Restart', { fontSize: 22 })
   restartButton.setInteractive()
   restartButton.on('pointerdown', () => {
     this.scene.restart()
   })
-  let menuButton = this.add.text(850, 20, 'Main Menu', { fontSize: 22 })
+  let menuButton = this.add.text(880, 20, 'Main Menu', { fontSize: 22 })
   menuButton.setInteractive()
   menuButton.on('pointerdown', () => {
     this.scene.start('SceneA')

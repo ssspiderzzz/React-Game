@@ -1,13 +1,11 @@
 import Phaser from 'phaser'
 import preload from './preload'
 import create from './create'
-import update from './update'
 
-export default class SceneB extends Phaser.Scene {
+export default class SceneA extends Phaser.Scene {
   constructor () {
-    super('SceneB')
+    super('SceneA')
     this.preload = preload
     this.create = create
-    this.update = update
   }
 }
