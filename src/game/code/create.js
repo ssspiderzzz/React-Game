@@ -243,22 +243,22 @@ export default function create () {
   this.invisibleWalls = this.physics.add.staticGroup()
   this.invisibleWalls
     .create(320, 470, 'tiles', 1)
-    .setScale(1, 1)
+    .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(704, 470, 'tiles', 1)
-    .setScale(1, 1)
+    .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(320, 736, 'tiles', 1)
-    .setScale(1, 1)
+    .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(704, 736, 'tiles', 1)
-    .setScale(1, 1)
+    .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
 
