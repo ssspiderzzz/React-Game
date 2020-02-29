@@ -7,26 +7,28 @@ export default function update () {
 
     // player runs and stands
     if (!this.knockBack) {
-      if (this.cursors.right.isDown) {
-        this.player.anims.play('walk', true)
-        this.player.flipX = false
-        this.player.body.setVelocityX(300)
-        this.player.facing = 'right'
-      } else if (this.cursors.left.isDown) {
-        this.player.anims.play('walk', true)
-        this.player.flipX = true
-        this.player.body.setVelocityX(-300)
-        this.player.facing = 'left'
-      } else {
-        if (this.player.facing === 'right') {
+      if (this.player.shootable) {
+        if (this.cursors.right.isDown) {
+          this.player.anims.play('walk', true)
           this.player.flipX = false
-          this.player.anims.play('idle', true)
-        }
-        if (this.player.facing === 'left') {
+          this.player.body.setVelocityX(300)
+          this.player.facing = 'right'
+        } else if (this.cursors.left.isDown) {
+          this.player.anims.play('walk', true)
           this.player.flipX = true
-          this.player.anims.play('idle', true)
+          this.player.body.setVelocityX(-300)
+          this.player.facing = 'left'
+        } else {
+          if (this.player.facing === 'right') {
+            this.player.flipX = false
+            this.player.anims.play('idle', true)
+          }
+          if (this.player.facing === 'left') {
+            this.player.flipX = true
+            this.player.anims.play('idle', true)
+          }
+          this.player.body.setVelocityX(0)
         }
-        this.player.body.setVelocityX(0)
       }
 
       // player jumps
@@ -40,53 +42,70 @@ export default function update () {
       }
 
       // player shoots
-      if (this.cursors.space.isDown) {
+      if (this.cursors.space.isDown && this.player.shootable) {
         if (this.player.facing === 'right') {
-          this.player.anims.play('attack', true)
+          if (this.player.shootCount === 0) {
+            this.player.anims.play('attack', true)
+            this.player.shootCount = 1
+          } else if (this.player.shootCount === 1) {
+            this.player.anims.play('attack2', true)
+            this.player.shootCount = 0
+          } else {
+            this.player.anims.play('attack', true)
+          }
           this.player.flipX = false
-          let newWeb_right = this.webs.create(
-            this.player.x + 20,
-            this.player.y + 20,
-            'web'
-          )
-          shootWeb(newWeb_right, 450)
+          if (this.player.name === 'ironman') ironManShooter(this, 'right')
+          if (this.player.name === 'spiderman') spiderManShooter(this, 20, 450)
         }
 
         if (this.player.facing === 'left') {
-          this.player.anims.play('attack', true)
+          if (this.player.shootCount === 0) {
+            this.player.anims.play('attack', true)
+            this.player.shootCount = 1
+          } else if (this.player.shootCount === 1) {
+            this.player.anims.play('attack2', true)
+            this.player.shootCount = 0
+          } else {
+            this.player.anims.play('attack', true)
+          }
           this.player.flipX = true
-          let newWeb_left = this.webs.create(
-            this.player.x - 20,
-            this.player.y + 20,
-            'web'
-          )
-          shootWeb(newWeb_left, -450)
+          if (this.player.name === 'ironman') ironManShooter(this, 'left')
+
+          if (this.player.name === 'spiderman')
+            spiderManShooter(this, -20, -450)
         }
+
+        this.player.shootable = false
+        this.player.body.setVelocityX(0)
+      }
+
+      if (this.cursors.space.isUp) {
+        this.player.shootable = true
       }
 
       if (this.keyX.isDown) {
         //do nothing
       }
+    }
 
-      // player dies
-      // when hp drop to 0, make player immobile
-      if (this.player.hp <= 0) {
-        this.player.alive = false
-        this.player.body.allowGravity = false
-        this.player.bar.destroy()
-        if (this.player.facing === 'right') {
-          this.player.anims.play('ghost', true)
-          this.player.flipX = false
-        }
-        if (this.player.facing === 'left') {
-          this.player.anims.play('ghost', true)
-          this.player.flipX = true
-        }
-        setTimeout(() => {
-          this.player.body.setVelocityX(0)
-          this.player.body.setVelocityY(-10)
-        }, 500)
+    // player dies
+    // when hp drop to 0, make player immobile
+    if (this.player.hp <= 0) {
+      this.player.alive = false
+      this.player.body.allowGravity = false
+      this.player.bar.destroy()
+      if (this.player.facing === 'right') {
+        this.player.anims.play('dead', true)
+        this.player.flipX = false
       }
+      if (this.player.facing === 'left') {
+        this.player.anims.play('dead', true)
+        this.player.flipX = true
+      }
+      setTimeout(() => {
+        this.player.body.setVelocityX(0)
+        this.player.body.setVelocityY(-10)
+      }, 500)
     }
   }
 
@@ -130,7 +149,44 @@ export default function update () {
   }
 }
 
-function shootWeb (web, shootSpeed) {
+function ironManShooter (scene, shootDirection) {
+  let shootSpeed
+  let shootX
+  let flipX
+  if (shootDirection === 'right') {
+    shootSpeed = 450
+    shootX = 40
+    flipX = false
+  }
+  if (shootDirection === 'left') {
+    shootSpeed = -450
+    shootX = -40
+    flipX = true
+  }
+
+  let beam = scene.beams.create(
+    scene.player.x + shootX,
+    scene.player.y + 10,
+    'beam'
+  )
+  beam.body.setSize(35, 15, 0, 0).setOffset(10, 20)
+  beam.body.collideWorldBounds = false
+  beam.body.allowGravity = false
+  beam.anims.play('beam', true)
+  beam.body.velocity.x = shootSpeed
+  beam.flipX = flipX
+  beam.setScale(1.5, 1.5)
+  setInterval(() => {
+    beam.destroy()
+  }, 2500)
+}
+
+function spiderManShooter (scene, shootDirection, shootSpeed) {
+  let web = scene.webs.create(
+    scene.player.x + shootDirection,
+    scene.player.y + 20,
+    'web'
+  )
   web.body.setSize(30, 15, 5, 5)
   web.body.collideWorldBounds = true
   web.body.allowGravity = false
