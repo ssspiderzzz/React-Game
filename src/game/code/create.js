@@ -294,37 +294,7 @@ export default function create () {
     let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
     this.player.hp -= floatSlimeDmg
     drawDamageText(this, player, floatSlimeDmg)
-
-    if (slime.body.touching.right) {
-      this.knockBack = true
-      this.knockBackOrient = 'right'
-      this.player.anims.play('hit', true)
-      this.player.flipX = true
-    }
-    if (slime.body.touching.left) {
-      this.knockBack = true
-      this.knockBackOrient = 'left'
-      this.player.anims.play('hit', true)
-      this.player.flipX = false
-    }
-    if (slime.body.touching.up) {
-      this.knockBack = true
-      if (floatSlimeDmg % 2 === 0) this.knockBackOrient = 'right'
-      if (floatSlimeDmg % 2 === 1) this.knockBackOrient = 'left'
-    }
-
-    if (this.knockBackOrient === 'right') {
-      this.player.body.setVelocityX(200)
-      this.player.body.setVelocityY(-200)
-    }
-    if (this.knockBackOrient === 'left') {
-      this.player.body.setVelocityX(-200)
-      this.player.body.setVelocityY(-200)
-    }
-    setTimeout(() => {
-      this.knockBack = false
-    }, 850)
-    this.knockBackOrient = false
+    knockBack(this, player, slime)
   })
 
   this.physics.add.collider(
@@ -334,36 +304,7 @@ export default function create () {
       let floatProjectileDmg = Math.floor(Math.random() * 20) + 15
       this.player.hp -= floatProjectileDmg
       drawDamageText(this, player, floatProjectileDmg)
-
-      if (red_projectile.body.touching.right) {
-        this.knockBack = true
-        this.knockBackOrient = 'right'
-      }
-      if (red_projectile.body.touching.left) {
-        this.knockBack = true
-        this.knockBackOrient = 'left'
-      }
-      if (
-        red_projectile.body.touching.up ||
-        red_projectile.body.touching.down
-      ) {
-        this.knockBack = true
-        if (floatProjectileDmg % 2 === 0) this.knockBackOrient = 'right'
-        if (floatProjectileDmg % 2 === 1) this.knockBackOrient = 'left'
-      }
-
-      if (this.knockBackOrient === 'right') {
-        this.player.body.setVelocityX(200)
-        this.player.body.setVelocityY(-200)
-      }
-      if (this.knockBackOrient === 'left') {
-        this.player.body.setVelocityX(-200)
-        this.player.body.setVelocityY(-200)
-      }
-      setTimeout(() => {
-        this.knockBack = false
-      }, 850)
-      this.knockBackOrient = false
+      knockBack(this, player, red_projectile)
       red_projectile.disableBody(true, true)
       red_projectile.destroy()
     }
@@ -388,6 +329,34 @@ export default function create () {
   restartButton.on('pointerdown', () => {
     this.scene.restart()
   })
+}
+
+function knockBack (scene, player, dmgObject) {
+  if (dmgObject.body.x <= player.body.x) {
+    scene.knockBack = true
+    scene.knockBackOrient = 'right'
+    scene.player.anims.play('hit', true)
+    scene.player.flipX = true
+  }
+  if (dmgObject.body.x > player.body.x) {
+    scene.knockBack = true
+    scene.knockBackOrient = 'left'
+    scene.player.anims.play('hit', true)
+    scene.player.flipX = false
+  }
+
+  if (scene.knockBackOrient === 'right') {
+    scene.player.body.setVelocityX(200)
+    scene.player.body.setVelocityY(-200)
+  }
+  if (scene.knockBackOrient === 'left') {
+    scene.player.body.setVelocityX(-200)
+    scene.player.body.setVelocityY(-200)
+  }
+  setTimeout(() => {
+    scene.knockBack = false
+  }, 850)
+  scene.knockBackOrient = false
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.
