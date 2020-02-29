@@ -7,13 +7,19 @@ export default function create () {
 
   // player
   this.player = this.physics.add.sprite(512, 300, 'ironman').setScale(2, 2)
+  this.player.name = 'ironman'
   this.player.setSize(21, 45, 0, 0).setOffset(17, 10)
   this.player.alive = true
   this.player.shootable = true
+  this.player.shootCount = 0
   this.player.body.collideWorldBounds = true
   this.player.facing = 'right'
   this.player.bar = this.add.graphics()
   this.player.hp = 100
+  // ironman shoots beams
+  this.beams = this.physics.add.group()
+  this.beams_hit = this.physics.add.group()
+  // ironman animations
   this.anims.create({
     key: 'idle',
     frames: this.anims.generateFrameNumbers('ironman', {
@@ -36,6 +42,15 @@ export default function create () {
     key: 'attack',
     frames: this.anims.generateFrameNumbers('ironman', {
       start: 8,
+      end: 8
+    }),
+    frameRate: 5,
+    repeat: -1
+  })
+  this.anims.create({
+    key: 'attack2',
+    frames: this.anims.generateFrameNumbers('ironman', {
+      start: 9,
       end: 9
     }),
     frameRate: 5,
@@ -59,9 +74,28 @@ export default function create () {
     frameRate: 3,
     repeat: 0
   })
+  this.anims.create({
+    key: 'beam',
+    frames: this.anims.generateFrameNumbers('ironman', {
+      start: 25,
+      end: 26
+    }),
+    frameRate: 3,
+    repeat: 0
+  })
+  this.anims.create({
+    key: 'beam_hit',
+    frames: this.anims.generateFrameNumbers('hit_effect', {
+      start: 0,
+      end: 7
+    }),
+    frameRate: 7,
+    repeat: 0
+  })
 
   // spiderman animations and sprits setup
   // this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)
+  // this.player.name = 'spiderman'
   // this.player.alive = true
   // this.player.body.setSize(55, 65, 10, 10)
   // this.player.body.collideWorldBounds = true
@@ -291,6 +325,12 @@ export default function create () {
     web.disableBody(true, true)
     slime.hp -= 1
   })
+
+  this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
+    beamHitEffect(this, beam)
+    slime.hp -= Math.floor(Math.random() * 25) + 10
+  })
+
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
     let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
     this.player.hp -= floatSlimeDmg
@@ -358,6 +398,21 @@ function knockBack (scene, player, dmgObject) {
     scene.knockBack = false
   }, 850)
   scene.knockBackOrient = false
+}
+
+function beamHitEffect (scene, beam) {
+  let beam_hit = scene.beams_hit.create(
+    beam.body.x + 17.5,
+    beam.body.y + 7.5,
+    'beam_hit'
+  )
+  beam_hit.body.allowGravity = false
+  beam_hit.setScale(1.5, 1.5)
+  beam_hit.anims.play('beam_hit', true)
+  setTimeout(() => {
+    beam_hit.destroy()
+  }, 1000)
+  beam.disableBody(true, true)
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.

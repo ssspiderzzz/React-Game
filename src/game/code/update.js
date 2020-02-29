@@ -44,25 +44,35 @@ export default function update () {
       // player shoots
       if (this.cursors.space.isDown && this.player.shootable) {
         if (this.player.facing === 'right') {
-          this.player.anims.play('attack', true)
+          if (this.player.shootCount === 0) {
+            this.player.anims.play('attack', true)
+            this.player.shootCount = 1
+          } else if (this.player.shootCount === 1) {
+            this.player.anims.play('attack2', true)
+            this.player.shootCount = 0
+          } else {
+            this.player.anims.play('attack', true)
+          }
           this.player.flipX = false
-          let newWeb_right = this.webs.create(
-            this.player.x + 20,
-            this.player.y + 20,
-            'web'
-          )
-          shootWeb(newWeb_right, 450)
+          if (this.player.name === 'ironman') ironManShooter(this, 'right')
+          if (this.player.name === 'spiderman') spiderManShooter(this, 20, 450)
         }
 
         if (this.player.facing === 'left') {
-          this.player.anims.play('attack', true)
+          if (this.player.shootCount === 0) {
+            this.player.anims.play('attack', true)
+            this.player.shootCount = 1
+          } else if (this.player.shootCount === 1) {
+            this.player.anims.play('attack2', true)
+            this.player.shootCount = 0
+          } else {
+            this.player.anims.play('attack', true)
+          }
           this.player.flipX = true
-          let newWeb_left = this.webs.create(
-            this.player.x - 20,
-            this.player.y + 20,
-            'web'
-          )
-          shootWeb(newWeb_left, -450)
+          if (this.player.name === 'ironman') ironManShooter(this, 'left')
+
+          if (this.player.name === 'spiderman')
+            spiderManShooter(this, -20, -450)
         }
 
         this.player.shootable = false
@@ -139,7 +149,44 @@ export default function update () {
   }
 }
 
-function shootWeb (web, shootSpeed) {
+function ironManShooter (scene, shootDirection) {
+  let shootSpeed
+  let shootX
+  let flipX
+  if (shootDirection === 'right') {
+    shootSpeed = 450
+    shootX = 40
+    flipX = false
+  }
+  if (shootDirection === 'left') {
+    shootSpeed = -450
+    shootX = -40
+    flipX = true
+  }
+
+  let beam = scene.beams.create(
+    scene.player.x + shootX,
+    scene.player.y + 10,
+    'beam'
+  )
+  beam.body.setSize(35, 15, 0, 0).setOffset(10, 20)
+  beam.body.collideWorldBounds = false
+  beam.body.allowGravity = false
+  beam.anims.play('beam', true)
+  beam.body.velocity.x = shootSpeed
+  beam.flipX = flipX
+  beam.setScale(1.5, 1.5)
+  setInterval(() => {
+    beam.destroy()
+  }, 2500)
+}
+
+function spiderManShooter (scene, shootDirection, shootSpeed) {
+  let web = scene.webs.create(
+    scene.player.x + shootDirection,
+    scene.player.y + 20,
+    'web'
+  )
   web.body.setSize(30, 15, 5, 5)
   web.body.collideWorldBounds = true
   web.body.allowGravity = false

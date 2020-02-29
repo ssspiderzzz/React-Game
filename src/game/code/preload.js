@@ -6,6 +6,7 @@ import slime from '../../assets/slime.png'
 import spiderandweb from '../../assets/spiderandweb.png'
 import red_projectile from '../../assets/red_projectile.png'
 import ironman_sprites from '../../assets/characters/ironman_sprites.png'
+import hit_effect from '../../assets/hit_effect.png'
 
 export default function preload () {
   this.load.crossOrigin = true
@@ -38,5 +39,9 @@ export default function preload () {
   this.load.spritesheet('ironman', ironman_sprites, {
     frameWidth: 55,
     frameHeight: 55
+  })
+  this.load.spritesheet('hit_effect', hit_effect, {
+    frameWidth: 50,
+    frameHeight: 50
   })
 }
