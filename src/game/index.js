@@ -1,7 +1,5 @@
 import Phaser from 'phaser'
-import preload from './code/preload'
-import create from './code/create'
-import update from './code/update'
+import SceneB from './SceneB'
 
 export let config = {
   type: Phaser.AUTO,
@@ -26,9 +24,5 @@ export let config = {
     }
   },
 
-  scene: {
-    preload: preload,
-    create: create,
-    update: update
-  }
+  scene: [SceneB]
 }

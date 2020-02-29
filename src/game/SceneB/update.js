@@ -153,6 +153,10 @@ function ironManShooter (scene, shootDirection) {
   let shootSpeed
   let shootX
   let flipX
+  let shootYDifference = 0
+  if (scene.player.shootCount === 1) {
+    shootYDifference = 5
+  }
   if (shootDirection === 'right') {
     shootSpeed = 450
     shootX = 40
@@ -166,7 +170,7 @@ function ironManShooter (scene, shootDirection) {
 
   let beam = scene.beams.create(
     scene.player.x + shootX,
-    scene.player.y + 10,
+    scene.player.y + 10 + shootYDifference,
     'beam'
   )
   beam.body.setSize(35, 15, 0, 0).setOffset(10, 20)
