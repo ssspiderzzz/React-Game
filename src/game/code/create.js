@@ -9,6 +9,7 @@ export default function create () {
   this.player = this.physics.add.sprite(512, 300, 'ironman').setScale(2, 2)
   this.player.setSize(21, 45, 0, 0).setOffset(17, 10)
   this.player.alive = true
+  this.player.shootable = true
   this.player.body.collideWorldBounds = true
   this.player.facing = 'right'
   this.player.bar = this.add.graphics()
@@ -50,10 +51,10 @@ export default function create () {
     repeat: 0
   })
   this.anims.create({
-    key: 'ghost',
+    key: 'dead',
     frames: this.anims.generateFrameNumbers('ironman', {
       start: 21,
-      end: 24
+      end: 23
     }),
     frameRate: 3,
     repeat: 0
@@ -95,7 +96,7 @@ export default function create () {
   //   repeat: -1
   // })
   // this.anims.create({
-  //   key: 'ghost',
+  //   key: 'dead',
   //   frames: this.anims.generateFrameNumbers('spiderman', {
   //     start: 120,
   //     end: 121

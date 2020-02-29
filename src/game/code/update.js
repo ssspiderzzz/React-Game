@@ -7,26 +7,28 @@ export default function update () {
 
     // player runs and stands
     if (!this.knockBack) {
-      if (this.cursors.right.isDown) {
-        this.player.anims.play('walk', true)
-        this.player.flipX = false
-        this.player.body.setVelocityX(300)
-        this.player.facing = 'right'
-      } else if (this.cursors.left.isDown) {
-        this.player.anims.play('walk', true)
-        this.player.flipX = true
-        this.player.body.setVelocityX(-300)
-        this.player.facing = 'left'
-      } else {
-        if (this.player.facing === 'right') {
+      if (this.player.shootable) {
+        if (this.cursors.right.isDown) {
+          this.player.anims.play('walk', true)
           this.player.flipX = false
-          this.player.anims.play('idle', true)
-        }
-        if (this.player.facing === 'left') {
+          this.player.body.setVelocityX(300)
+          this.player.facing = 'right'
+        } else if (this.cursors.left.isDown) {
+          this.player.anims.play('walk', true)
           this.player.flipX = true
-          this.player.anims.play('idle', true)
+          this.player.body.setVelocityX(-300)
+          this.player.facing = 'left'
+        } else {
+          if (this.player.facing === 'right') {
+            this.player.flipX = false
+            this.player.anims.play('idle', true)
+          }
+          if (this.player.facing === 'left') {
+            this.player.flipX = true
+            this.player.anims.play('idle', true)
+          }
+          this.player.body.setVelocityX(0)
         }
-        this.player.body.setVelocityX(0)
       }
 
       // player jumps
@@ -40,7 +42,7 @@ export default function update () {
       }
 
       // player shoots
-      if (this.cursors.space.isDown) {
+      if (this.cursors.space.isDown && this.player.shootable) {
         if (this.player.facing === 'right') {
           this.player.anims.play('attack', true)
           this.player.flipX = false
@@ -62,6 +64,13 @@ export default function update () {
           )
           shootWeb(newWeb_left, -450)
         }
+
+        this.player.shootable = false
+        this.player.body.setVelocityX(0)
+      }
+
+      if (this.cursors.space.isUp) {
+        this.player.shootable = true
       }
 
       if (this.keyX.isDown) {
@@ -76,11 +85,11 @@ export default function update () {
       this.player.body.allowGravity = false
       this.player.bar.destroy()
       if (this.player.facing === 'right') {
-        this.player.anims.play('ghost', true)
+        this.player.anims.play('dead', true)
         this.player.flipX = false
       }
       if (this.player.facing === 'left') {
-        this.player.anims.play('ghost', true)
+        this.player.anims.play('dead', true)
         this.player.flipX = true
       }
       setTimeout(() => {
