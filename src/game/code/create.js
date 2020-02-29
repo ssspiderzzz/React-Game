@@ -5,62 +5,94 @@ export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
-  this.anims.create({
-    key: 'everything',
-    frames: this.anims.generateFrameNames('ironman'),
-    frameRate: 5,
-    repeat: -1
-  })
-  this.ironman = this.physics.add
-    .sprite(300, 300, 'ironman')
-    .setScale(2, 2)
-    .play('everything')
-  this.ironman.body.allowGravity = false
-
   // player
-  this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)
+  this.player = this.physics.add.sprite(512, 300, 'ironman').setScale(2, 2)
   this.player.alive = true
-  this.player.body.setSize(55, 65, 10, 10)
   this.player.body.collideWorldBounds = true
   this.player.facing = 'right'
   this.player.bar = this.add.graphics()
   this.player.hp = 100
   this.anims.create({
-    key: 'walk',
-    frames: this.anims.generateFrameNumbers('spiderman', {
-      start: 1,
-      end: 8
+    key: 'idle',
+    frames: this.anims.generateFrameNumbers('ironman', {
+      start: 0,
+      end: 1
     }),
-    frameRate: 10,
+    frameRate: 1,
     repeat: -1
   })
   this.anims.create({
-    key: 'idle',
-    frames: this.anims.generateFrameNumbers('spiderman', {
-      start: 0,
-      end: 0
+    key: 'walk',
+    frames: this.anims.generateFrameNumbers('ironman', {
+      start: 3,
+      end: 3
     }),
-    frameRate: 10,
+    frameRate: 1,
     repeat: -1
   })
   this.anims.create({
     key: 'attack',
-    frames: this.anims.generateFrameNumbers('spiderman', {
-      start: 53,
-      end: 53
-    }),
-    frameRate: 10,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'ghost',
-    frames: this.anims.generateFrameNumbers('spiderman', {
-      start: 120,
-      end: 121
+    frames: this.anims.generateFrameNumbers('ironman', {
+      start: 8,
+      end: 9
     }),
     frameRate: 5,
     repeat: -1
   })
+  this.anims.create({
+    key: 'ghost',
+    frames: this.anims.generateFrameNumbers('ironman', {
+      start: 21,
+      end: 24
+    }),
+    frameRate: 3,
+    repeat: 0
+  })
+
+  // spiderman animations and sprits setup
+  // this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)
+  // this.player.alive = true
+  // this.player.body.setSize(55, 65, 10, 10)
+  // this.player.body.collideWorldBounds = true
+  // this.player.facing = 'right'
+  // this.player.bar = this.add.graphics()
+  // this.player.hp = 100
+  // this.anims.create({
+  //   key: 'walk',
+  //   frames: this.anims.generateFrameNumbers('spiderman', {
+  //     start: 1,
+  //     end: 8
+  //   }),
+  //   frameRate: 10,
+  //   repeat: -1
+  // })
+  // this.anims.create({
+  //   key: 'idle',
+  //   frames: this.anims.generateFrameNumbers('spiderman', {
+  //     start: 0,
+  //     end: 0
+  //   }),
+  //   frameRate: 10,
+  //   repeat: -1
+  // })
+  // this.anims.create({
+  //   key: 'attack',
+  //   frames: this.anims.generateFrameNumbers('spiderman', {
+  //     start: 53,
+  //     end: 53
+  //   }),
+  //   frameRate: 10,
+  //   repeat: -1
+  // })
+  // this.anims.create({
+  //   key: 'ghost',
+  //   frames: this.anims.generateFrameNumbers('spiderman', {
+  //     start: 120,
+  //     end: 121
+  //   }),
+  //   frameRate: 5,
+  //   repeat: -1
+  // })
 
   // coin
   this.coins = this.physics.add.group({
