@@ -7,6 +7,7 @@ export default function create () {
 
   // player
   this.player = this.physics.add.sprite(512, 300, 'ironman').setScale(2, 2)
+  this.player.setSize(21, 45, 0, 0).setOffset(17, 10)
   this.player.alive = true
   this.player.body.collideWorldBounds = true
   this.player.facing = 'right'
@@ -16,7 +17,7 @@ export default function create () {
     key: 'idle',
     frames: this.anims.generateFrameNumbers('ironman', {
       start: 0,
-      end: 1
+      end: 0
     }),
     frameRate: 1,
     repeat: -1
@@ -38,6 +39,15 @@ export default function create () {
     }),
     frameRate: 5,
     repeat: -1
+  })
+  this.anims.create({
+    key: 'hit',
+    frames: this.anims.generateFrameNumbers('ironman', {
+      start: 16,
+      end: 17
+    }),
+    frameRate: 3,
+    repeat: 0
   })
   this.anims.create({
     key: 'ghost',
@@ -257,17 +267,17 @@ export default function create () {
 
   this.physics.add.collider(this.player, this.platforms)
   this.physics.add.collider(this.coins, this.platforms)
-  this.physics.add.collider(this.coins, this.player)
-  this.physics.add.collider(this.slimes, this.platforms)
-  this.physics.add.collider(this.slimes, this.slimes)
-  this.physics.add.collider(this.slimes, this.invisibleWalls)
-  this.physics.add.collider(this.webs, this.platforms)
-  this.physics.add.overlap(this.webs, this.coins, (web, coin) => {
+  this.physics.add.collider(this.player, this.coins, (player, coin) => {
     this.money++
     this.moneyChange = true
     coin.disableBody(true, true)
     coin.destroy()
   })
+  this.physics.add.collider(this.slimes, this.platforms)
+  this.physics.add.collider(this.slimes, this.slimes)
+  this.physics.add.collider(this.slimes, this.invisibleWalls)
+  this.physics.add.collider(this.webs, this.platforms)
+  this.physics.add.overlap(this.webs, this.coins)
   this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
     let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
     newWeb_hit.body.allowGravity = false
@@ -288,10 +298,14 @@ export default function create () {
     if (slime.body.touching.right) {
       this.knockBack = true
       this.knockBackOrient = 'right'
+      this.player.anims.play('hit', true)
+      this.player.flipX = true
     }
     if (slime.body.touching.left) {
       this.knockBack = true
       this.knockBackOrient = 'left'
+      this.player.anims.play('hit', true)
+      this.player.flipX = false
     }
     if (slime.body.touching.up) {
       this.knockBack = true
