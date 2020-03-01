@@ -10,4 +10,7 @@ export default class SceneB extends Phaser.Scene {
     this.create = create
     this.update = update
   }
+  init (data) {
+    this.select = data.select
+  }
 }

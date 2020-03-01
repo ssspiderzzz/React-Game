@@ -2,6 +2,8 @@ import Phaser from 'phaser'
 import drawDamageText from './drawDamageText'
 
 export default function create () {
+  let name = this.select
+  console.log(name)
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 

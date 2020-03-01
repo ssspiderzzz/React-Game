@@ -19,6 +19,7 @@ export default function create () {
 
   this.selectName = this.add.text()
   iron_man_face.on('pointerdown', () => {
+    this.select = 'IronMan'
     this.selectName.destroy()
     this.selectName = this.add
       .text(1024 / 2 - 150, 200, ['Iron Man', '(Tony Stark)'], {
@@ -28,6 +29,7 @@ export default function create () {
       .setOrigin(0.5)
   })
   captain_america_face.on('pointerdown', () => {
+    this.select = 'CaptainAmerica'
     this.selectName.destroy()
     this.selectName = this.add
       .text(1024 / 2, 200, ['Captain America', '(Steve Rogers)'], {
@@ -37,6 +39,7 @@ export default function create () {
       .setOrigin(0.5)
   })
   thor_face.on('pointerdown', () => {
+    this.select = 'Thor'
     this.selectName.destroy()
     this.selectName = this.add
       .text(1024 / 2 + 150, 200, ['Thor', '(God of Thunder)'], {
@@ -58,6 +61,6 @@ export default function create () {
     .setOrigin(0.5)
   playButton.setInteractive()
   playButton.on('pointerdown', () => {
-    this.scene.start('SceneB')
+    this.scene.start('SceneB', { select: this.select })
   })
 }
