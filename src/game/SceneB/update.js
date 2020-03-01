@@ -54,7 +54,7 @@ export default function update () {
             this.player.anims.play('attack', true)
           }
           this.player.flipX = false
-          if (this.player.name === 'ironman') ironManShooter(this, 'right')
+          if (this.player.name === 'IronMan') ironManShooter(this, 'right')
           if (this.player.name === 'spiderman') spiderManShooter(this, 20, 450)
         }
 
@@ -69,7 +69,7 @@ export default function update () {
             this.player.anims.play('attack', true)
           }
           this.player.flipX = true
-          if (this.player.name === 'ironman') ironManShooter(this, 'left')
+          if (this.player.name === 'IronMan') ironManShooter(this, 'left')
 
           if (this.player.name === 'spiderman')
             spiderManShooter(this, -20, -450)

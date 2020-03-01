@@ -1,102 +1,17 @@
 import Phaser from 'phaser'
 import drawDamageText from './drawDamageText'
+import initIronMan from './initIronMan'
+import initCaptainAmerica from './initCaptainAmerica'
 
 export default function create () {
   let name = this.select
   console.log(name)
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
-  this.player2 = this.physics.add
-    .sprite(800, 300, 'CaptainAmerica')
-    .setScale(2, 2)
 
   // player
-  this.player = this.physics.add.sprite(512, 300, 'ironman').setScale(2, 2)
-  this.player.name = 'ironman'
-  this.player.setSize(21, 45, 0, 0).setOffset(17, 10)
-  this.player.alive = true
-  this.player.shootable = true
-  this.player.shootCount = 0
-  this.player.body.collideWorldBounds = true
-  this.player.facing = 'right'
-  this.player.bar = this.add.graphics()
-  this.player.hp = 100
-  // ironman shoots beams
-  this.beams = this.physics.add.group()
-  this.beams_hit = this.physics.add.group()
-  // ironman animations
-  this.anims.create({
-    key: 'idle',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 0,
-      end: 0
-    }),
-    frameRate: 1,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'walk',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 3,
-      end: 3
-    }),
-    frameRate: 1,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'attack',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 8,
-      end: 8
-    }),
-    frameRate: 5,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'attack2',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 9,
-      end: 9
-    }),
-    frameRate: 5,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'hit',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 16,
-      end: 17
-    }),
-    frameRate: 3,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'dead',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 21,
-      end: 23
-    }),
-    frameRate: 3,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'beam',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 25,
-      end: 26
-    }),
-    frameRate: 3,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'beam_hit',
-    frames: this.anims.generateFrameNumbers('hit_effect', {
-      start: 0,
-      end: 7
-    }),
-    frameRate: 7,
-    repeat: 0
-  })
+  if (name === 'IronMan') initIronMan(this)
+  if (name === 'CaptainAmerica') initCaptainAmerica(this)
 
   // spiderman animations and sprits setup
   // this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)

@@ -37,7 +37,7 @@ export default function preload () {
     frameWidth: 153,
     frameHeight: 153
   })
-  this.load.spritesheet('ironman', iron_man_sprites, {
+  this.load.spritesheet('IronMan', iron_man_sprites, {
     frameWidth: 55,
     frameHeight: 55
   })
