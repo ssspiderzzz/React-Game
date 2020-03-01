@@ -5,20 +5,20 @@ import coin from '../../assets/coin.png'
 import slime from '../../assets/slime.png'
 import spiderandweb from '../../assets/spiderandweb.png'
 import red_projectile from '../../assets/red_projectile.png'
-import ironman_sprites from '../../assets/characters/ironman_sprites.png'
+import iron_man_sprites from '../../assets/characters/iron_man_sprites.png'
 import hit_effect from '../../assets/hit_effect.png'
-import face_icon from '../../assets/characters/face_icon.png'
-import ironman_icon from '../../assets/characters/ironman.jpg'
+import iron_man_face from '../../assets/characters/iron_man_face.jpg'
+import captain_america_face from '../../assets/characters/captain_america_face.jpg'
+import thor_face from '../../assets/characters/thor_face.jpg'
 
 export default function preload () {
   this.load.crossOrigin = true
 
   this.load.image('background', background)
-  this.load.image('ironman_icon', ironman_icon)
-  // this.load.spritesheet('face_icon', face_icon, {
-  //   frameWidth: 40,
-  //   frameHeight: 50
-  // })
+  this.load.image('iron_man_face', iron_man_face)
+  this.load.image('captain_america_face', captain_america_face)
+  this.load.image('thor_face', thor_face)
+
   this.load.spritesheet('spiderman', spiderman, {
     frameWidth: 80,
     frameHeight: 80
@@ -43,7 +43,7 @@ export default function preload () {
     frameWidth: 153,
     frameHeight: 153
   })
-  this.load.spritesheet('ironman', ironman_sprites, {
+  this.load.spritesheet('ironman', iron_man_sprites, {
     frameWidth: 55,
     frameHeight: 55
   })

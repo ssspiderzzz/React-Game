@@ -5,7 +5,7 @@ import coin from '../../assets/coin.png'
 import slime from '../../assets/slime.png'
 import spiderandweb from '../../assets/spiderandweb.png'
 import red_projectile from '../../assets/red_projectile.png'
-import ironman_sprites from '../../assets/characters/ironman_sprites.png'
+import iron_man_sprites from '../../assets/characters/iron_man_sprites.png'
 import hit_effect from '../../assets/hit_effect.png'
 
 export default function preload () {
@@ -36,7 +36,7 @@ export default function preload () {
     frameWidth: 153,
     frameHeight: 153
   })
-  this.load.spritesheet('ironman', ironman_sprites, {
+  this.load.spritesheet('ironman', iron_man_sprites, {
     frameWidth: 55,
     frameHeight: 55
   })
