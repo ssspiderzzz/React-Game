@@ -55,6 +55,10 @@ export default function update () {
           }
           this.player.flipX = false
           if (this.player.name === 'IronMan') ironManShooter(this, 'right')
+          if (this.player.name === 'CaptainAmerica')
+            setTimeout(() => {
+              captainAmericaShooter(this, 'right')
+            }, 200)
           if (this.player.name === 'spiderman') spiderManShooter(this, 20, 450)
         }
 
@@ -70,7 +74,10 @@ export default function update () {
           }
           this.player.flipX = true
           if (this.player.name === 'IronMan') ironManShooter(this, 'left')
-
+          if (this.player.name === 'CaptainAmerica')
+            setTimeout(() => {
+              captainAmericaShooter(this, 'left')
+            }, 200)
           if (this.player.name === 'spiderman')
             spiderManShooter(this, -20, -450)
         }
@@ -182,6 +189,42 @@ function ironManShooter (scene, shootDirection) {
   beam.setScale(1.5, 1.5)
   setInterval(() => {
     beam.destroy()
+  }, 2500)
+}
+
+function captainAmericaShooter (scene, shootDirection) {
+  let shootSpeed
+  let shootX
+  let flipX
+  let shootYDifference = 0
+  if (scene.player.shootCount === 1) {
+    shootYDifference = 5
+  }
+  if (shootDirection === 'right') {
+    shootSpeed = 450
+    shootX = 50
+    flipX = false
+  }
+  if (shootDirection === 'left') {
+    shootSpeed = -450
+    shootX = -50
+    flipX = true
+  }
+
+  let shield = scene.shields.create(
+    scene.player.x + shootX,
+    scene.player.y + 10 + shootYDifference,
+    'shield'
+  )
+  shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
+  shield.body.collideWorldBounds = false
+  shield.body.allowGravity = false
+  shield.anims.play('shield', true)
+  shield.body.velocity.x = shootSpeed
+  shield.flipX = flipX
+  shield.setScale(2, 2)
+  setInterval(() => {
+    shield.destroy()
   }, 2500)
 }
 

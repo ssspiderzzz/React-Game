@@ -3,7 +3,7 @@ export default function initCaptainAmerica (scene) {
     .sprite(512, 300, 'CaptainAmerica')
     .setScale(2, 2)
   scene.player.name = 'CaptainAmerica'
-  scene.player.setSize(21, 45, 0, 0).setOffset(17, 10)
+  scene.player.setSize(22, 45, 0, 0).setOffset(24, 10)
   scene.player.alive = true
   scene.player.shootable = true
   scene.player.body.collideWorldBounds = true
@@ -40,7 +40,7 @@ export default function initCaptainAmerica (scene) {
       start: 10,
       end: 12
     }),
-    frameRate: 5,
+    frameRate: 10,
     repeat: 0
   })
   scene.anims.create({
