@@ -196,10 +196,6 @@ function captainAmericaShooter (scene, shootDirection) {
   let shootSpeed
   let shootX
   let flipX
-  let shootYDifference = 0
-  if (scene.player.shootCount === 1) {
-    shootYDifference = 5
-  }
   if (shootDirection === 'right') {
     shootSpeed = 450
     shootX = 50
@@ -213,7 +209,7 @@ function captainAmericaShooter (scene, shootDirection) {
 
   let shield = scene.shields.create(
     scene.player.x + shootX,
-    scene.player.y + 10 + shootYDifference,
+    scene.player.y + 10,
     'shield'
   )
   shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)

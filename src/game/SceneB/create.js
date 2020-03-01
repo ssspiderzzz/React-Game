@@ -184,7 +184,6 @@ export default function create () {
     coin.destroy()
   })
   this.physics.add.collider(this.slimes, this.platforms)
-  this.physics.add.collider(this.slimes, this.slimes)
   this.physics.add.collider(this.slimes, this.invisibleWalls)
   // this.physics.add.collider(this.webs, this.platforms)
   // this.physics.add.overlap(this.webs, this.coins)
@@ -204,6 +203,16 @@ export default function create () {
     this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
       beamHitEffect(this, beam)
       slime.hp -= Math.floor(Math.random() * 25) + 10
+    })
+  }
+
+  if (this.player.name === 'CaptainAmerica') {
+    this.physics.add.collider(this.shields, this.slimes, (shield, slime) => {
+      shieldHitEffect(this, shield)
+      slime.hp -= Math.floor(Math.random() * 35) + 10
+    })
+    this.physics.add.collider(this.player, this.shields, (player, shield) => {
+      shield.disableBody(true, true)
     })
   }
 
@@ -309,6 +318,26 @@ function beamHitEffect (scene, beam) {
     beam_hit.destroy()
   }, 1000)
   beam.disableBody(true, true)
+}
+
+function shieldHitEffect (scene, shield) {
+  let shield_hit = scene.shields_hit.create(
+    shield.body.x + 17.5,
+    shield.body.y + 7.5,
+    'shield_hit'
+  )
+  shield_hit.body.allowGravity = false
+  shield_hit.setScale(1.5, 1.5)
+  shield_hit.anims.play('shield_hit', true)
+  setTimeout(() => {
+    shield_hit.destroy()
+  }, 1000)
+
+  let shieldTravelTime = Math.abs(shield.body.x - scene.player.body.x) / 450
+  shield.body.velocity.x *= -1
+
+  shield.body.velocity.y =
+    (scene.player.body.y + 30 - shield.body.y) / shieldTravelTime
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.
