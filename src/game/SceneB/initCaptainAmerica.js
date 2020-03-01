@@ -1,6 +1,8 @@
 export default function initCaptainAmerica (scene) {
-  scene.player = scene.physics.add.sprite(512, 300, 'IronMan').setScale(2, 2)
-  scene.player.name = 'IronMan'
+  scene.player = scene.physics.add
+    .sprite(512, 300, 'CaptainAmerica')
+    .setScale(2, 2)
+  scene.player.name = 'CaptainAmerica'
   scene.player.setSize(21, 45, 0, 0).setOffset(17, 10)
   scene.player.alive = true
   scene.player.shootable = true
@@ -9,13 +11,14 @@ export default function initCaptainAmerica (scene) {
   scene.player.facing = 'right'
   scene.player.bar = scene.add.graphics()
   scene.player.hp = 100
-  // IronMan shoots beams
+  // CaptainAmerica shoots beams
   scene.beams = scene.physics.add.group()
   scene.beams_hit = scene.physics.add.group()
-  // IronMan animations
+  // CaptainAmerica animations
+
   scene.anims.create({
     key: 'idle',
-    frames: scene.anims.generateFrameNumbers('IronMan', {
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 0,
       end: 0
     }),
@@ -24,7 +27,7 @@ export default function initCaptainAmerica (scene) {
   })
   scene.anims.create({
     key: 'walk',
-    frames: scene.anims.generateFrameNumbers('IronMan', {
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 3,
       end: 3
     }),
@@ -33,7 +36,7 @@ export default function initCaptainAmerica (scene) {
   })
   scene.anims.create({
     key: 'attack',
-    frames: scene.anims.generateFrameNumbers('IronMan', {
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 8,
       end: 8
     }),
@@ -42,7 +45,7 @@ export default function initCaptainAmerica (scene) {
   })
   scene.anims.create({
     key: 'attack2',
-    frames: scene.anims.generateFrameNumbers('IronMan', {
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 9,
       end: 9
     }),
@@ -51,7 +54,7 @@ export default function initCaptainAmerica (scene) {
   })
   scene.anims.create({
     key: 'hit',
-    frames: scene.anims.generateFrameNumbers('IronMan', {
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 16,
       end: 17
     }),
@@ -60,7 +63,7 @@ export default function initCaptainAmerica (scene) {
   })
   scene.anims.create({
     key: 'dead',
-    frames: scene.anims.generateFrameNumbers('IronMan', {
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 21,
       end: 23
     }),
@@ -69,7 +72,7 @@ export default function initCaptainAmerica (scene) {
   })
   scene.anims.create({
     key: 'beam',
-    frames: scene.anims.generateFrameNumbers('IronMan', {
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 25,
       end: 26
     }),

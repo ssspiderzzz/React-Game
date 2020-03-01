@@ -6,58 +6,13 @@ import initCaptainAmerica from './initCaptainAmerica'
 export default function create () {
   let name = this.select
   console.log(name)
+
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
   // player
   if (name === 'IronMan') initIronMan(this)
   if (name === 'CaptainAmerica') initCaptainAmerica(this)
-
-  // spiderman animations and sprits setup
-  // this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)
-  // this.player.name = 'spiderman'
-  // this.player.alive = true
-  // this.player.body.setSize(55, 65, 10, 10)
-  // this.player.body.collideWorldBounds = true
-  // this.player.facing = 'right'
-  // this.player.bar = this.add.graphics()
-  // this.player.hp = 100
-  // this.anims.create({
-  //   key: 'walk',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 1,
-  //     end: 8
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // })
-  // this.anims.create({
-  //   key: 'idle',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 0,
-  //     end: 0
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // })
-  // this.anims.create({
-  //   key: 'attack',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 53,
-  //     end: 53
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // })
-  // this.anims.create({
-  //   key: 'dead',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 120,
-  //     end: 121
-  //   }),
-  //   frameRate: 5,
-  //   repeat: -1
-  // })
 
   // coin
   this.coins = this.physics.add.group({
@@ -293,6 +248,19 @@ export default function create () {
   let menuButton = this.add.text(880, 20, 'Main Menu', { fontSize: 22 })
   menuButton.setInteractive()
   menuButton.on('pointerdown', () => {
+    let animsList = [
+      'idle',
+      'walk',
+      'attack',
+      'attack2',
+      'hit',
+      'dead',
+      'beam',
+      'beam-hit'
+    ]
+    animsList.forEach(i => {
+      this.anims.remove(i)
+    })
     this.scene.start('SceneA')
   })
 }
