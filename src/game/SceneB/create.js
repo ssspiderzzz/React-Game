@@ -6,6 +6,9 @@ export default function create () {
   console.log(name)
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
+  this.player2 = this.physics.add
+    .sprite(800, 300, 'CaptainAmerica')
+    .setScale(2, 2)
 
   // player
   this.player = this.physics.add.sprite(512, 300, 'ironman').setScale(2, 2)

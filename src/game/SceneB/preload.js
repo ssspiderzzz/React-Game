@@ -7,6 +7,7 @@ import spiderandweb from '../../assets/spiderandweb.png'
 import red_projectile from '../../assets/red_projectile.png'
 import iron_man_sprites from '../../assets/characters/iron_man_sprites.png'
 import hit_effect from '../../assets/hit_effect.png'
+import captain_america_sprites from '../../assets/characters/captain_america_sprites.png'
 
 export default function preload () {
   this.load.crossOrigin = true
@@ -43,5 +44,9 @@ export default function preload () {
   this.load.spritesheet('hit_effect', hit_effect, {
     frameWidth: 50,
     frameHeight: 50
+  })
+  this.load.spritesheet('CaptainAmerica', captain_america_sprites, {
+    frameWidth: 70,
+    frameHeight: 55
   })
 }
