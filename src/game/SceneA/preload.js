@@ -7,11 +7,18 @@ import spiderandweb from '../../assets/spiderandweb.png'
 import red_projectile from '../../assets/red_projectile.png'
 import ironman_sprites from '../../assets/characters/ironman_sprites.png'
 import hit_effect from '../../assets/hit_effect.png'
+import face_icon from '../../assets/characters/face_icon.png'
+import ironman_icon from '../../assets/characters/ironman.jpg'
 
 export default function preload () {
   this.load.crossOrigin = true
 
   this.load.image('background', background)
+  this.load.image('ironman_icon', ironman_icon)
+  // this.load.spritesheet('face_icon', face_icon, {
+  //   frameWidth: 40,
+  //   frameHeight: 50
+  // })
   this.load.spritesheet('spiderman', spiderman, {
     frameWidth: 80,
     frameHeight: 80
