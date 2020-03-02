@@ -333,11 +333,11 @@ function shieldHitEffect (scene, shield) {
     shield_hit.destroy()
   }, 1000)
 
-  let shieldTravelTime = Math.abs(shield.body.x - scene.player.body.x) / 450
-  shield.body.velocity.x *= -1
+  shield.shieldTravelTime = Math.abs(shield.body.x - scene.player.body.x) / 450
+  shield.body.velocity.x = -shield.body.velocity.x * 1.5
 
   shield.body.velocity.y =
-    (scene.player.body.y + 30 - shield.body.y) / shieldTravelTime
+    (scene.player.body.y + 35 - shield.body.y) / shield.shieldTravelTime
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.
