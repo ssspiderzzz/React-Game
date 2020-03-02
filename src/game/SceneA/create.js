@@ -41,7 +41,7 @@ export default function create () {
     this.playButton.setVisible(true)
   })
   thor_face.on('pointerdown', () => {
-    this.select = 'IronMan'
+    this.select = 'Thor'
     this.selectName.destroy()
     this.selectName = this.add
       .text(1024 / 2 + 150, 200, ['Thor', '(God of Thunder)'], {
