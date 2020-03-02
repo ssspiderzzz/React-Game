@@ -87,19 +87,19 @@ export default function update () {
         this.player.body.setVelocityX(0)
       }
 
-      if (this.cursors.space.isDown && this.player.name === 'Thor') {
-        if (this.cursors.space.getDuration() < 5000) {
-          this.player.thorSwing = this.cursors.space.getDuration()
-        } else {
-          this.player.thorSwing = 5000
-        }
-      }
-
       if (this.cursors.space.isUp && this.checkSpaceKeyisUp) {
         this.player.shootable = true
         this.checkSpaceKeyisUp = false
 
         // Thor's special move, attack after swing
+        if (this.cursors.space.isDown && this.player.name === 'Thor') {
+          if (this.cursors.space.getDuration() < 5000) {
+            this.player.thorSwing = this.cursors.space.getDuration()
+          } else {
+            this.player.thorSwing = 5000
+          }
+        }
+
         if (this.player.name === 'Thor') {
           if (this.player.facing === 'right') {
             thorShooter(this, 'right', this.player.thorSwing)
@@ -111,8 +111,8 @@ export default function update () {
             this.player.anims.play('throw', true)
             this.player.flipX = true
           }
+          this.player.shootable = false
         }
-        this.player.shootable = false
       }
 
       if (this.keyX.isDown) {
