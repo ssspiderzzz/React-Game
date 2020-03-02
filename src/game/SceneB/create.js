@@ -2,10 +2,10 @@ import Phaser from 'phaser'
 import drawDamageText from './drawDamageText'
 import initIronMan from './initIronMan'
 import initCaptainAmerica from './initCaptainAmerica'
+import initThor from './initThor'
 
 export default function create () {
   let name = this.select
-  console.log(name)
 
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
@@ -13,8 +13,9 @@ export default function create () {
   // player
   if (name === 'IronMan') initIronMan(this)
   if (name === 'CaptainAmerica') initCaptainAmerica(this)
+  if (name === 'Thor') initThor(this)
 
-  // coin
+  // coins
   this.coins = this.physics.add.group({
     key: 'coin',
     repeat: 9,
