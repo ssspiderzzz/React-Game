@@ -83,11 +83,36 @@ export default function update () {
         }
 
         this.player.shootable = false
+        this.checkSpaceKeyisUp = true
         this.player.body.setVelocityX(0)
       }
 
-      if (this.cursors.space.isUp) {
+      if (this.cursors.space.isDown && this.player.name === 'Thor') {
+        if (this.cursors.space.getDuration() < 5000) {
+          this.player.thorSwing = this.cursors.space.getDuration()
+        } else {
+          this.player.thorSwing = 5000
+        }
+      }
+
+      if (this.cursors.space.isUp && this.checkSpaceKeyisUp) {
         this.player.shootable = true
+        this.checkSpaceKeyisUp = false
+
+        // Thor's special move, attack after swing
+        if (this.player.name === 'Thor') {
+          if (this.player.facing === 'right') {
+            thorShooter(this, 'right', this.player.thorSwing)
+            this.player.anims.play('throw', true)
+            this.player.flipX = false
+          }
+          if (this.player.facing === 'left') {
+            thorShooter(this, 'left', this.player.thorSwing)
+            this.player.anims.play('throw', true)
+            this.player.flipX = true
+          }
+        }
+        this.player.shootable = false
       }
 
       if (this.keyX.isDown) {
@@ -155,12 +180,25 @@ export default function update () {
     })
   }
 
+  // Captain America's Special move, shield comeback
   if (this.player.name === 'CaptainAmerica') {
     if (this.shields.children.size > 0) {
       this.shields.children.iterate(shield => {
         if (shield.shieldTravelTime) {
           shield.body.velocity.y =
             (this.player.body.y + 35 - shield.body.y) / shield.shieldTravelTime
+        }
+      })
+    }
+  }
+
+  // Thor's Special move, shield comeback
+  if (this.player.name === 'Thor') {
+    if (this.hammers.children.size > 0) {
+      this.hammers.children.iterate(hammer => {
+        if (hammer.hammerTravelTime) {
+          hammer.body.velocity.y =
+            (this.player.body.y + 35 - hammer.body.y) / hammer.hammerTravelTime
         }
       })
     }
@@ -198,7 +236,7 @@ function ironManShooter (scene, shootDirection) {
   beam.body.velocity.x = shootSpeed
   beam.flipX = flipX
   beam.setScale(1.5, 1.5)
-  setInterval(() => {
+  setTimeout(() => {
     beam.destroy()
   }, 2500)
 }
@@ -230,8 +268,57 @@ function captainAmericaShooter (scene, shootDirection) {
   shield.body.velocity.x = shootSpeed
   shield.flipX = flipX
   shield.setScale(2, 2)
-  setInterval(() => {
+  setTimeout(() => {
     shield.destroy()
+  }, 5000)
+}
+
+function thorShooter (scene, shootDirection, swingDuration) {
+  let shootSpeed
+  let shootX
+  let flipX
+  let swingModifier = swingDuration / 2500
+  swingModifier < 0.5
+    ? (swingModifier = 1)
+    : swingModifier < 1
+    ? (swingModifier = 1.5)
+    : swingModifier < 1.5
+    ? (swingModifier = 1.5)
+    : swingModifier < 2
+    ? (swingModifier = 2.5)
+    : (swingModifier = 3)
+
+  if (shootDirection === 'right') {
+    shootSpeed = 450 * swingModifier
+    shootX = 50
+    flipX = false
+  }
+  if (shootDirection === 'left') {
+    shootSpeed = -450 * swingModifier
+    shootX = -50
+    flipX = true
+  }
+
+  let hammer = scene.hammers.create(
+    scene.player.x + shootX,
+    scene.player.y + 10,
+    'hammer'
+  )
+  hammer.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
+  hammer.body.collideWorldBounds = false
+  hammer.body.allowGravity = false
+  hammer.anims.play('hammer', true)
+  hammer.body.velocity.x = shootSpeed
+  hammer.flipX = flipX
+  hammer.setScale(2, 2)
+  setTimeout(() => {
+    if (hammer.body.x > scene.player.x && hammer.body.velocity.x > 0)
+      hammer.body.velocity.x = -hammer.body.velocity.x
+    if (hammer.body.x < scene.player.x && hammer.body.velocity.x < 0)
+      hammer.body.velocity.x = -hammer.body.velocity.x
+  }, 1000)
+  setTimeout(() => {
+    hammer.destroy()
   }, 5000)
 }
 

@@ -217,6 +217,17 @@ export default function create () {
     })
   }
 
+  if (this.player.name === 'Thor') {
+    this.physics.add.collider(this.hammers, this.slimes, (hammer, slime) => {
+      hammerHitEffect(this, hammer)
+      slime.hp -= Math.floor(Math.random() * 45) + 10
+    })
+    this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
+      hammer.disableBody(true, true)
+      this.player.shootable = true
+    })
+  }
+
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
     let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
     this.player.hp -= floatSlimeDmg
@@ -343,6 +354,30 @@ function shieldHitEffect (scene, shield) {
 
   shield.body.velocity.y =
     (scene.player.body.y + 35 - shield.body.y) / shield.shieldTravelTime
+}
+
+function hammerHitEffect (scene, hammer) {
+  let hammer_hit = scene.hammers_hit.create(
+    hammer.body.x + 17.5,
+    hammer.body.y + 7.5,
+    'hammer_hit'
+  )
+  hammer_hit.body.allowGravity = false
+  hammer_hit.setScale(1.5, 1.5)
+  hammer_hit.anims.play('hammer_hit', true)
+  setTimeout(() => {
+    hammer_hit.destroy()
+  }, 1000)
+
+  hammer.hammerTravelTime = Math.abs(hammer.body.x - scene.player.body.x) / 450
+  if (hammer.body.x > scene.player.body.x) {
+    hammer.body.velocity.x = -450
+  } else {
+    hammer.body.velocity.x = 450
+  }
+
+  hammer.body.velocity.y =
+    (scene.player.body.y + 35 - hammer.body.y) / hammer.hammerTravelTime
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.
