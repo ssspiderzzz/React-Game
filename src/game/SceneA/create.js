@@ -27,6 +27,7 @@ export default function create () {
         align: 'center'
       })
       .setOrigin(0.5)
+    this.playButton.setVisible(true)
   })
   captain_america_face.on('pointerdown', () => {
     this.select = 'CaptainAmerica'
@@ -37,9 +38,10 @@ export default function create () {
         align: 'center'
       })
       .setOrigin(0.5)
+    this.playButton.setVisible(true)
   })
   thor_face.on('pointerdown', () => {
-    this.select = 'Thor'
+    this.select = 'IronMan'
     this.selectName.destroy()
     this.selectName = this.add
       .text(1024 / 2 + 150, 200, ['Thor', '(God of Thunder)'], {
@@ -47,6 +49,7 @@ export default function create () {
         align: 'center'
       })
       .setOrigin(0.5)
+    this.playButton.setVisible(true)
   })
 
   this.money = 0
@@ -54,13 +57,14 @@ export default function create () {
   this.doublejump = false
 
   // static text
-  let playButton = this.add
+  this.playButton = this.add
     .text(1024 / 2, 768 / 2, 'Play', {
       fontSize: 33
     })
     .setOrigin(0.5)
-  playButton.setInteractive()
-  playButton.on('pointerdown', () => {
+  this.playButton.setVisible(false)
+  this.playButton.setInteractive()
+  this.playButton.on('pointerdown', () => {
     this.scene.start('SceneB', { select: this.select })
   })
 }
