@@ -32,9 +32,9 @@ export default function update () {
       }
 
       // player jumps
-      if (this.cursors.up.isDown && !this.doublejump) {
+      if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.body.setVelocityY(-400)
-        this.doublejump = true
+        // this.doublejump = true
       }
 
       if (this.player.body.touching.down && this.doublejump) {
