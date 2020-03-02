@@ -334,7 +334,11 @@ function shieldHitEffect (scene, shield) {
   }, 1000)
 
   shield.shieldTravelTime = Math.abs(shield.body.x - scene.player.body.x) / 450
-  shield.body.velocity.x = -shield.body.velocity.x * 1.5
+  if (shield.body.x > scene.player.body.x) {
+    shield.body.velocity.x = -450
+  } else {
+    shield.body.velocity.x = 450
+  }
 
   shield.body.velocity.y =
     (scene.player.body.y + 35 - shield.body.y) / shield.shieldTravelTime
