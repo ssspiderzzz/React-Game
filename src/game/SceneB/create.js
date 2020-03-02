@@ -1,143 +1,18 @@
 import Phaser from 'phaser'
 import drawDamageText from './drawDamageText'
+import initIronMan from './initIronMan'
+import initCaptainAmerica from './initCaptainAmerica'
 
 export default function create () {
+  let name = this.select
+  console.log(name)
+
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
   // player
-  this.player = this.physics.add.sprite(512, 300, 'ironman').setScale(2, 2)
-  this.player.name = 'ironman'
-  this.player.setSize(21, 45, 0, 0).setOffset(17, 10)
-  this.player.alive = true
-  this.player.shootable = true
-  this.player.shootCount = 0
-  this.player.body.collideWorldBounds = true
-  this.player.facing = 'right'
-  this.player.bar = this.add.graphics()
-  this.player.hp = 100
-  // ironman shoots beams
-  this.beams = this.physics.add.group()
-  this.beams_hit = this.physics.add.group()
-  // ironman animations
-  this.anims.create({
-    key: 'idle',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 0,
-      end: 0
-    }),
-    frameRate: 1,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'walk',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 3,
-      end: 3
-    }),
-    frameRate: 1,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'attack',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 8,
-      end: 8
-    }),
-    frameRate: 5,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'attack2',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 9,
-      end: 9
-    }),
-    frameRate: 5,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'hit',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 16,
-      end: 17
-    }),
-    frameRate: 3,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'dead',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 21,
-      end: 23
-    }),
-    frameRate: 3,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'beam',
-    frames: this.anims.generateFrameNumbers('ironman', {
-      start: 25,
-      end: 26
-    }),
-    frameRate: 3,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'beam_hit',
-    frames: this.anims.generateFrameNumbers('hit_effect', {
-      start: 0,
-      end: 7
-    }),
-    frameRate: 7,
-    repeat: 0
-  })
-
-  // spiderman animations and sprits setup
-  // this.player = this.physics.add.sprite(512, 300, 'spiderman').setScale(1, 1)
-  // this.player.name = 'spiderman'
-  // this.player.alive = true
-  // this.player.body.setSize(55, 65, 10, 10)
-  // this.player.body.collideWorldBounds = true
-  // this.player.facing = 'right'
-  // this.player.bar = this.add.graphics()
-  // this.player.hp = 100
-  // this.anims.create({
-  //   key: 'walk',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 1,
-  //     end: 8
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // })
-  // this.anims.create({
-  //   key: 'idle',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 0,
-  //     end: 0
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // })
-  // this.anims.create({
-  //   key: 'attack',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 53,
-  //     end: 53
-  //   }),
-  //   frameRate: 10,
-  //   repeat: -1
-  // })
-  // this.anims.create({
-  //   key: 'dead',
-  //   frames: this.anims.generateFrameNumbers('spiderman', {
-  //     start: 120,
-  //     end: 121
-  //   }),
-  //   frameRate: 5,
-  //   repeat: -1
-  // })
+  if (name === 'IronMan') initIronMan(this)
+  if (name === 'CaptainAmerica') initCaptainAmerica(this)
 
   // coin
   this.coins = this.physics.add.group({
@@ -309,27 +184,37 @@ export default function create () {
     coin.destroy()
   })
   this.physics.add.collider(this.slimes, this.platforms)
-  this.physics.add.collider(this.slimes, this.slimes)
   this.physics.add.collider(this.slimes, this.invisibleWalls)
-  this.physics.add.collider(this.webs, this.platforms)
-  this.physics.add.overlap(this.webs, this.coins)
-  this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
-    let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
-    newWeb_hit.body.allowGravity = false
-    newWeb_hit.body.setSize(15, 15, 5, 5)
-    newWeb_hit.setScale(1.5, 1.5)
-    newWeb_hit.anims.play('web_hit', true)
-    setTimeout(() => {
-      newWeb_hit.destroy()
-    }, 800)
-    web.disableBody(true, true)
-    slime.hp -= 1
-  })
+  // this.physics.add.collider(this.webs, this.platforms)
+  // this.physics.add.overlap(this.webs, this.coins)
+  // this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
+  //   let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
+  //   newWeb_hit.body.allowGravity = false
+  //   newWeb_hit.body.setSize(15, 15, 5, 5)
+  //   newWeb_hit.setScale(1.5, 1.5)
+  //   newWeb_hit.anims.play('web_hit', true)
+  //   setTimeout(() => {
+  //     newWeb_hit.destroy()
+  //   }, 800)
+  //   web.disableBody(true, true)
+  //   slime.hp -= 1
+  // })
+  if (this.player.name === 'IronMan') {
+    this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
+      beamHitEffect(this, beam)
+      slime.hp -= Math.floor(Math.random() * 25) + 10
+    })
+  }
 
-  this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
-    beamHitEffect(this, beam)
-    slime.hp -= Math.floor(Math.random() * 25) + 10
-  })
+  if (this.player.name === 'CaptainAmerica') {
+    this.physics.add.collider(this.shields, this.slimes, (shield, slime) => {
+      shieldHitEffect(this, shield)
+      slime.hp -= Math.floor(Math.random() * 35) + 10
+    })
+    this.physics.add.collider(this.player, this.shields, (player, shield) => {
+      shield.disableBody(true, true)
+    })
+  }
 
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
     let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
@@ -365,10 +250,30 @@ export default function create () {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
   })
-  let restartButton = this.add.text(900, 20, 'Restart', { fontSize: 22 })
+  let restartButton = this.add.text(750, 20, 'Restart', { fontSize: 22 })
   restartButton.setInteractive()
   restartButton.on('pointerdown', () => {
     this.scene.restart()
+  })
+  let menuButton = this.add.text(880, 20, 'Main Menu', { fontSize: 22 })
+  menuButton.setInteractive()
+  menuButton.on('pointerdown', () => {
+    let animsList = [
+      'idle',
+      'walk',
+      'attack',
+      'attack2',
+      'hit',
+      'dead',
+      'beam',
+      'beam-hit',
+      'shield',
+      'shield-hit'
+    ]
+    animsList.forEach(i => {
+      this.anims.remove(i)
+    })
+    this.scene.start('SceneA')
   })
 }
 
@@ -413,6 +318,26 @@ function beamHitEffect (scene, beam) {
     beam_hit.destroy()
   }, 1000)
   beam.disableBody(true, true)
+}
+
+function shieldHitEffect (scene, shield) {
+  let shield_hit = scene.shields_hit.create(
+    shield.body.x + 17.5,
+    shield.body.y + 7.5,
+    'shield_hit'
+  )
+  shield_hit.body.allowGravity = false
+  shield_hit.setScale(1.5, 1.5)
+  shield_hit.anims.play('shield_hit', true)
+  setTimeout(() => {
+    shield_hit.destroy()
+  }, 1000)
+
+  let shieldTravelTime = Math.abs(shield.body.x - scene.player.body.x) / 450
+  shield.body.velocity.x *= -1
+
+  shield.body.velocity.y =
+    (scene.player.body.y + 30 - shield.body.y) / shieldTravelTime
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.
