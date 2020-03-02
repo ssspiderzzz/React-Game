@@ -20,32 +20,41 @@ export default function initThor (scene) {
       end: 0
     }),
     frameRate: 1,
-    repeat: -1
+    repeat: 0
   })
   scene.anims.create({
     key: 'walk',
     frames: scene.anims.generateFrameNumbers('Thor', {
-      start: 5,
-      end: 7
+      start: 2,
+      end: 3
     }),
-    frameRate: 7,
+    frameRate: 4,
     yoyo: true,
     repeat: -1
   })
   scene.anims.create({
     key: 'attack',
     frames: scene.anims.generateFrameNumbers('Thor', {
-      start: 10,
-      end: 12
+      start: 9,
+      end: 13
     }),
     frameRate: 10,
+    repeat: -1
+  })
+  scene.anims.create({
+    key: 'throw',
+    frames: scene.anims.generateFrameNumbers('Thor', {
+      start: 15,
+      end: 15
+    }),
+    frameRate: 1,
     repeat: 0
   })
   scene.anims.create({
     key: 'hit',
     frames: scene.anims.generateFrameNumbers('Thor', {
-      start: 19,
-      end: 20
+      start: 24,
+      end: 25
     }),
     frameRate: 3,
     repeat: 0
@@ -53,23 +62,23 @@ export default function initThor (scene) {
   scene.anims.create({
     key: 'dead',
     frames: scene.anims.generateFrameNumbers('Thor', {
-      start: 24,
-      end: 26
+      start: 33,
+      end: 35
     }),
     frameRate: 3,
     repeat: 0
   })
   scene.anims.create({
-    key: 'shield',
+    key: 'hammer',
     frames: scene.anims.generateFrameNumbers('Thor', {
-      start: 28,
-      end: 28
+      start: 30,
+      end: 30
     }),
     frameRate: 1,
     repeat: 0
   })
   scene.anims.create({
-    key: 'shield_hit',
+    key: 'hammer_hit',
     frames: scene.anims.generateFrameNumbers('hit_effect', {
       start: 0,
       end: 7
