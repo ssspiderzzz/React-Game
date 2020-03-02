@@ -154,6 +154,17 @@ export default function update () {
       }
     })
   }
+
+  if (this.player.name === 'CaptainAmerica') {
+    if (this.shields.children.size > 0) {
+      this.shields.children.iterate(shield => {
+        if (shield.shieldTravelTime) {
+          shield.body.velocity.y =
+            (this.player.body.y + 35 - shield.body.y) / shield.shieldTravelTime
+        }
+      })
+    }
+  }
 }
 
 function ironManShooter (scene, shootDirection) {
@@ -221,7 +232,7 @@ function captainAmericaShooter (scene, shootDirection) {
   shield.setScale(2, 2)
   setInterval(() => {
     shield.destroy()
-  }, 2500)
+  }, 5000)
 }
 
 function spiderManShooter (scene, shootDirection, shootSpeed) {
