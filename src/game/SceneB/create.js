@@ -212,7 +212,7 @@ export default function create () {
       shieldHitEffect(this, shield)
       slime.hp -= Math.floor(Math.random() * 35) + 10
     })
-    this.physics.add.collider(this.player, this.shields, (player, shield) => {
+    this.physics.add.overlap(this.player, this.shields, (player, shield) => {
       shield.disableBody(true, true)
     })
   }
@@ -356,6 +356,7 @@ function shieldHitEffect (scene, shield) {
 }
 
 function hammerHitEffect (scene, hammer) {
+  thorHammerReturn(scene.player, hammer)
   let hammer_hit = scene.hammers_hit.create(
     hammer.body.x + 17.5,
     hammer.body.y + 7.5,
@@ -367,16 +368,14 @@ function hammerHitEffect (scene, hammer) {
   setTimeout(() => {
     hammer_hit.destroy()
   }, 1000)
+}
 
-  hammer.hammerTravelTime = Math.abs(hammer.body.x - scene.player.body.x) / 450
-  if (hammer.body.x > scene.player.body.x) {
-    hammer.body.velocity.x = -450
-  } else {
-    hammer.body.velocity.x = 450
-  }
-
-  hammer.body.velocity.y =
-    (scene.player.body.y + 35 - hammer.body.y) / hammer.hammerTravelTime
+function thorHammerReturn (thor, hammer) {
+  hammer.return = true
+  hammer.hammerTravelTime =
+    Math.abs(hammer.body.x - thor.body.x) / hammer.hammerTravelSpeedX
+  hammer.hammerTravelSpeedY =
+    (Math.abs(hammer.body.y - thor.body.y) + 35) / hammer.hammerTravelTime
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.

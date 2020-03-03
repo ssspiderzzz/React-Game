@@ -40,7 +40,7 @@ export default function update () {
       if (
         this.cursors.up.isUp &&
         !this.jumpable &&
-        this.cursors.up.duration < 500
+        this.cursors.up.duration < 400
       ) {
         this.player.body.velocity.y += 100
         this.jumpable = true
@@ -92,18 +92,18 @@ export default function update () {
         this.player.body.setVelocityX(0)
       }
 
+      // Thor's special move, attack after swing
+      if (this.cursors.space.isDown && this.player.name === 'Thor') {
+        if (this.cursors.space.getDuration() < 2500) {
+          this.player.thorSwing = this.cursors.space.getDuration()
+        } else {
+          this.player.thorSwing = 2500
+        }
+      }
+
       if (this.cursors.space.isUp && this.checkSpaceKeyisUp) {
         this.player.shootable = true
         this.checkSpaceKeyisUp = false
-
-        // Thor's special move, attack after swing
-        if (this.cursors.space.isDown && this.player.name === 'Thor') {
-          if (this.cursors.space.getDuration() < 5000) {
-            this.player.thorSwing = this.cursors.space.getDuration()
-          } else {
-            this.player.thorSwing = 5000
-          }
-        }
 
         if (this.player.name === 'Thor') {
           if (this.player.facing === 'right') {
@@ -201,9 +201,22 @@ export default function update () {
   if (this.player.name === 'Thor') {
     if (this.hammers.children.size > 0) {
       this.hammers.children.iterate(hammer => {
-        if (hammer.hammerTravelTime) {
-          hammer.body.velocity.y =
-            (this.player.body.y + 35 - hammer.body.y) / hammer.hammerTravelTime
+        if (hammer.return) {
+          if (Math.abs(this.player.body.x - hammer.body.x) < 10) {
+            hammer.body.velocity.x = 0
+          } else if (hammer.body.x > this.player.body.x) {
+            hammer.body.velocity.x = -hammer.hammerTravelSpeedX
+          } else {
+            hammer.body.velocity.x = hammer.hammerTravelSpeedX
+          }
+
+          if (Math.abs(this.player.body.y + 35 - hammer.body.y) < 10) {
+            hammer.body.velocity.y = 0
+          } else if (hammer.body.y > this.player.body.y + 35) {
+            hammer.body.velocity.y = -hammer.hammerTravelSpeedY
+          } else {
+            hammer.body.velocity.y = hammer.hammerTravelSpeedY
+          }
         }
       })
     }
@@ -269,7 +282,7 @@ function captainAmericaShooter (scene, shootDirection) {
   shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
   shield.body.collideWorldBounds = false
   shield.body.allowGravity = false
-  shield.anims.play('shield', true)
+  shield.anims.play('throw', true)
   shield.body.velocity.x = shootSpeed
   shield.flipX = flipX
   shield.setScale(2, 2)
@@ -283,13 +296,13 @@ function thorShooter (scene, shootDirection, swingDuration) {
   let shootX
   let flipX
   let swingModifier = swingDuration / 2500
-  swingModifier < 0.5
+  swingModifier < 0.25
     ? (swingModifier = 1)
+    : swingModifier < 0.5
+    ? (swingModifier = 1.5)
+    : swingModifier < 0.75
+    ? (swingModifier = 1.5)
     : swingModifier < 1
-    ? (swingModifier = 1.5)
-    : swingModifier < 1.5
-    ? (swingModifier = 1.5)
-    : swingModifier < 2
     ? (swingModifier = 2.5)
     : (swingModifier = 3)
 
@@ -314,17 +327,15 @@ function thorShooter (scene, shootDirection, swingDuration) {
   hammer.body.allowGravity = false
   hammer.anims.play('hammer', true)
   hammer.body.velocity.x = shootSpeed
+  hammer.hammerTravelSpeedX = Math.abs(shootSpeed)
   hammer.flipX = flipX
   hammer.setScale(2, 2)
   setTimeout(() => {
-    if (hammer.body.x > scene.player.x && hammer.body.velocity.x > 0)
-      hammer.body.velocity.x = -hammer.body.velocity.x
-    if (hammer.body.x < scene.player.x && hammer.body.velocity.x < 0)
-      hammer.body.velocity.x = -hammer.body.velocity.x
+    thorHammerReturn(scene.player, hammer)
   }, 1000)
   setTimeout(() => {
     hammer.destroy()
-  }, 5000)
+  }, 3000)
 }
 
 function spiderManShooter (scene, shootDirection, shootSpeed) {
@@ -386,4 +397,13 @@ function shootProjectile (scene, slime, direction) {
   newProjectile.anims.play('red_projectile', true)
   newProjectile.body.velocity.x = velocityX
   newProjectile.setScale(0.5, 0.2)
+}
+
+function thorHammerReturn (thor, hammer) {
+  hammer.return = true
+  hammer.hammerTravelSpeedX = Math.abs(hammer.body.velocity.x)
+  hammer.hammerTravelTime =
+    Math.abs(hammer.body.x - thor.body.x) / hammer.hammerTravelSpeedX
+  hammer.hammerTravelSpeedY =
+    (Math.abs(hammer.body.y - thor.body.y) + 35) / hammer.hammerTravelTime
 }
