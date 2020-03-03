@@ -250,7 +250,6 @@ export default function create () {
 
   this.money = 0
   this.moneyChange = false
-  this.doublejump = false
 
   // static text
   this.moneyIcon = this.physics.add.staticGroup()

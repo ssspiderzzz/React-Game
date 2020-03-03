@@ -34,11 +34,16 @@ export default function update () {
       // player jumps
       if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.body.setVelocityY(-400)
-        // this.doublejump = true
+        this.jumpable = false
       }
 
-      if (this.player.body.touching.down && this.doublejump) {
-        this.doublejump = false
+      if (
+        this.cursors.up.isUp &&
+        !this.jumpable &&
+        this.cursors.up.duration < 500
+      ) {
+        this.player.body.velocity.y += 100
+        this.jumpable = true
       }
 
       // player shoots
