@@ -55,7 +55,8 @@ export function captainAmericaShooter (scene, shootDirection) {
     'shield'
   )
   shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
-  shield.body.collideWorldBounds = false
+  shield.setCollideWorldBounds(true)
+  shield.body.onWorldBounds = true
   shield.body.allowGravity = false
   shield.anims.play('shield', true)
   shield.body.velocity.x = shootSpeed
@@ -175,6 +176,15 @@ export function shootProjectile (scene, slime, direction) {
   newProjectile.setScale(0.5, 0.2)
 }
 
+export function captainShieldReturn (captain, shield) {
+  shield.return = true
+  shield.shieldTravelSpeedX = 550
+  shield.shieldTravelTime =
+    Math.abs(shield.body.x - captain.body.x) / shield.shieldTravelSpeedX
+  shield.shieldTravelSpeedY =
+    (Math.abs(shield.body.y - captain.body.y) + 35) / shield.shieldTravelTime
+}
+
 export function thorHammerReturn (thor, hammer) {
   hammer.return = true
   hammer.hammerTravelSpeedX = Math.abs(hammer.body.velocity.x)
@@ -190,13 +200,13 @@ export function knockBack (scene, player, dmgObject) {
   if (dmgObject.body.x <= player.body.x) {
     scene.knockBack = true
     scene.knockBackOrient = 'right'
-    scene.player.anims.play('hit', true)
+    if (player.shootable) scene.player.anims.play('hit', true)
     scene.player.flipX = true
   }
   if (dmgObject.body.x > player.body.x) {
     scene.knockBack = true
     scene.knockBackOrient = 'left'
-    scene.player.anims.play('hit', true)
+    if (player.shootable) scene.player.anims.play('hit', true)
     scene.player.flipX = false
   }
 

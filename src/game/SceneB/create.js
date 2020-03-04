@@ -4,12 +4,13 @@ import initIronMan from './helpers/initIronMan'
 import initCaptainAmerica from './helpers/initCaptainAmerica'
 import initThor from './helpers/initThor'
 import {
-  ironManShooter,
-  captainAmericaShooter,
-  thorShooter,
-  spiderManShooter,
-  randomMove,
-  shootProjectile,
+  // ironManShooter,
+  // captainAmericaShooter,
+  // thorShooter,
+  // spiderManShooter,
+  // randomMove,
+  // shootProjectile,
+  captainShieldReturn,
   thorHammerReturn,
   knockBack,
   beamHitEffect,
@@ -221,7 +222,17 @@ export default function create () {
   }
 
   if (this.player.name === 'CaptainAmerica') {
+    this.physics.world.on(
+      'worldbounds',
+      () => {
+        this.shields.children.iterate(shield => {
+          captainShieldReturn(this.player, shield)
+        })
+      },
+      this
+    )
     this.physics.add.collider(this.shields, this.slimes, (shield, slime) => {
+      captainShieldReturn(this.player, shield)
       shieldHitEffect(this, shield)
       slime.hp -= Math.floor(Math.random() * 35) + 10
     })

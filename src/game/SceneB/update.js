@@ -5,12 +5,12 @@ import {
   thorShooter,
   spiderManShooter,
   randomMove,
-  shootProjectile,
-  thorHammerReturn,
-  knockBack,
-  beamHitEffect,
-  shieldHitEffect,
-  hammerHitEffect
+  shootProjectile
+  // thorHammerReturn,
+  // knockBack,
+  // beamHitEffect,
+  // shieldHitEffect,
+  // hammerHitEffect
 } from './helpers'
 
 export default function update () {
@@ -206,9 +206,22 @@ export default function update () {
   if (this.player.name === 'CaptainAmerica') {
     if (this.shields.children.size > 0) {
       this.shields.children.iterate(shield => {
-        if (shield.shieldTravelTime) {
-          shield.body.velocity.y =
-            (this.player.body.y + 35 - shield.body.y) / shield.shieldTravelTime
+        if (shield.return) {
+          if (Math.abs(this.player.body.x - shield.body.x) < 10) {
+            shield.body.velocity.x = 0
+          } else if (shield.body.x > this.player.body.x) {
+            shield.body.velocity.x = -shield.shieldTravelSpeedX
+          } else {
+            shield.body.velocity.x = shield.shieldTravelSpeedX
+          }
+
+          if (Math.abs(this.player.body.y + 35 - shield.body.y) < 10) {
+            shield.body.velocity.y = 0
+          } else if (shield.body.y > this.player.body.y + 35) {
+            shield.body.velocity.y = -shield.shieldTravelSpeedY
+          } else {
+            shield.body.velocity.y = shield.shieldTravelSpeedY
+          }
         }
       })
     }
