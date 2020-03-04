@@ -200,20 +200,26 @@ export default function create () {
   })
   this.physics.add.collider(this.slimes, this.platforms)
   this.physics.add.collider(this.slimes, this.invisibleWalls)
-  // this.physics.add.collider(this.webs, this.platforms)
-  // this.physics.add.overlap(this.webs, this.coins)
-  // this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
-  //   let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
-  //   newWeb_hit.body.allowGravity = false
-  //   newWeb_hit.body.setSize(15, 15, 5, 5)
-  //   newWeb_hit.setScale(1.5, 1.5)
-  //   newWeb_hit.anims.play('web_hit', true)
-  //   setTimeout(() => {
-  //     newWeb_hit.destroy()
-  //   }, 800)
-  //   web.disableBody(true, true)
-  //   slime.hp -= 1
-  // })
+  this.physics.add.collider(this.player, this.slimes, (player, slime) => {
+    let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
+    this.player.hp -= floatSlimeDmg
+    drawDamageText(this, player, floatSlimeDmg)
+    knockBack(this, player, slime)
+  })
+
+  this.physics.add.collider(
+    this.player,
+    this.red_projectiles,
+    (player, red_projectile) => {
+      let floatProjectileDmg = Math.floor(Math.random() * 15) + 15
+      this.player.hp -= floatProjectileDmg
+      drawDamageText(this, player, floatProjectileDmg)
+      knockBack(this, player, red_projectile)
+      red_projectile.disableBody(true, true)
+      red_projectile.destroy()
+    }
+  )
+
   if (this.player.name === 'IronMan') {
     this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
       beamHitEffect(this, beam)
@@ -254,25 +260,22 @@ export default function create () {
     })
   }
 
-  this.physics.add.collider(this.player, this.slimes, (player, slime) => {
-    let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
-    this.player.hp -= floatSlimeDmg
-    drawDamageText(this, player, floatSlimeDmg)
-    knockBack(this, player, slime)
-  })
-
-  this.physics.add.collider(
-    this.player,
-    this.red_projectiles,
-    (player, red_projectile) => {
-      let floatProjectileDmg = Math.floor(Math.random() * 15) + 15
-      this.player.hp -= floatProjectileDmg
-      drawDamageText(this, player, floatProjectileDmg)
-      knockBack(this, player, red_projectile)
-      red_projectile.disableBody(true, true)
-      red_projectile.destroy()
-    }
-  )
+  if (this.player.name === 'SpiderMan') {
+    this.physics.add.collider(this.webs, this.platforms)
+    this.physics.add.overlap(this.webs, this.coins)
+    this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
+      let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
+      newWeb_hit.body.allowGravity = false
+      newWeb_hit.body.setSize(15, 15, 5, 5)
+      newWeb_hit.setScale(1.5, 1.5)
+      newWeb_hit.anims.play('web_hit', true)
+      setTimeout(() => {
+        newWeb_hit.destroy()
+      }, 800)
+      web.disableBody(true, true)
+      slime.hp -= 1
+    })
+  }
 
   this.money = 0
   this.moneyChange = false
