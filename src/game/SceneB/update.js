@@ -202,6 +202,39 @@ export default function update () {
     })
   }
 
+  // Iron Man's Special move, energy regeneration
+  if (this.player.name === 'IronMan') {
+    if (this.player.mp <= 100) {
+      this.player.mp += 0.5
+    }
+
+    let x = object.x - 40
+    let y = object.y - 30
+
+    this.player.barMP.clear()
+
+    //  BG
+    this.player.barMP.fillStyle(0x000000)
+    this.player.barMP.fillRect(x, y, 80, 16)
+
+    //  Energy
+
+    this.player.barMP.fillStyle(0xffffff)
+    this.player.barMP.fillRect(x + 2, y + 2, 76, 12)
+
+    if (this.player.hp < 30) {
+      this.player.barMP.fillStyle(0xff0000)
+    } else {
+      this.player.barMP.fillStyle(0x00ff00)
+    }
+
+    let d = Math.floor((76 / 100) * this.player.mp)
+
+    this.player.barMP.fillRect(x + 2, y + 2, d, 12)
+
+    scene.add.existing(this.player.barMP)
+  }
+
   // Captain America's Special move, shield comeback
   if (this.player.name === 'CaptainAmerica') {
     if (this.shields.children.size > 0) {

@@ -8,6 +8,7 @@ export default function initSpiderMan (scene) {
   scene.player.facing = 'right'
   scene.player.bar = scene.add.graphics()
   scene.player.hp = 100
+  scene.player.mp = 100
   scene.anims.create({
     key: 'walk',
     frames: scene.anims.generateFrameNumbers('spiderman', {
