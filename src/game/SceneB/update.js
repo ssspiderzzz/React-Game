@@ -208,31 +208,31 @@ export default function update () {
       this.player.mp += 0.5
     }
 
-    let x = object.x - 40
-    let y = object.y - 30
+    let x = this.player.x - 40
+    let y = this.player.y - 42
 
     this.player.barMP.clear()
 
-    //  BG
-    this.player.barMP.fillStyle(0x000000)
-    this.player.barMP.fillRect(x, y, 80, 16)
+    // Black Stroke
+    // this.player.barMP.fillStyle(0x000000)
+    // this.player.barMP.fillRect(x, y, 80, 16)
 
-    //  Energy
+    // White Background
 
     this.player.barMP.fillStyle(0xffffff)
-    this.player.barMP.fillRect(x + 2, y + 2, 76, 12)
+    this.player.barMP.fillRect(x + 2, y, 76, 6)
 
-    if (this.player.hp < 30) {
-      this.player.barMP.fillStyle(0xff0000)
+    if (this.player.mp < 30) {
+      this.player.barMP.fillStyle(0x00ffff)
     } else {
-      this.player.barMP.fillStyle(0x00ff00)
+      this.player.barMP.fillStyle(0x00fff0)
     }
 
     let d = Math.floor((76 / 100) * this.player.mp)
 
-    this.player.barMP.fillRect(x + 2, y + 2, d, 12)
+    this.player.barMP.fillRect(x + 2, y, d, 6)
 
-    scene.add.existing(this.player.barMP)
+    this.add.existing(this.player.barMP)
   }
 
   // Captain America's Special move, shield comeback
