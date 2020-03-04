@@ -35,12 +35,21 @@ export default function initCaptainAmerica (scene) {
     repeat: -1
   })
   scene.anims.create({
-    key: 'throw',
+    key: 'attack',
     frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 10,
       end: 12
     }),
     frameRate: 10,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'throw',
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
+      start: 12,
+      end: 12
+    }),
+    frameRate: 1,
     repeat: 0
   })
   scene.anims.create({

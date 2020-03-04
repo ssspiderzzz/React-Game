@@ -1,4 +1,17 @@
-import drawHealthBar from './drawHealthBar'
+import drawHealthBar from './helpers/drawHealthBar'
+import {
+  ironManShooter,
+  captainAmericaShooter,
+  thorShooter,
+  spiderManShooter,
+  randomMove,
+  shootProjectile,
+  thorHammerReturn,
+  knockBack,
+  beamHitEffect,
+  shieldHitEffect,
+  hammerHitEffect
+} from './helpers'
 
 export default function update () {
   // player
@@ -118,6 +131,10 @@ export default function update () {
           }
           this.player.shootable = false
         }
+
+        if (this.player.name === 'CaptainAmerica') {
+          this.player.shootable = false
+        }
       }
 
       if (this.keyX.isDown) {
@@ -221,189 +238,4 @@ export default function update () {
       })
     }
   }
-}
-
-function ironManShooter (scene, shootDirection) {
-  let shootSpeed
-  let shootX
-  let flipX
-  let shootYDifference = 0
-  if (scene.player.shootCount === 1) {
-    shootYDifference = 5
-  }
-  if (shootDirection === 'right') {
-    shootSpeed = 450
-    shootX = 40
-    flipX = false
-  }
-  if (shootDirection === 'left') {
-    shootSpeed = -450
-    shootX = -40
-    flipX = true
-  }
-
-  let beam = scene.beams.create(
-    scene.player.x + shootX,
-    scene.player.y + 10 + shootYDifference,
-    'beam'
-  )
-  beam.body.setSize(35, 15, 0, 0).setOffset(10, 20)
-  beam.body.collideWorldBounds = false
-  beam.body.allowGravity = false
-  beam.anims.play('beam', true)
-  beam.body.velocity.x = shootSpeed
-  beam.flipX = flipX
-  beam.setScale(1.5, 1.5)
-  setTimeout(() => {
-    beam.destroy()
-  }, 2500)
-}
-
-function captainAmericaShooter (scene, shootDirection) {
-  let shootSpeed
-  let shootX
-  let flipX
-  if (shootDirection === 'right') {
-    shootSpeed = 450
-    shootX = 50
-    flipX = false
-  }
-  if (shootDirection === 'left') {
-    shootSpeed = -450
-    shootX = -50
-    flipX = true
-  }
-
-  let shield = scene.shields.create(
-    scene.player.x + shootX,
-    scene.player.y + 10,
-    'shield'
-  )
-  shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
-  shield.body.collideWorldBounds = false
-  shield.body.allowGravity = false
-  shield.anims.play('throw', true)
-  shield.body.velocity.x = shootSpeed
-  shield.flipX = flipX
-  shield.setScale(2, 2)
-  setTimeout(() => {
-    shield.destroy()
-  }, 5000)
-}
-
-function thorShooter (scene, shootDirection, swingDuration) {
-  let shootSpeed
-  let shootX
-  let flipX
-  let swingModifier = swingDuration / 2500
-  swingModifier < 0.25
-    ? (swingModifier = 1)
-    : swingModifier < 0.5
-    ? (swingModifier = 1.5)
-    : swingModifier < 0.75
-    ? (swingModifier = 1.5)
-    : swingModifier < 1
-    ? (swingModifier = 2.5)
-    : (swingModifier = 3)
-
-  if (shootDirection === 'right') {
-    shootSpeed = 450 * swingModifier
-    shootX = 50
-    flipX = false
-  }
-  if (shootDirection === 'left') {
-    shootSpeed = -450 * swingModifier
-    shootX = -50
-    flipX = true
-  }
-
-  let hammer = scene.hammers.create(
-    scene.player.x + shootX,
-    scene.player.y + 10,
-    'hammer'
-  )
-  hammer.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
-  hammer.body.collideWorldBounds = false
-  hammer.body.allowGravity = false
-  hammer.anims.play('hammer', true)
-  hammer.body.velocity.x = shootSpeed
-  hammer.hammerTravelSpeedX = Math.abs(shootSpeed)
-  hammer.flipX = flipX
-  hammer.setScale(2, 2)
-  setTimeout(() => {
-    thorHammerReturn(scene.player, hammer)
-  }, 1000)
-  setTimeout(() => {
-    hammer.destroy()
-  }, 3000)
-}
-
-function spiderManShooter (scene, shootDirection, shootSpeed) {
-  let web = scene.webs.create(
-    scene.player.x + shootDirection,
-    scene.player.y + 20,
-    'web'
-  )
-  web.body.setSize(30, 15, 5, 5)
-  web.body.collideWorldBounds = true
-  web.body.allowGravity = false
-  web.anims.play('web', true)
-  web.body.velocity.x = shootSpeed
-  web.setScale(1.5, 1.5)
-  setInterval(() => {
-    web.destroy()
-  }, 800)
-}
-
-function randomMove (object) {
-  //randomise the movement
-  let droidmover = Math.random()
-  let turnChance = Math.random()
-  //simple if statement to choose if and which way the droid moves
-  if (turnChance < 0.03) {
-    if (droidmover >= 0.5) {
-      object.body.velocity.x = 100
-    } else if (droidmover < 0.5) {
-      object.body.velocity.x = -100
-    } else {
-      object.body.velocity.x = 0
-    }
-  }
-}
-
-function shootProjectile (scene, slime, direction) {
-  let plusX
-  let velocityX
-  let flipX
-  if (direction === 'right') {
-    plusX = 20
-    velocityX = 150
-    flipX = false
-  }
-  if (direction === 'left') {
-    plusX = -20
-    velocityX = -150
-    flipX = true
-  }
-  let newProjectile = scene.red_projectiles.create(
-    slime.body.x + plusX,
-    slime.body.y + 30,
-    'red_projectiles'
-  )
-  newProjectile.setSize(90, 110, 0, 0).setOffset(35, 25)
-  // newProjectile.body.collideWorldBounds = true
-  newProjectile.body.allowGravity = false
-  newProjectile.flipX = flipX
-  newProjectile.anims.play('red_projectile', true)
-  newProjectile.body.velocity.x = velocityX
-  newProjectile.setScale(0.5, 0.2)
-}
-
-function thorHammerReturn (thor, hammer) {
-  hammer.return = true
-  hammer.hammerTravelSpeedX = Math.abs(hammer.body.velocity.x)
-  hammer.hammerTravelTime =
-    Math.abs(hammer.body.x - thor.body.x) / hammer.hammerTravelSpeedX
-  hammer.hammerTravelSpeedY =
-    (Math.abs(hammer.body.y - thor.body.y) + 35) / hammer.hammerTravelTime
 }

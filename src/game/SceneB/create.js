@@ -1,8 +1,21 @@
 import Phaser from 'phaser'
-import drawDamageText from './drawDamageText'
-import initIronMan from './initIronMan'
-import initCaptainAmerica from './initCaptainAmerica'
-import initThor from './initThor'
+import drawDamageText from './helpers/drawDamageText'
+import initIronMan from './helpers/initIronMan'
+import initCaptainAmerica from './helpers/initCaptainAmerica'
+import initThor from './helpers/initThor'
+import {
+  ironManShooter,
+  captainAmericaShooter,
+  thorShooter,
+  spiderManShooter,
+  randomMove,
+  shootProjectile,
+  thorHammerReturn,
+  knockBack,
+  beamHitEffect,
+  shieldHitEffect,
+  hammerHitEffect
+} from './helpers'
 
 export default function create () {
   let name = this.select
@@ -214,12 +227,14 @@ export default function create () {
     })
     this.physics.add.overlap(this.player, this.shields, (player, shield) => {
       shield.disableBody(true, true)
+      this.player.shootable = true
     })
   }
 
   if (this.player.name === 'Thor') {
     this.physics.add.collider(this.hammers, this.slimes, (hammer, slime) => {
       hammerHitEffect(this, hammer)
+      thorHammerReturn(this.player, hammer)
       slime.hp -= Math.floor(Math.random() * 45) + 10
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
@@ -229,7 +244,7 @@ export default function create () {
   }
 
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
-    let floatSlimeDmg = Math.floor(Math.random() * 10) + 10
+    let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
     this.player.hp -= floatSlimeDmg
     drawDamageText(this, player, floatSlimeDmg)
     knockBack(this, player, slime)
@@ -239,7 +254,7 @@ export default function create () {
     this.player,
     this.red_projectiles,
     (player, red_projectile) => {
-      let floatProjectileDmg = Math.floor(Math.random() * 20) + 15
+      let floatProjectileDmg = Math.floor(Math.random() * 15) + 15
       this.player.hp -= floatProjectileDmg
       drawDamageText(this, player, floatProjectileDmg)
       knockBack(this, player, red_projectile)
@@ -286,96 +301,6 @@ export default function create () {
     })
     this.scene.start('SceneA')
   })
-}
-
-function knockBack (scene, player, dmgObject) {
-  if (dmgObject.body.x <= player.body.x) {
-    scene.knockBack = true
-    scene.knockBackOrient = 'right'
-    scene.player.anims.play('hit', true)
-    scene.player.flipX = true
-  }
-  if (dmgObject.body.x > player.body.x) {
-    scene.knockBack = true
-    scene.knockBackOrient = 'left'
-    scene.player.anims.play('hit', true)
-    scene.player.flipX = false
-  }
-
-  if (scene.knockBackOrient === 'right') {
-    scene.player.body.setVelocityX(200)
-    scene.player.body.setVelocityY(-200)
-  }
-  if (scene.knockBackOrient === 'left') {
-    scene.player.body.setVelocityX(-200)
-    scene.player.body.setVelocityY(-200)
-  }
-  setTimeout(() => {
-    scene.knockBack = false
-  }, 850)
-  scene.knockBackOrient = false
-}
-
-function beamHitEffect (scene, beam) {
-  let beam_hit = scene.beams_hit.create(
-    beam.body.x + 17.5,
-    beam.body.y + 7.5,
-    'beam_hit'
-  )
-  beam_hit.body.allowGravity = false
-  beam_hit.setScale(1.5, 1.5)
-  beam_hit.anims.play('beam_hit', true)
-  setTimeout(() => {
-    beam_hit.destroy()
-  }, 1000)
-  beam.disableBody(true, true)
-}
-
-function shieldHitEffect (scene, shield) {
-  let shield_hit = scene.shields_hit.create(
-    shield.body.x + 17.5,
-    shield.body.y + 7.5,
-    'shield_hit'
-  )
-  shield_hit.body.allowGravity = false
-  shield_hit.setScale(1.5, 1.5)
-  shield_hit.anims.play('shield_hit', true)
-  setTimeout(() => {
-    shield_hit.destroy()
-  }, 1000)
-
-  shield.shieldTravelTime = Math.abs(shield.body.x - scene.player.body.x) / 450
-  if (shield.body.x > scene.player.body.x) {
-    shield.body.velocity.x = -450
-  } else {
-    shield.body.velocity.x = 450
-  }
-
-  shield.body.velocity.y =
-    (scene.player.body.y + 35 - shield.body.y) / shield.shieldTravelTime
-}
-
-function hammerHitEffect (scene, hammer) {
-  thorHammerReturn(scene.player, hammer)
-  let hammer_hit = scene.hammers_hit.create(
-    hammer.body.x + 17.5,
-    hammer.body.y + 7.5,
-    'hammer_hit'
-  )
-  hammer_hit.body.allowGravity = false
-  hammer_hit.setScale(1.5, 1.5)
-  hammer_hit.anims.play('hammer_hit', true)
-  setTimeout(() => {
-    hammer_hit.destroy()
-  }, 1000)
-}
-
-function thorHammerReturn (thor, hammer) {
-  hammer.return = true
-  hammer.hammerTravelTime =
-    Math.abs(hammer.body.x - thor.body.x) / hammer.hammerTravelSpeedX
-  hammer.hammerTravelSpeedY =
-    (Math.abs(hammer.body.y - thor.body.y) + 35) / hammer.hammerTravelTime
 }
 
 // Dr. Stephen Strange : I went forward in time... to view alternate futures.
