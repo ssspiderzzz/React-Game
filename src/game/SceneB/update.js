@@ -137,8 +137,37 @@ export default function update () {
         }
       }
 
+      // Iron Man special move, test!!!!!!!!!----------
       if (this.keyX.isDown) {
-        //do nothing
+        this.player.shootable = false
+        this.player.body.setVelocityX(0)
+
+        if (this.player.name === 'IronMan') {
+          if (this.player.mp <= 151) {
+            this.player.mp += 1
+            this.player.anims.play('special', true)
+          } else {
+            this.player.anims.play('special', true)
+          }
+        }
+      }
+
+      if (this.keyX.isUp) {
+        if (this.player.name === 'IronMan' && !this.player.shootable) {
+          if (this.player.mp >= 150) {
+            this.player.mp -= 150
+            this.player.anims.play('specialShoot', true)
+            this.player.specialShoot = true
+            setTimeout(() => {
+              this.player.shootable = true
+              this.player.specialShoot = false
+            }, 500)
+          } else if (this.player.specialShoot) {
+          } else {
+            this.player.shootable = true
+            this.player.specialShoot = false
+          }
+        }
       }
     }
 
@@ -148,6 +177,7 @@ export default function update () {
       this.player.alive = false
       this.player.body.allowGravity = false
       this.player.bar.destroy()
+      this.player.barMP.destroy()
       if (this.player.facing === 'right') {
         this.player.anims.play('dead', true)
         this.player.flipX = false
@@ -203,21 +233,17 @@ export default function update () {
   }
 
   // Iron Man's Special move, energy regeneration
-  if (this.player.name === 'IronMan') {
+  if (this.player.name === 'IronMan' && this.player.alive) {
     if (this.player.mp <= 100) {
       this.player.mp += 0.5
+    } else if (this.player.mp > 100 && !this.keyX.isDown) {
+      this.player.mp -= 0.25
     }
 
     let x = this.player.x - 40
     let y = this.player.y - 42
 
     this.player.barMP.clear()
-
-    // Black Stroke
-    // this.player.barMP.fillStyle(0x000000)
-    // this.player.barMP.fillRect(x, y, 80, 16)
-
-    // White Background
 
     this.player.barMP.fillStyle(0xffffff)
     this.player.barMP.fillRect(x + 2, y, 76, 6)
@@ -229,9 +255,7 @@ export default function update () {
     }
 
     let d = Math.floor((76 / 100) * this.player.mp)
-
     this.player.barMP.fillRect(x + 2, y, d, 6)
-
     this.add.existing(this.player.barMP)
   }
 

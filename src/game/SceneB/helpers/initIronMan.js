@@ -92,4 +92,22 @@ export default function initIronMan (scene) {
     frameRate: 7,
     repeat: 0
   })
+  scene.anims.create({
+    key: 'special',
+    frames: scene.anims.generateFrameNumbers('IronMan', {
+      start: 13,
+      end: 13
+    }),
+    frameRate: 1,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'specialShoot',
+    frames: scene.anims.generateFrameNumbers('IronMan', {
+      start: 14,
+      end: 14
+    }),
+    frameRate: 1,
+    repeat: 0
+  })
 }
