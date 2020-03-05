@@ -1,6 +1,7 @@
 import drawHealthBar from './helpers/drawHealthBar'
 import {
   ironManShooter,
+  ironManUnibeam,
   captainAmericaShooter,
   thorShooter,
   spiderManShooter,
@@ -154,9 +155,11 @@ export default function update () {
           if (this.player.mp >= 150) {
             this.player.mp -= 150
             this.player.anims.play('specialShoot', true)
+            ironManUnibeam(this, this.player.facing)
+
             setTimeout(() => {
               this.player.shootable = true
-            }, 500)
+            }, 1000)
           } else {
             this.player.shootable = true
           }
