@@ -47,16 +47,11 @@ export default function update () {
       // player jumps
       if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.body.setVelocityY(-400)
-        this.jumpable = false
       }
 
-      if (
-        this.cursors.up.isUp &&
-        !this.jumpable &&
-        this.cursors.up.duration < 400
-      ) {
+      if (this.cursors.up._justUp && this.cursors.up.duration < 400) {
         this.player.body.velocity.y += 100
-        this.jumpable = true
+        this.cursors.up._justUp = false
       }
 
       // player shoots
@@ -101,7 +96,6 @@ export default function update () {
         }
 
         this.player.shootable = false
-        this.checkSpaceKeyisUp = true
         this.player.body.setVelocityX(0)
       }
 
@@ -114,11 +108,19 @@ export default function update () {
         }
       }
 
-      if (this.cursors.space.isUp && this.checkSpaceKeyisUp) {
-        this.player.shootable = true
-        this.checkSpaceKeyisUp = false
+      if (this.cursors.space._justUp) {
+        this.cursors.space._justUp = false
+
+        if (this.player.name === 'IronMan') {
+          this.player.shootable = true
+        }
+
+        if (this.player.name === 'CaptainAmerica') {
+          this.player.shootable = false
+        }
 
         if (this.player.name === 'Thor') {
+          this.player.shootable = false
           if (this.player.facing === 'right') {
             thorShooter(this, 'right', this.player.thorSwing)
             this.player.anims.play('throw', true)
@@ -129,16 +131,37 @@ export default function update () {
             this.player.anims.play('throw', true)
             this.player.flipX = true
           }
-          this.player.shootable = false
-        }
-
-        if (this.player.name === 'CaptainAmerica') {
-          this.player.shootable = false
         }
       }
 
+      // Iron Man special move, Unibeam
       if (this.keyX.isDown) {
-        //do nothing
+        this.player.shootable = false
+        this.player.body.setVelocityX(0)
+
+        if (this.player.name === 'IronMan') {
+          if (this.player.mp <= 151) {
+            this.player.mp += 1
+            this.player.anims.play('special', true)
+          } else {
+            this.player.anims.play('special', true)
+          }
+        }
+      }
+
+      if (this.keyX._justUp) {
+        if (this.player.name === 'IronMan') {
+          if (this.player.mp >= 150) {
+            this.player.mp -= 150
+            this.player.anims.play('specialShoot', true)
+            setTimeout(() => {
+              this.player.shootable = true
+            }, 500)
+          } else {
+            this.player.shootable = true
+          }
+        }
+        this.keyX._justUp = false
       }
     }
 
@@ -148,6 +171,7 @@ export default function update () {
       this.player.alive = false
       this.player.body.allowGravity = false
       this.player.bar.destroy()
+      this.player.barMP.destroy()
       if (this.player.facing === 'right') {
         this.player.anims.play('dead', true)
         this.player.flipX = false
@@ -200,6 +224,33 @@ export default function update () {
         }
       }
     })
+  }
+
+  // Iron Man's Special move, energy regeneration
+  if (this.player.name === 'IronMan' && this.player.alive) {
+    if (this.player.mp <= 100) {
+      this.player.mp += 0.5
+    } else if (this.player.mp > 100 && !this.keyX.isDown) {
+      this.player.mp -= 0.25
+    }
+
+    let x = this.player.x - 40
+    let y = this.player.y - 42
+
+    this.player.barMP.clear()
+
+    this.player.barMP.fillStyle(0xffffff)
+    this.player.barMP.fillRect(x + 2, y, 76, 6)
+
+    if (this.player.mp < 30) {
+      this.player.barMP.fillStyle(0x00ffff)
+    } else {
+      this.player.barMP.fillStyle(0x00fff0)
+    }
+
+    let d = Math.floor((76 / 100) * this.player.mp)
+    this.player.barMP.fillRect(x + 2, y, d, 6)
+    this.add.existing(this.player.barMP)
   }
 
   // Captain America's Special move, shield comeback

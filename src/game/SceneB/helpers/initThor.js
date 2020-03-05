@@ -8,6 +8,7 @@ export default function initThor (scene) {
   scene.player.facing = 'right'
   scene.player.bar = scene.add.graphics()
   scene.player.hp = 100
+  scene.player.mp = 100
   scene.player.thorSwing = 0
   // Thor throws hammer
   scene.hammers = scene.physics.add.group()

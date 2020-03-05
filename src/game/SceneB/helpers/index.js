@@ -1,37 +1,42 @@
 export function ironManShooter (scene, shootDirection) {
-  let shootSpeed
-  let shootX
-  let flipX
-  let shootYDifference = 0
-  if (scene.player.shootCount === 1) {
-    shootYDifference = 5
-  }
-  if (shootDirection === 'right') {
-    shootSpeed = 450
-    shootX = 40
-    flipX = false
-  }
-  if (shootDirection === 'left') {
-    shootSpeed = -450
-    shootX = -40
-    flipX = true
-  }
+  if (scene.player.mp > 25) {
+    let shootSpeed
+    let shootX
+    let flipX
+    let shootYDifference = 0
+    // energy cost for normal shoot
+    scene.player.mp -= 25
 
-  let beam = scene.beams.create(
-    scene.player.x + shootX,
-    scene.player.y + 10 + shootYDifference,
-    'beam'
-  )
-  beam.body.setSize(35, 15, 0, 0).setOffset(10, 20)
-  beam.body.collideWorldBounds = false
-  beam.body.allowGravity = false
-  beam.anims.play('beam', true)
-  beam.body.velocity.x = shootSpeed
-  beam.flipX = flipX
-  beam.setScale(1.5, 1.5)
-  setTimeout(() => {
-    beam.destroy()
-  }, 2500)
+    if (scene.player.shootCount === 1) {
+      shootYDifference = 5
+    }
+    if (shootDirection === 'right') {
+      shootSpeed = 550
+      shootX = 40
+      flipX = false
+    }
+    if (shootDirection === 'left') {
+      shootSpeed = -550
+      shootX = -40
+      flipX = true
+    }
+
+    let beam = scene.beams.create(
+      scene.player.x + shootX,
+      scene.player.y + 10 + shootYDifference,
+      'beam'
+    )
+    beam.body.setSize(35, 15, 0, 0).setOffset(10, 20)
+    beam.body.collideWorldBounds = false
+    beam.body.allowGravity = false
+    beam.anims.play('beam', true)
+    beam.body.velocity.x = shootSpeed
+    beam.flipX = flipX
+    beam.setScale(1.5, 1.5)
+    setTimeout(() => {
+      beam.destroy()
+    }, 2500)
+  }
 }
 
 export function captainAmericaShooter (scene, shootDirection) {

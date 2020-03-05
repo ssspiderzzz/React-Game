@@ -10,6 +10,7 @@ export default function initCaptainAmerica (scene) {
   scene.player.facing = 'right'
   scene.player.bar = scene.add.graphics()
   scene.player.hp = 100
+  scene.player.mp = 100
   // CaptainAmerica throws shield
   scene.shields = scene.physics.add.group()
   scene.shields_hit = scene.physics.add.group()

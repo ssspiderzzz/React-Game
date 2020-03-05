@@ -5,12 +5,11 @@ export default function drawHealthBar (scene, object) {
 
     object.bar.clear()
 
-    //  BG
+    //  Black Stroke Background
     object.bar.fillStyle(0x000000)
     object.bar.fillRect(x, y, 80, 16)
 
-    //  Health
-
+    //  White Background
     object.bar.fillStyle(0xffffff)
     object.bar.fillRect(x + 2, y + 2, 76, 12)
 
@@ -20,7 +19,7 @@ export default function drawHealthBar (scene, object) {
       object.bar.fillStyle(0x00ff00)
     }
 
-    var d = Math.floor((76 / 100) * object.hp)
+    let d = Math.floor((76 / 100) * object.hp)
 
     object.bar.fillRect(x + 2, y + 2, d, 12)
 
