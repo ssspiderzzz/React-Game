@@ -225,6 +225,9 @@ export default function create () {
       beamHitEffect(this, beam)
       slime.hp -= Math.floor(Math.random() * 25) + 10
     })
+    this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
+      slime.hp -= Math.floor(Math.random() * 1) + 1
+    })
   }
 
   if (this.player.name === 'CaptainAmerica') {
