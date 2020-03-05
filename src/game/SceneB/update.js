@@ -47,16 +47,11 @@ export default function update () {
       // player jumps
       if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.body.setVelocityY(-400)
-        this.jumpable = false
       }
 
-      if (
-        this.cursors.up.isUp &&
-        !this.jumpable &&
-        this.cursors.up.duration < 400
-      ) {
+      if (this.cursors.up._justUp && this.cursors.up.duration < 400) {
         this.player.body.velocity.y += 100
-        this.jumpable = true
+        this.cursors.up._justUp = false
       }
 
       // player shoots
@@ -101,7 +96,6 @@ export default function update () {
         }
 
         this.player.shootable = false
-        this.checkSpaceKeyisUp = true
         this.player.body.setVelocityX(0)
       }
 
@@ -114,11 +108,19 @@ export default function update () {
         }
       }
 
-      if (this.cursors.space.isUp && this.checkSpaceKeyisUp) {
-        this.player.shootable = true
-        this.checkSpaceKeyisUp = false
+      if (this.cursors.space._justUp) {
+        this.cursors.space._justUp = false
+
+        if (this.player.name === 'IronMan') {
+          this.player.shootable = true
+        }
+
+        if (this.player.name === 'CaptainAmerica') {
+          this.player.shootable = false
+        }
 
         if (this.player.name === 'Thor') {
+          this.player.shootable = false
           if (this.player.facing === 'right') {
             thorShooter(this, 'right', this.player.thorSwing)
             this.player.anims.play('throw', true)
@@ -129,15 +131,10 @@ export default function update () {
             this.player.anims.play('throw', true)
             this.player.flipX = true
           }
-          this.player.shootable = false
-        }
-
-        if (this.player.name === 'CaptainAmerica') {
-          this.player.shootable = false
         }
       }
 
-      // Iron Man special move, test!!!!!!!!!----------
+      // Iron Man special move, Unibeam
       if (this.keyX.isDown) {
         this.player.shootable = false
         this.player.body.setVelocityX(0)
@@ -152,22 +149,19 @@ export default function update () {
         }
       }
 
-      if (this.keyX.isUp) {
-        if (this.player.name === 'IronMan' && !this.player.shootable) {
+      if (this.keyX._justUp) {
+        if (this.player.name === 'IronMan') {
           if (this.player.mp >= 150) {
             this.player.mp -= 150
             this.player.anims.play('specialShoot', true)
-            this.player.specialShoot = true
             setTimeout(() => {
               this.player.shootable = true
-              this.player.specialShoot = false
             }, 500)
-          } else if (this.player.specialShoot) {
           } else {
             this.player.shootable = true
-            this.player.specialShoot = false
           }
         }
+        this.keyX._justUp = false
       }
     }
 
