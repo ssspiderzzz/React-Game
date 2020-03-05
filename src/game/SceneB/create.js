@@ -277,8 +277,6 @@ export default function create () {
     })
   }
 
-  console.log(this.keyX)
-
   this.money = 0
   this.moneyChange = false
 

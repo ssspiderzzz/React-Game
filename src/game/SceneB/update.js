@@ -244,8 +244,10 @@ export default function update () {
 
     if (this.player.mp < 30) {
       this.player.barMP.fillStyle(0x00ffff)
+    } else if (this.player.mp < 150) {
+      this.player.barMP.fillStyle(0x00bbff)
     } else {
-      this.player.barMP.fillStyle(0x00fff0)
+      this.player.barMP.fillStyle(0xffff00)
     }
 
     let d = Math.floor((76 / 100) * this.player.mp)
