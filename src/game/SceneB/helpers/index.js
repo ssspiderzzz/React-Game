@@ -39,6 +39,52 @@ export function ironManShooter (scene, shootDirection) {
   }
 }
 
+export function ironManUnibeam (scene, shootDirection) {
+  let shootSpeed
+  let shootX
+  let flipX
+  // energy cost for Unibeam shoot
+
+  if (shootDirection === 'right') {
+    shootSpeed = 800
+    shootX = 500
+    flipX = false
+  }
+  if (shootDirection === 'left') {
+    shootSpeed = -800
+    shootX = -500
+    flipX = true
+  }
+
+  let uniBeam = scene.uniBeams.create(
+    scene.player.x + shootX,
+    scene.player.y + 10,
+    'uniBeam'
+  )
+  uniBeam.body.setSize(8, 5, 0, 0).setOffset(23.5, 25)
+  uniBeam.body.collideWorldBounds = false
+  uniBeam.body.allowGravity = false
+  uniBeam.anims.play('uniBeam', true)
+  uniBeam.flipX = flipX
+  uniBeam.setScale(130, 0.5)
+  setTimeout(() => {
+    uniBeam.setScale(130, 1)
+  }, 250)
+  setTimeout(() => {
+    uniBeam.setScale(130, 1.5)
+  }, 500)
+  setTimeout(() => {
+    uniBeam.setScale(130, 2)
+  }, 750)
+  setTimeout(() => {
+    uniBeam.setScale(130, 2.5)
+    uniBeam.body.velocity.x = shootSpeed
+  }, 1000)
+  setTimeout(() => {
+    uniBeam.destroy()
+  }, 3000)
+}
+
 export function captainAmericaShooter (scene, shootDirection) {
   let shootSpeed
   let shootX
@@ -61,6 +107,7 @@ export function captainAmericaShooter (scene, shootDirection) {
   )
   shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
   shield.setCollideWorldBounds(true)
+  shield.damageable = true
   shield.body.onWorldBounds = true
   shield.body.allowGravity = false
   shield.anims.play('shield', true)
@@ -105,6 +152,7 @@ export function thorShooter (scene, shootDirection, swingDuration) {
     'hammer'
   )
   hammer.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
+  hammer.damageable = true
   hammer.body.collideWorldBounds = false
   hammer.body.allowGravity = false
   hammer.anims.play('hammer', true)
@@ -183,6 +231,7 @@ export function shootProjectile (scene, slime, direction) {
 
 export function captainShieldReturn (captain, shield) {
   shield.return = true
+  shield.damageable = true
   shield.shieldTravelSpeedX = 550
   shield.shieldTravelTime =
     Math.abs(shield.body.x - captain.body.x) / shield.shieldTravelSpeedX

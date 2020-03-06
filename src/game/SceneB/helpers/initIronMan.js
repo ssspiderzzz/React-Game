@@ -10,7 +10,7 @@ export default function initIronMan (scene) {
   scene.player.bar = scene.add.graphics()
   scene.player.barMP = scene.add.graphics()
   scene.player.hp = 100
-  scene.player.mp = 100
+  scene.player.mp = 0
 
   // main core power laser: when power reach 150%,
   //      Iron Man can fire out a powerful laser from the main chest reactor
@@ -18,6 +18,7 @@ export default function initIronMan (scene) {
 
   // IronMan shoots beams
   scene.beams = scene.physics.add.group()
+  scene.uniBeams = scene.physics.add.group()
   scene.beams_hit = scene.physics.add.group()
   // IronMan animations
   scene.anims.create({
@@ -109,5 +110,14 @@ export default function initIronMan (scene) {
     }),
     frameRate: 1,
     repeat: 0
+  })
+  scene.anims.create({
+    key: 'uniBeam',
+    frames: scene.anims.generateFrameNumbers('IronMan', {
+      start: 27,
+      end: 28
+    }),
+    frameRate: 6,
+    repeat: -1
   })
 }
