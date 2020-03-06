@@ -1,16 +1,20 @@
 export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
+  this.add
+    .image(1024 / 2, 100, 'title')
+    .setOrigin(0.5)
+    .setScale(0.5, 0.5)
 
   // face icons
   let iron_man_face = this.add
-    .image(1024 / 2 - 150, 300, 'iron_man_face')
+    .image(1024 / 2 - 150, 400, 'iron_man_face')
     .setScale(2, 2)
   let captain_america_face = this.add
-    .image(1024 / 2, 300, 'captain_america_face')
+    .image(1024 / 2, 400, 'captain_america_face')
     .setScale(2, 2)
   let thor_face = this.add
-    .image(1024 / 2 + 150, 300, 'thor_face')
+    .image(1024 / 2 + 150, 400, 'thor_face')
     .setScale(2, 2)
 
   iron_man_face.setInteractive()
@@ -22,7 +26,7 @@ export default function create () {
     this.select = 'IronMan'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2 - 150, 200, ['Iron Man', '(Tony Stark)'], {
+      .text(1024 / 2 - 150, 300, ['Iron Man', '(Tony Stark)'], {
         fontSize: 22,
         align: 'center'
       })
@@ -36,7 +40,7 @@ export default function create () {
     this.select = 'CaptainAmerica'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2, 200, ['Captain America', '(Steve Rogers)'], {
+      .text(1024 / 2, 300, ['Captain America', '(Steve Rogers)'], {
         fontSize: 22,
         align: 'center'
       })
@@ -50,7 +54,7 @@ export default function create () {
     this.select = 'Thor'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2 + 150, 200, ['Thor', '(God of Thunder)'], {
+      .text(1024 / 2 + 150, 300, ['Thor', '(God of Thunder)'], {
         fontSize: 22,
         align: 'center'
       })
@@ -139,7 +143,7 @@ export default function create () {
 
   // static text
   this.playButton = this.add
-    .text(1024 / 2, 768 / 2, 'Play', {
+    .text(1024 / 2, 600, 'Play', {
       fontSize: 33
     })
     .setOrigin(0.5)
