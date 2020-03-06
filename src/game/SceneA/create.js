@@ -1,10 +1,7 @@
 export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
-  this.add
-    .image(1024 / 2, 100, 'title')
-    .setOrigin(0.5)
-    .setScale(0.5, 0.5)
+  this.add.image(1024 / 2, 100, 'title').setOrigin(0.5)
 
   // face icons
   let iron_man_face = this.add
