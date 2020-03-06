@@ -223,7 +223,7 @@ export default function create () {
   if (this.player.name === 'IronMan') {
     this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
       beamHitEffect(this, beam)
-      slime.hp -= Math.floor(Math.random() * 25) + 10
+      slime.hp -= Math.floor(Math.random() * 15) + 10
     })
     this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
       slime.hp -= Math.floor(Math.random() * 1) + 1
@@ -240,24 +240,31 @@ export default function create () {
       },
       this
     )
-    this.physics.add.collider(this.shields, this.slimes, (shield, slime) => {
-      captainShieldReturn(this.player, shield)
-      shieldHitEffect(this, shield)
-      slime.hp -= Math.floor(Math.random() * 35) + 10
+    this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
+      if (shield.damageable) {
+        shield.damageable = false
+        shieldHitEffect(this, shield)
+        slime.hp -= Math.floor(Math.random() * 25) + 10
+      }
     })
     this.physics.add.overlap(this.player, this.shields, (player, shield) => {
+      shield.damageable = true
       shield.disableBody(true, true)
       this.player.shootable = true
     })
   }
 
   if (this.player.name === 'Thor') {
-    this.physics.add.collider(this.hammers, this.slimes, (hammer, slime) => {
-      hammerHitEffect(this, hammer)
-      thorHammerReturn(this.player, hammer)
-      slime.hp -= Math.floor(Math.random() * 45) + 10
+    this.physics.add.overlap(this.hammers, this.slimes, (hammer, slime) => {
+      if (hammer.damageable) {
+        hammer.damageable = false
+        thorHammerReturn(this.player, hammer)
+        hammerHitEffect(this, hammer)
+        slime.hp -= Math.floor(Math.random() * 35) + 10
+      }
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
+      hammer.damageable = true
       hammer.disableBody(true, true)
       this.player.shootable = true
     })

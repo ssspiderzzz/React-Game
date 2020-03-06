@@ -15,6 +15,7 @@ import {
 } from './helpers'
 
 export default function update () {
+  console.log(this.player.shootable)
   // player
   if (this.player.alive) {
     drawHealthBar(this, this.player)
@@ -96,17 +97,9 @@ export default function update () {
             spiderManShooter(this, -20, -450)
         }
 
+        if (this.player.name === 'Thor') this.player.thorSwing = true
         this.player.shootable = false
         this.player.body.setVelocityX(0)
-      }
-
-      // Thor's special move, attack after swing
-      if (this.cursors.space.isDown && this.player.name === 'Thor') {
-        if (this.cursors.space.getDuration() < 2500) {
-          this.player.thorSwing = this.cursors.space.getDuration()
-        } else {
-          this.player.thorSwing = 2500
-        }
       }
 
       if (this.cursors.space._justUp) {
@@ -120,8 +113,13 @@ export default function update () {
           this.player.shootable = false
         }
 
-        if (this.player.name === 'Thor') {
+        if (this.player.name === 'Thor' && this.player.thorSwing) {
           this.player.shootable = false
+          if (this.cursors.space.duration < 2500) {
+            this.player.thorSwing = this.cursors.space.duration
+          } else {
+            this.player.thorSwing = 2500
+          }
           if (this.player.facing === 'right') {
             thorShooter(this, 'right', this.player.thorSwing)
             this.player.anims.play('throw', true)
@@ -132,15 +130,15 @@ export default function update () {
             this.player.anims.play('throw', true)
             this.player.flipX = true
           }
+          this.player.thorSwing = false
         }
       }
 
       // Iron Man special move, Unibeam
       if (this.keyX.isDown) {
-        this.player.shootable = false
-        this.player.body.setVelocityX(0)
-
         if (this.player.name === 'IronMan') {
+          this.player.shootable = false
+          this.player.body.setVelocityX(0)
           if (this.player.mp <= 151) {
             this.player.mp += 1
             this.player.anims.play('special', true)

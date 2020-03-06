@@ -107,6 +107,7 @@ export function captainAmericaShooter (scene, shootDirection) {
   )
   shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
   shield.setCollideWorldBounds(true)
+  shield.damageable = true
   shield.body.onWorldBounds = true
   shield.body.allowGravity = false
   shield.anims.play('shield', true)
@@ -151,6 +152,7 @@ export function thorShooter (scene, shootDirection, swingDuration) {
     'hammer'
   )
   hammer.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
+  hammer.damageable = true
   hammer.body.collideWorldBounds = false
   hammer.body.allowGravity = false
   hammer.anims.play('hammer', true)
@@ -229,6 +231,7 @@ export function shootProjectile (scene, slime, direction) {
 
 export function captainShieldReturn (captain, shield) {
   shield.return = true
+  shield.damageable = true
   shield.shieldTravelSpeedX = 550
   shield.shieldTravelTime =
     Math.abs(shield.body.x - captain.body.x) / shield.shieldTravelSpeedX
