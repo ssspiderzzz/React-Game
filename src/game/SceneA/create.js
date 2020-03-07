@@ -1,6 +1,13 @@
 export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
+
+  let transitionBlack = this.add.graphics()
+  transitionBlack.fillStyle(0x000000)
+  transitionBlack.fillRect(0, 0, 1024, 768)
+  transitionBlack.setAlpha(0)
+  transitionBlack.setDepth(99)
+
   let title = this.add
     .image(1024 / 2, 100, 'title')
     .setOrigin(0.5)
@@ -158,7 +165,14 @@ export default function create () {
     .setOrigin(0.5)
   this.playButton.setVisible(false)
   this.playButton.setInteractive()
+
   this.playButton.on('pointerdown', () => {
-    this.scene.start('SceneB', { select: this.select })
+    this.tweens.add({
+      targets: transitionBlack,
+      alpha: { value: 1, duration: 500, ease: 'Power1' }
+    })
+    setTimeout(() => {
+      this.scene.start('SceneB', { select: this.select })
+    }, 500)
   })
 }

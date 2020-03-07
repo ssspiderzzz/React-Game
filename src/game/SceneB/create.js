@@ -18,6 +18,17 @@ export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+  // transition
+  let transitionBlack = this.add.graphics()
+  transitionBlack.fillStyle(0x000000)
+  transitionBlack.fillRect(0, 0, 1024, 768)
+  transitionBlack.setAlpha(1)
+  transitionBlack.setDepth(99)
+  this.tweens.add({
+    targets: transitionBlack,
+    alpha: { value: 0, duration: 500, ease: 'Power1' }
+  })
+
   // player
   if (name === 'IronMan') initIronMan(this)
   if (name === 'CaptainAmerica') initCaptainAmerica(this)
