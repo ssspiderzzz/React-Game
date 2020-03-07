@@ -2,6 +2,12 @@ export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+  let playButtonBronze = this.add.image(1024 / 2, 650, 'play_now_bronze')
+  playButtonBronze.setVisible(false).setInteractive()
+
+  let playButtonRed = this.add.image(1024 / 2, 650, 'play_now_red')
+  playButtonRed.setVisible(false).setInteractive()
+
   let transitionBlack = this.add.graphics()
   transitionBlack.fillStyle(0x000000)
   transitionBlack.fillRect(0, 0, 1024, 768)
@@ -42,12 +48,12 @@ export default function create () {
     this.select = 'IronMan'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2 - 150, 300, ['Iron Man', '(Tony Stark)'], {
+      .text(1024 / 2 - 150, 300, ['Iron Man'], {
         fontSize: 22,
         align: 'center'
       })
       .setOrigin(0.5)
-    this.playButton.setVisible(true)
+    playButtonBronze.setVisible(true)
     this.IronMan.anims.play('IronManMove', true)
     this.CaptainAmerica.anims.play('CaptainAmericaIdle', true)
     this.Thor.anims.play('ThorIdle', true)
@@ -56,12 +62,12 @@ export default function create () {
     this.select = 'CaptainAmerica'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2, 300, ['Captain America', '(Steve Rogers)'], {
+      .text(1024 / 2, 300, ['Captain America'], {
         fontSize: 22,
         align: 'center'
       })
       .setOrigin(0.5)
-    this.playButton.setVisible(true)
+    playButtonBronze.setVisible(true)
     this.IronMan.anims.play('IronManIdle', true)
     this.CaptainAmerica.anims.play('CaptainAmericaMove', true)
     this.Thor.anims.play('ThorIdle', true)
@@ -70,12 +76,12 @@ export default function create () {
     this.select = 'Thor'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2 + 150, 300, ['Thor', '(God of Thunder)'], {
+      .text(1024 / 2 + 150, 300, ['Thor'], {
         fontSize: 22,
         align: 'center'
       })
       .setOrigin(0.5)
-    this.playButton.setVisible(true)
+    playButtonBronze.setVisible(true)
     this.IronMan.anims.play('IronManIdle', true)
     this.CaptainAmerica.anims.play('CaptainAmericaIdle', true)
     this.Thor.anims.play('ThorMove', true)
@@ -157,16 +163,18 @@ export default function create () {
   })
   this.Thor.anims.play('ThorIdle', true)
 
-  // static text
-  this.playButton = this.add
-    .text(1024 / 2, 600, 'Play', {
-      fontSize: 33
-    })
-    .setOrigin(0.5)
-  this.playButton.setVisible(false)
-  this.playButton.setInteractive()
+  // pointer interactive events
+  playButtonBronze.on('pointerover', () => {
+    playButtonBronze.setVisible(false)
+    playButtonRed.setVisible(true)
+  })
 
-  this.playButton.on('pointerdown', () => {
+  playButtonRed.on('pointerout', () => {
+    playButtonBronze.setVisible(true)
+    playButtonRed.setVisible(false)
+  })
+
+  playButtonRed.on('pointerdown', () => {
     this.tweens.add({
       targets: transitionBlack,
       alpha: { value: 1, duration: 500, ease: 'Power1' }

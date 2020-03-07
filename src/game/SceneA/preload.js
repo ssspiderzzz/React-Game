@@ -13,6 +13,8 @@ import hit_effect from '../../assets/hit_effect.png'
 import captain_america_sprites from '../../assets/characters/captain_america_sprites.png'
 import thor_sprites from '../../assets/characters/thor_sprites.png'
 import title from '../../assets/avengers_title.png'
+import play_now_bronze from '../../assets/PlayNowBronze.png'
+import play_now_red from '../../assets/PlayNowRed.png'
 
 export default function preload () {
   this.load.crossOrigin = true
@@ -22,6 +24,8 @@ export default function preload () {
   this.load.image('iron_man_face', iron_man_face)
   this.load.image('captain_america_face', captain_america_face)
   this.load.image('thor_face', thor_face)
+  this.load.image('play_now_bronze', play_now_bronze)
+  this.load.image('play_now_red', play_now_red)
 
   this.load.spritesheet('spiderman', spiderman, {
     frameWidth: 80,
