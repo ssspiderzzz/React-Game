@@ -15,7 +15,6 @@ import {
 } from './helpers'
 
 export default function update () {
-  console.log(this.player.shootable)
   // player
   if (this.player.alive) {
     drawHealthBar(this, this.player)
@@ -139,6 +138,13 @@ export default function update () {
         if (this.player.name === 'IronMan') {
           this.player.shootable = false
           this.player.body.setVelocityX(0)
+          if (this.cursors.right.isDown) {
+            this.player.facing = 'right'
+            this.player.flipX = false
+          } else if (this.cursors.left.isDown) {
+            this.player.facing = 'left'
+            this.player.flipX = true
+          }
           if (this.player.mp <= 151) {
             this.player.mp += 1
             this.player.anims.play('special', true)
