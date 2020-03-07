@@ -1,3 +1,5 @@
+// update functions
+
 export function ironManShooter (scene, shootDirection) {
   if (scene.player.mp > 25) {
     let shootSpeed
@@ -229,6 +231,37 @@ export function shootProjectile (scene, slime, direction) {
   newProjectile.setScale(0.5, 0.2)
 }
 
+export function drawHealthBar (scene, object) {
+  if (object.hp > 0 && object.hp < 100) {
+    let x = object.x - 40
+    let y = object.y - 50
+
+    object.bar.clear()
+
+    //  Black Stroke Background
+    object.bar.fillStyle(0x000000)
+    object.bar.fillRect(x, y, 80, 16)
+
+    //  White Background
+    object.bar.fillStyle(0xffffff)
+    object.bar.fillRect(x + 2, y + 2, 76, 12)
+
+    if (object.hp < 30) {
+      object.bar.fillStyle(0xff0000)
+    } else {
+      object.bar.fillStyle(0x00ff00)
+    }
+
+    let d = Math.floor((76 / 100) * object.hp)
+
+    object.bar.fillRect(x + 2, y + 2, d, 12)
+
+    scene.add.existing(object.bar)
+  }
+}
+
+// create functions
+
 export function captainShieldReturn (captain, shield) {
   shield.return = true
   shield.damageable = true
@@ -248,7 +281,21 @@ export function thorHammerReturn (thor, hammer) {
     (Math.abs(hammer.body.y - thor.body.y) + 35) / hammer.hammerTravelTime
 }
 
-// in create after this line -----------
+export function drawDamageText (scene, object, dmg) {
+  let dmgText
+  dmgText = scene.add.text(object.body.x, object.body.y, '-' + dmg, {
+    fontFamily: '"Roboto Condensed"',
+    fontSize: 20,
+    color: 'red',
+    align: 'center'
+  })
+  setInterval(() => {
+    dmgText.y = dmgText.y - 0.75
+  }, 25)
+  setTimeout(() => {
+    dmgText.destroy()
+  }, 1000)
+}
 
 export function knockBack (scene, player, dmgObject) {
   if (dmgObject.body.x <= player.body.x) {

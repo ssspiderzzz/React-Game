@@ -1,4 +1,3 @@
-import drawHealthBar from './helpers/drawHealthBar'
 import {
   ironManShooter,
   ironManUnibeam,
@@ -6,12 +5,8 @@ import {
   thorShooter,
   spiderManShooter,
   randomMove,
-  shootProjectile
-  // thorHammerReturn,
-  // knockBack,
-  // beamHitEffect,
-  // shieldHitEffect,
-  // hammerHitEffect
+  shootProjectile,
+  drawHealthBar
 } from './helpers'
 
 export default function update () {

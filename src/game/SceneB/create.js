@@ -1,21 +1,15 @@
 import Phaser from 'phaser'
-import drawDamageText from './helpers/drawDamageText'
 import initIronMan from './helpers/initIronMan'
 import initCaptainAmerica from './helpers/initCaptainAmerica'
 import initThor from './helpers/initThor'
 import {
-  // ironManShooter,
-  // captainAmericaShooter,
-  // thorShooter,
-  // spiderManShooter,
-  // randomMove,
-  // shootProjectile,
   captainShieldReturn,
   thorHammerReturn,
   knockBack,
   beamHitEffect,
   shieldHitEffect,
-  hammerHitEffect
+  hammerHitEffect,
+  drawDamageText
 } from './helpers'
 
 export default function create () {
