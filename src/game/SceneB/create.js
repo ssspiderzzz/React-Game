@@ -326,22 +326,7 @@ export default function create () {
   let menuButton = this.add.text(880, 20, 'Main Menu', { fontSize: 22 })
   menuButton.setInteractive()
   menuButton.on('pointerdown', () => {
-    let animsList = [
-      'idle',
-      'walk',
-      'attack',
-      'attack2',
-      'hit',
-      'dead',
-      'beam',
-      'beam-hit',
-      'shield',
-      'shield-hit',
-      'throw'
-    ]
-    animsList.forEach(i => {
-      this.anims.remove(i)
-    })
+    this.anims.anims.clear()
     this.scene.start('SceneA')
   })
 }
