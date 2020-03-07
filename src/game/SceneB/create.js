@@ -336,7 +336,8 @@ export default function create () {
       'beam',
       'beam-hit',
       'shield',
-      'shield-hit'
+      'shield-hit',
+      'throw'
     ]
     animsList.forEach(i => {
       this.anims.remove(i)
