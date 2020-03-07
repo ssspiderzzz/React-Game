@@ -1,6 +1,7 @@
 import Phaser from 'phaser'
 import SceneA from './SceneA'
 import SceneB from './SceneB'
+import SceneC from './SceneC'
 
 export let config = {
   type: Phaser.AUTO,
@@ -25,5 +26,5 @@ export let config = {
     }
   },
 
-  scene: [SceneA, SceneB]
+  scene: [SceneA, SceneB, SceneC]
 }

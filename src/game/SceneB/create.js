@@ -18,12 +18,25 @@ export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+  let pause = this.add.image(984, 40, 'pause').setOrigin(0.5)
+  pause.setScale(0.5, 0.5)
+  pause.setInteractive()
+  pause.on('pointerdown', () => {
+    this.scene.pause()
+    this.scene.launch('SceneC')
+    transitionBlack.setAlpha(0.5)
+  })
+
+  this.events.on('resume', function () {
+    transitionBlack.setAlpha(0)
+  })
+
   // transition
   let transitionBlack = this.add.graphics()
   transitionBlack.fillStyle(0x000000)
   transitionBlack.fillRect(0, 0, 1024, 768)
   transitionBlack.setAlpha(1)
-  transitionBlack.setDepth(99)
+  transitionBlack.setDepth(98)
   this.tweens.add({
     targets: transitionBlack,
     alpha: { value: 0, duration: 500, ease: 'Power1' }
