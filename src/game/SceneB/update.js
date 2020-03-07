@@ -6,7 +6,8 @@ import {
   spiderManShooter,
   randomMove,
   shootProjectile,
-  drawHealthBar
+  drawHealthBar,
+  drawEnergyBar
 } from './helpers'
 
 export default function update () {
@@ -235,26 +236,7 @@ export default function update () {
     } else if (this.player.mp > 100 && !this.keyX.isDown) {
       this.player.mp -= 0.25
     }
-
-    let x = this.player.x - 40
-    let y = this.player.y - 42
-
-    this.player.barMP.clear()
-
-    this.player.barMP.fillStyle(0xffffff)
-    this.player.barMP.fillRect(x + 2, y, 76, 6)
-
-    if (this.player.mp < 30) {
-      this.player.barMP.fillStyle(0x00ffff)
-    } else if (this.player.mp < 150) {
-      this.player.barMP.fillStyle(0x00bbff)
-    } else {
-      this.player.barMP.fillStyle(0xffff00)
-    }
-
-    let d = Math.floor((76 / 100) * this.player.mp)
-    this.player.barMP.fillRect(x + 2, y, d, 6)
-    this.add.existing(this.player.barMP)
+    drawEnergyBar(this, this.player)
   }
 
   // Captain America's Special move, shield comeback

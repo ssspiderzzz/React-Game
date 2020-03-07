@@ -260,6 +260,28 @@ export function drawHealthBar (scene, object) {
   }
 }
 
+export function drawEnergyBar (scene, object) {
+  let x = object.x - 40
+  let y = object.y - 42
+
+  object.barMP.clear()
+
+  object.barMP.fillStyle(0xffffff)
+  object.barMP.fillRect(x + 2, y, 76, 6)
+
+  if (object.mp < 30) {
+    object.barMP.fillStyle(0x00ffff)
+  } else if (object.mp < 150) {
+    object.barMP.fillStyle(0x00bbff)
+  } else {
+    object.barMP.fillStyle(0xffff00)
+  }
+
+  let d = Math.floor((76 / 100) * object.mp)
+  object.barMP.fillRect(x + 2, y, d, 6)
+  scene.add.existing(object.barMP)
+}
+
 // create functions
 
 export function captainShieldReturn (captain, shield) {
