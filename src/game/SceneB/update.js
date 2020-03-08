@@ -121,6 +121,13 @@ export default function update () {
             this.player.flipX = true
           }
           this.player.thorSwing = false
+        } else if (
+          this.player.name === 'Thor' &&
+          this.player.thorSwing &&
+          this.player.mp < 20
+        ) {
+          this.player.shootable = true
+          this.player.thorSwing = false
         }
       }
 
