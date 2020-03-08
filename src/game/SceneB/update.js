@@ -14,6 +14,7 @@ export default function update () {
   // player
   if (this.player.alive) {
     drawHealthBar(this, this.player)
+    drawEnergyBar(this, this.player)
 
     // player runs and stands
     if (!this.knockBack) {
@@ -54,45 +55,34 @@ export default function update () {
       // player shoots
       if (this.cursors.space.isDown && this.player.shootable) {
         if (this.player.facing === 'right') {
-          if (this.player.shootCount === 0) {
-            this.player.anims.play('attack', true)
-            this.player.shootCount = 1
-          } else if (this.player.shootCount === 1) {
-            this.player.anims.play('attack2', true)
-            this.player.shootCount = 0
-          } else {
-            this.player.anims.play('attack', true)
-          }
           this.player.flipX = false
-          if (this.player.name === 'IronMan') ironManShooter(this, 'right')
-          if (this.player.name === 'CaptainAmerica')
-            setTimeout(() => {
-              captainAmericaShooter(this, 'right')
-            }, 200)
-          if (this.player.name === 'spiderman') spiderManShooter(this, 20, 450)
-        }
-
-        if (this.player.facing === 'left') {
-          if (this.player.shootCount === 0) {
-            this.player.anims.play('attack', true)
-            this.player.shootCount = 1
-          } else if (this.player.shootCount === 1) {
-            this.player.anims.play('attack2', true)
-            this.player.shootCount = 0
-          } else {
-            this.player.anims.play('attack', true)
-          }
+        } else if (this.player.facing === 'left') {
           this.player.flipX = true
-          if (this.player.name === 'IronMan') ironManShooter(this, 'left')
-          if (this.player.name === 'CaptainAmerica')
-            setTimeout(() => {
-              captainAmericaShooter(this, 'left')
-            }, 200)
-          if (this.player.name === 'spiderman')
-            spiderManShooter(this, -20, -450)
         }
 
-        if (this.player.name === 'Thor') this.player.thorSwing = true
+        if (this.player.shootCount === 0) {
+          this.player.anims.play('attack', true)
+          this.player.shootCount = 1
+        } else if (this.player.shootCount === 1) {
+          this.player.anims.play('attack2', true)
+          this.player.shootCount = 0
+        } else {
+          this.player.anims.play('attack', true)
+        }
+
+        if (this.player.name === 'IronMan') {
+          ironManShooter(this, this.player.facing)
+        }
+        if (this.player.name === 'CaptainAmerica') {
+          captainAmericaShooter(this, this.player.facing)
+        }
+        if (this.player.name === 'Thor') {
+          this.player.thorSwing = true
+        }
+        if (this.player.name === 'spiderman') {
+          spiderManShooter(this, 20, 450)
+        }
+
         this.player.shootable = false
         this.player.body.setVelocityX(0)
       }
@@ -236,7 +226,6 @@ export default function update () {
     } else if (this.player.mp > 100 && !this.keyX.isDown) {
       this.player.mp -= 0.25
     }
-    drawEnergyBar(this, this.player)
   }
 
   // Captain America's Special move, shield comeback

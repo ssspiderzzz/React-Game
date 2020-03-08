@@ -3,7 +3,7 @@ export default function create () {
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
   let playButtonBronze = this.add.image(1024 / 2, 650, 'play_now_bronze')
-  playButtonBronze.setVisible(false).setInteractive()
+  playButtonBronze.setVisible(true).setInteractive()
 
   let playButtonRed = this.add.image(1024 / 2, 650, 'play_now_red')
   playButtonRed.setVisible(false).setInteractive()
@@ -90,7 +90,7 @@ export default function create () {
   this.IronMan = this.physics.add
     .sprite(1024 / 2 - 150, 500, 'IronMan')
     .setScale(2, 2)
-  this.IronMan.setSize(22, 45, 0, 0).setOffset(24, 10)
+  this.IronMan.setSize(23, 45, 0, 0).setOffset(16, 10)
   this.IronMan.body.allowGravity = false
   this.anims.create({
     key: 'IronManIdle',
@@ -165,8 +165,10 @@ export default function create () {
 
   // pointer interactive events
   playButtonBronze.on('pointerover', () => {
-    playButtonBronze.setVisible(false)
-    playButtonRed.setVisible(true)
+    if (this.select) {
+      playButtonBronze.setVisible(false)
+      playButtonRed.setVisible(true)
+    }
   })
 
   playButtonRed.on('pointerout', () => {

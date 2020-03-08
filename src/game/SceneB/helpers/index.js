@@ -113,10 +113,16 @@ export function captainAmericaShooter (scene, shootDirection) {
   shield.body.onWorldBounds = true
   shield.body.allowGravity = false
   shield.anims.play('shield', true)
-  shield.body.velocity.x = shootSpeed
   shield.shieldTravelSpeedX = Math.abs(shootSpeed)
   shield.flipX = flipX
   shield.setScale(2, 2)
+  shield.setVisible(false)
+
+  setTimeout(() => {
+    shield.body.velocity.x = shootSpeed
+    shield.setVisible(true)
+  }, 100)
+
   setTimeout(() => {
     shield.destroy()
   }, 5000)
