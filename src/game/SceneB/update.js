@@ -99,7 +99,11 @@ export default function update () {
           this.player.shootable = false
         }
 
-        if (this.player.name === 'Thor' && this.player.thorSwing) {
+        if (
+          this.player.name === 'Thor' &&
+          this.player.thorSwing &&
+          this.player.mp >= 20
+        ) {
           this.player.shootable = false
           if (this.cursors.space.duration < 2500) {
             this.player.thorSwing = this.cursors.space.duration
