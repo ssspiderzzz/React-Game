@@ -24,7 +24,47 @@ export default function create () {
       }
     )
     .setOrigin(0.5)
+  let iron_man_passive = this.add
+    .image(865, 450, 'iron_man_passive')
+    .setVisible(false)
+  let captain_america_passive = this.add
+    .image(865, 450, 'captain_america_passive')
+    .setVisible(false)
+  let thor_passive = this.add.image(865, 450, 'thor_passive').setVisible(false)
+  let iron_man_passive_text = this.add
+    .text(
+      775,
+      480,
+      ['Arc Reactor (Passive)', '   Increases energy', '   regeneration rate'],
+      {
+        fontSize: 14,
+        align: 'Left'
+      }
+    )
+    .setVisible(false)
+  let captain_america_passive_text = this.add
+    .text(
+      775,
+      480,
+      [
+        'Super-Soldier (Passive)',
+        "   Captain's health",
+        '   regenerates slowly'
+      ],
+      {
+        fontSize: 14,
+        align: 'Left'
+      }
+    )
+    .setVisible(false)
+  let thor_passive_text = this.add
+    .text(775, 480, ['God of Thunder (Passive)', '   He is basically God'], {
+      fontSize: 14,
+      align: 'Left'
+    })
+    .setVisible(false)
 
+  // play button
   let playButtonBronze = this.add.image(1024 / 2, 650, 'play_now_bronze')
   playButtonBronze.setVisible(true).setInteractive()
 
@@ -80,6 +120,12 @@ export default function create () {
     this.IronMan.anims.play('IronManMove', true)
     this.CaptainAmerica.anims.play('CaptainAmericaIdle', true)
     this.Thor.anims.play('ThorIdle', true)
+    iron_man_passive.setVisible(true)
+    iron_man_passive_text.setVisible(true)
+    captain_america_passive.setVisible(false)
+    captain_america_passive_text.setVisible(false)
+    thor_passive.setVisible(false)
+    thor_passive_text.setVisible(false)
   })
   captain_america_face.on('pointerdown', () => {
     this.select = 'CaptainAmerica'
@@ -94,6 +140,12 @@ export default function create () {
     this.IronMan.anims.play('IronManIdle', true)
     this.CaptainAmerica.anims.play('CaptainAmericaMove', true)
     this.Thor.anims.play('ThorIdle', true)
+    iron_man_passive.setVisible(false)
+    iron_man_passive_text.setVisible(false)
+    captain_america_passive.setVisible(true)
+    captain_america_passive_text.setVisible(true)
+    thor_passive.setVisible(false)
+    thor_passive_text.setVisible(false)
   })
   thor_face.on('pointerdown', () => {
     this.select = 'Thor'
@@ -108,6 +160,12 @@ export default function create () {
     this.IronMan.anims.play('IronManIdle', true)
     this.CaptainAmerica.anims.play('CaptainAmericaIdle', true)
     this.Thor.anims.play('ThorMove', true)
+    iron_man_passive.setVisible(false)
+    iron_man_passive_text.setVisible(false)
+    captain_america_passive.setVisible(false)
+    captain_america_passive_text.setVisible(false)
+    thor_passive.setVisible(true)
+    thor_passive_text.setVisible(true)
   })
 
   this.IronMan = this.physics.add
