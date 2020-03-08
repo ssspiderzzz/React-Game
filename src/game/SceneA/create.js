@@ -2,6 +2,29 @@ export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+  // announcement board
+  this.add.image(865, 400, 'announcement_board').setScale(0.8)
+  this.add
+    .text(
+      860,
+      330,
+      [
+        'Press or Hold "Z":',
+        '   Normal Attacts',
+        '',
+        'Press or Hold "X":',
+        '   Signature Skills',
+        '',
+        'Arrow Keys:',
+        '   Movements'
+      ],
+      {
+        fontSize: 15,
+        align: 'Left'
+      }
+    )
+    .setOrigin(0.5)
+
   let playButtonBronze = this.add.image(1024 / 2, 650, 'play_now_bronze')
   playButtonBronze.setVisible(true).setInteractive()
 
