@@ -23,8 +23,8 @@ export default function create () {
     targets: title,
     alphaTopLeft: { value: 1, duration: 1000, ease: 'Power1' },
     alphaBottomLeft: { value: 1, duration: 1000, ease: 'Power1' },
-    alphaBottomRight: { value: 1, duration: 6000, ease: 'Power1' },
-    alphaTopRight: { value: 1, duration: 6000, ease: 'Power1' },
+    alphaBottomRight: { value: 1, duration: 4000, ease: 'Power1' },
+    alphaTopRight: { value: 1, duration: 4000, ease: 'Power1' },
     loop: 0
   })
 

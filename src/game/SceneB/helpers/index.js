@@ -92,12 +92,12 @@ export function captainAmericaShooter (scene, shootDirection) {
   let shootX
   let flipX
   if (shootDirection === 'right') {
-    shootSpeed = 450
+    shootSpeed = 600
     shootX = 50
     flipX = false
   }
   if (shootDirection === 'left') {
-    shootSpeed = -450
+    shootSpeed = -600
     shootX = -50
     flipX = true
   }
@@ -287,7 +287,7 @@ export function drawEnergyBar (scene, object) {
 export function captainShieldReturn (captain, shield) {
   shield.return = true
   shield.damageable = true
-  shield.shieldTravelSpeedX = 550
+  shield.shieldTravelSpeedX = 700
   shield.shieldTravelTime =
     Math.abs(shield.body.x - captain.body.x) / shield.shieldTravelSpeedX
   shield.shieldTravelSpeedY =
