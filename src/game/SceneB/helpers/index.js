@@ -1,3 +1,5 @@
+// update functions
+
 export function ironManShooter (scene, shootDirection) {
   if (scene.player.mp > 25) {
     let shootSpeed
@@ -89,13 +91,16 @@ export function captainAmericaShooter (scene, shootDirection) {
   let shootSpeed
   let shootX
   let flipX
+  // throw out shield
+  scene.player.shieldOn = false
+
   if (shootDirection === 'right') {
-    shootSpeed = 450
+    shootSpeed = 600
     shootX = 50
     flipX = false
   }
   if (shootDirection === 'left') {
-    shootSpeed = -450
+    shootSpeed = -600
     shootX = -50
     flipX = true
   }
@@ -111,10 +116,16 @@ export function captainAmericaShooter (scene, shootDirection) {
   shield.body.onWorldBounds = true
   shield.body.allowGravity = false
   shield.anims.play('shield', true)
-  shield.body.velocity.x = shootSpeed
   shield.shieldTravelSpeedX = Math.abs(shootSpeed)
   shield.flipX = flipX
   shield.setScale(2, 2)
+  shield.setVisible(false)
+
+  setTimeout(() => {
+    shield.body.velocity.x = shootSpeed
+    shield.setVisible(true)
+  }, 100)
+
   setTimeout(() => {
     shield.destroy()
   }, 5000)
@@ -124,6 +135,9 @@ export function thorShooter (scene, shootDirection, swingDuration) {
   let shootSpeed
   let shootX
   let flipX
+  // energy cost for normal attack
+  scene.player.mp -= 20
+
   let swingModifier = swingDuration / 2500
   swingModifier < 0.25
     ? (swingModifier = 1)
@@ -229,10 +243,63 @@ export function shootProjectile (scene, slime, direction) {
   newProjectile.setScale(0.5, 0.2)
 }
 
+export function drawHealthBar (scene, object) {
+  if (object.hp > 0 && object.hp < 100) {
+    let x = object.x - 40
+    let y = object.y - 50
+
+    object.bar.clear()
+
+    //  Black Stroke Background
+    object.bar.fillStyle(0x000000)
+    object.bar.fillRect(x, y, 80, 16)
+
+    //  White Background
+    object.bar.fillStyle(0xffffff)
+    object.bar.fillRect(x + 2, y + 2, 76, 12)
+
+    if (object.hp < 30) {
+      object.bar.fillStyle(0xff0000)
+    } else {
+      object.bar.fillStyle(0x00ff00)
+    }
+
+    let d = Math.floor((76 / 100) * object.hp)
+
+    object.bar.fillRect(x + 2, y + 2, d, 12)
+
+    scene.add.existing(object.bar)
+  }
+}
+
+export function drawEnergyBar (scene, object) {
+  let x = object.x - 40
+  let y = object.y - 42
+
+  object.barMP.clear()
+
+  object.barMP.fillStyle(0xffffff)
+  object.barMP.fillRect(x + 2, y, 76, 6)
+
+  if (object.mp < 30) {
+    object.barMP.fillStyle(0x00ffff)
+  } else if (object.mp < 150) {
+    object.barMP.fillStyle(0x00bbff)
+  } else {
+    object.barMP.fillStyle(0xffff00)
+  }
+
+  let d = Math.floor((76 / 100) * object.mp)
+  object.barMP.fillRect(x + 2, y, d, 6)
+  scene.add.existing(object.barMP)
+}
+
+// create functions
+
 export function captainShieldReturn (captain, shield) {
   shield.return = true
   shield.damageable = true
-  shield.shieldTravelSpeedX = 550
+  shield.shieldTravelSpeedX = 700
   shield.shieldTravelTime =
     Math.abs(shield.body.x - captain.body.x) / shield.shieldTravelSpeedX
   shield.shieldTravelSpeedY =
@@ -248,7 +315,21 @@ export function thorHammerReturn (thor, hammer) {
     (Math.abs(hammer.body.y - thor.body.y) + 35) / hammer.hammerTravelTime
 }
 
-// in create after this line -----------
+export function drawDamageText (scene, object, dmg) {
+  let dmgText
+  dmgText = scene.add.text(object.body.x, object.body.y, '-' + dmg, {
+    fontFamily: '"Roboto Condensed"',
+    fontSize: 20,
+    color: 'red',
+    align: 'center'
+  })
+  setInterval(() => {
+    dmgText.y = dmgText.y - 0.75
+  }, 25)
+  setTimeout(() => {
+    dmgText.destroy()
+  }, 1000)
+}
 
 export function knockBack (scene, player, dmgObject) {
   if (dmgObject.body.x <= player.body.x) {
@@ -278,45 +359,16 @@ export function knockBack (scene, player, dmgObject) {
   scene.knockBackOrient = false
 }
 
-export function beamHitEffect (scene, beam) {
-  let beam_hit = scene.beams_hit.create(
-    beam.body.x + 17.5,
-    beam.body.y + 7.5,
-    'beam_hit'
+export function hitEffect (scene, object) {
+  let hit_effect = scene.hitEffects.create(
+    object.body.x + 17.5,
+    object.body.y + 7.5,
+    'hit_effect'
   )
-  beam_hit.body.allowGravity = false
-  beam_hit.setScale(1.5, 1.5)
-  beam_hit.anims.play('beam_hit', true)
+  hit_effect.body.allowGravity = false
+  hit_effect.setScale(1.5, 1.5)
+  hit_effect.anims.play('hit_effect', true)
   setTimeout(() => {
-    beam_hit.destroy()
-  }, 1000)
-  beam.disableBody(true, true)
-}
-
-export function shieldHitEffect (scene, shield) {
-  let shield_hit = scene.shields_hit.create(
-    shield.body.x + 17.5,
-    shield.body.y + 7.5,
-    'shield_hit'
-  )
-  shield_hit.body.allowGravity = false
-  shield_hit.setScale(1.5, 1.5)
-  shield_hit.anims.play('shield_hit', true)
-  setTimeout(() => {
-    shield_hit.destroy()
-  }, 1000)
-}
-
-export function hammerHitEffect (scene, hammer) {
-  let hammer_hit = scene.hammers_hit.create(
-    hammer.body.x + 17.5,
-    hammer.body.y + 7.5,
-    'hammer_hit'
-  )
-  hammer_hit.body.allowGravity = false
-  hammer_hit.setScale(1.5, 1.5)
-  hammer_hit.anims.play('hammer_hit', true)
-  setTimeout(() => {
-    hammer_hit.destroy()
+    hit_effect.destroy()
   }, 1000)
 }

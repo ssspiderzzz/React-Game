@@ -1,4 +1,3 @@
-import drawHealthBar from './helpers/drawHealthBar'
 import {
   ironManShooter,
   ironManUnibeam,
@@ -6,20 +5,18 @@ import {
   thorShooter,
   spiderManShooter,
   randomMove,
-  shootProjectile
-  // thorHammerReturn,
-  // knockBack,
-  // beamHitEffect,
-  // shieldHitEffect,
-  // hammerHitEffect
+  shootProjectile,
+  drawHealthBar,
+  drawEnergyBar
 } from './helpers'
 
 export default function update () {
-  console.log(this.player.shootable)
+  // hp and mp bar drawing
+  drawHealthBar(this, this.player)
+  drawEnergyBar(this, this.player)
+
   // player
   if (this.player.alive) {
-    drawHealthBar(this, this.player)
-
     // player runs and stands
     if (!this.knockBack) {
       if (this.player.shootable) {
@@ -57,66 +54,59 @@ export default function update () {
       }
 
       // player shoots
-      if (this.cursors.space.isDown && this.player.shootable) {
+      if (this.keyZ.isDown && this.player.shootable) {
         if (this.player.facing === 'right') {
-          if (this.player.shootCount === 0) {
-            this.player.anims.play('attack', true)
-            this.player.shootCount = 1
-          } else if (this.player.shootCount === 1) {
-            this.player.anims.play('attack2', true)
-            this.player.shootCount = 0
-          } else {
-            this.player.anims.play('attack', true)
-          }
           this.player.flipX = false
-          if (this.player.name === 'IronMan') ironManShooter(this, 'right')
-          if (this.player.name === 'CaptainAmerica')
-            setTimeout(() => {
-              captainAmericaShooter(this, 'right')
-            }, 200)
-          if (this.player.name === 'spiderman') spiderManShooter(this, 20, 450)
-        }
-
-        if (this.player.facing === 'left') {
-          if (this.player.shootCount === 0) {
-            this.player.anims.play('attack', true)
-            this.player.shootCount = 1
-          } else if (this.player.shootCount === 1) {
-            this.player.anims.play('attack2', true)
-            this.player.shootCount = 0
-          } else {
-            this.player.anims.play('attack', true)
-          }
+        } else if (this.player.facing === 'left') {
           this.player.flipX = true
-          if (this.player.name === 'IronMan') ironManShooter(this, 'left')
-          if (this.player.name === 'CaptainAmerica')
-            setTimeout(() => {
-              captainAmericaShooter(this, 'left')
-            }, 200)
-          if (this.player.name === 'spiderman')
-            spiderManShooter(this, -20, -450)
         }
 
-        if (this.player.name === 'Thor') this.player.thorSwing = true
+        if (this.player.shootCount === 0) {
+          this.player.anims.play('attack', true)
+          this.player.shootCount = 1
+        } else if (this.player.shootCount === 1) {
+          this.player.anims.play('attack2', true)
+          this.player.shootCount = 0
+        } else {
+          this.player.anims.play('attack', true)
+        }
+
+        if (this.player.name === 'IronMan') {
+          ironManShooter(this, this.player.facing)
+        }
+        if (this.player.name === 'CaptainAmerica') {
+          captainAmericaShooter(this, this.player.facing)
+        }
+        if (this.player.name === 'Thor') {
+          this.player.thorSwing = true
+        }
+        if (this.player.name === 'spiderman') {
+          spiderManShooter(this, 20, 450)
+        }
+
         this.player.shootable = false
         this.player.body.setVelocityX(0)
       }
 
-      if (this.cursors.space._justUp) {
-        this.cursors.space._justUp = false
+      if (this.keyZ._justUp) {
+        this.keyZ._justUp = false
 
         if (this.player.name === 'IronMan') {
           this.player.shootable = true
         }
 
         if (this.player.name === 'CaptainAmerica') {
-          this.player.shootable = false
+          // this.player.shootable = false
         }
 
-        if (this.player.name === 'Thor' && this.player.thorSwing) {
-          this.player.shootable = false
-          if (this.cursors.space.duration < 2500) {
-            this.player.thorSwing = this.cursors.space.duration
+        if (
+          this.player.name === 'Thor' &&
+          this.player.thorSwing &&
+          this.player.mp >= 20
+        ) {
+          // this.player.shootable = false
+          if (this.keyZ.duration < 2500) {
+            this.player.thorSwing = this.keyZ.duration
           } else {
             this.player.thorSwing = 2500
           }
@@ -131,24 +121,78 @@ export default function update () {
             this.player.flipX = true
           }
           this.player.thorSwing = false
+        } else if (
+          this.player.name === 'Thor' &&
+          this.player.thorSwing &&
+          this.player.mp < 20
+        ) {
+          this.player.shootable = true
+          this.player.thorSwing = false
         }
       }
 
-      // Iron Man special move, Unibeam
+      // Special moves, Unibeam, Shield Dash
       if (this.keyX.isDown) {
+        // Iron Man
         if (this.player.name === 'IronMan') {
           this.player.shootable = false
           this.player.body.setVelocityX(0)
+          if (this.cursors.right.isDown) {
+            this.player.facing = 'right'
+            this.player.flipX = false
+          } else if (this.cursors.left.isDown) {
+            this.player.facing = 'left'
+            this.player.flipX = true
+          }
           if (this.player.mp <= 151) {
             this.player.mp += 1
-            this.player.anims.play('special', true)
-          } else {
-            this.player.anims.play('special', true)
           }
+          this.player.anims.play('special', true)
+        }
+        // Captain Ameirca
+        if (
+          this.player.name === 'CaptainAmerica' &&
+          this.player.mp > 1 &&
+          this.player.shieldOn
+        ) {
+          if (this.cursors.right.isDown) {
+            this.player.flipX = false
+            this.player.body.setVelocityX(150)
+            this.player.facing = 'right'
+          } else if (this.cursors.left.isDown) {
+            this.player.flipX = true
+            this.player.body.setVelocityX(-150)
+            this.player.facing = 'left'
+          } else {
+            this.player.body.setVelocityX(0)
+          }
+
+          this.player.mp -= 0.5
+          this.player.shootable = false
+          this.player.invincible = true
+          this.player.anims.play('block', true)
+        }
+        // Thor
+        if (this.player.name === 'Thor') {
+          this.player.shootable = false
+          this.player.body.setVelocityX(0)
+          if (this.cursors.right.isDown) {
+            this.player.facing = 'right'
+            this.player.flipX = false
+          } else if (this.cursors.left.isDown) {
+            this.player.facing = 'left'
+            this.player.flipX = true
+          }
+          if (this.player.mp < 99) {
+            this.player.mp += 1
+          }
+          this.player.anims.play('special', true)
         }
       }
 
       if (this.keyX._justUp) {
+        this.keyX._justUp = false
+
         if (this.player.name === 'IronMan') {
           if (this.player.mp >= 150) {
             this.player.mp -= 150
@@ -162,7 +206,15 @@ export default function update () {
             this.player.shootable = true
           }
         }
-        this.keyX._justUp = false
+
+        if (this.player.name === 'CaptainAmerica') {
+          this.player.shootable = true
+          this.player.invincible = false
+        }
+
+        if (this.player.name === 'Thor') {
+          this.player.shootable = true
+        }
       }
     }
 
@@ -234,30 +286,16 @@ export default function update () {
     } else if (this.player.mp > 100 && !this.keyX.isDown) {
       this.player.mp -= 0.25
     }
-
-    let x = this.player.x - 40
-    let y = this.player.y - 42
-
-    this.player.barMP.clear()
-
-    this.player.barMP.fillStyle(0xffffff)
-    this.player.barMP.fillRect(x + 2, y, 76, 6)
-
-    if (this.player.mp < 30) {
-      this.player.barMP.fillStyle(0x00ffff)
-    } else if (this.player.mp < 150) {
-      this.player.barMP.fillStyle(0x00bbff)
-    } else {
-      this.player.barMP.fillStyle(0xffff00)
-    }
-
-    let d = Math.floor((76 / 100) * this.player.mp)
-    this.player.barMP.fillRect(x + 2, y, d, 6)
-    this.add.existing(this.player.barMP)
   }
 
-  // Captain America's Special move, shield comeback
-  if (this.player.name === 'CaptainAmerica') {
+  // Captain America's Special move, shield comeback, health regeneration
+  if (this.player.name === 'CaptainAmerica' && this.player.alive) {
+    if (this.player.hp < 98) {
+      if (Math.random() < 0.01) this.player.hp += 1
+    }
+    if (this.player.mp <= 100) {
+      this.player.mp += 0.1
+    }
     if (this.shields.children.size > 0) {
       this.shields.children.iterate(shield => {
         if (shield.return) {
@@ -281,8 +319,11 @@ export default function update () {
     }
   }
 
-  // Thor's Special move, shield comeback
+  // Thor's Special move, hammer comeback
   if (this.player.name === 'Thor') {
+    if (this.player.mp <= 100) {
+      this.player.mp += 0.1
+    }
     if (this.hammers.children.size > 0) {
       this.hammers.children.iterate(hammer => {
         if (hammer.return) {

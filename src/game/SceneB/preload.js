@@ -9,11 +9,16 @@ import iron_man_sprites from '../../assets/characters/iron_man_sprites.png'
 import hit_effect from '../../assets/hit_effect.png'
 import captain_america_sprites from '../../assets/characters/captain_america_sprites.png'
 import thor_sprites from '../../assets/characters/thor_sprites.png'
+import pause from '../../assets/pause.png'
+import options from '../../assets/options.png'
 
 export default function preload () {
   this.load.crossOrigin = true
 
   this.load.image('background', background)
+  this.load.image('pause', pause)
+  this.load.image('options', options)
+
   this.load.spritesheet('spiderman', spiderman, {
     frameWidth: 80,
     frameHeight: 80

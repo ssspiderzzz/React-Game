@@ -1,21 +1,13 @@
 import Phaser from 'phaser'
-import drawDamageText from './helpers/drawDamageText'
 import initIronMan from './helpers/initIronMan'
 import initCaptainAmerica from './helpers/initCaptainAmerica'
 import initThor from './helpers/initThor'
 import {
-  // ironManShooter,
-  // captainAmericaShooter,
-  // thorShooter,
-  // spiderManShooter,
-  // randomMove,
-  // shootProjectile,
   captainShieldReturn,
   thorHammerReturn,
   knockBack,
-  beamHitEffect,
-  shieldHitEffect,
-  hammerHitEffect
+  hitEffect,
+  drawDamageText
 } from './helpers'
 
 export default function create () {
@@ -23,6 +15,30 @@ export default function create () {
 
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
+
+  let pause = this.add.image(984, 40, 'pause').setOrigin(0.5)
+  pause.setScale(0.5, 0.5)
+  pause.setInteractive()
+  pause.on('pointerdown', () => {
+    this.scene.pause()
+    this.scene.launch('SceneC', { currentSelect: this.select })
+    transitionBlack.setAlpha(0.5)
+  })
+
+  this.events.on('resume', function () {
+    transitionBlack.setAlpha(0)
+  })
+
+  // transition
+  let transitionBlack = this.add.graphics()
+  transitionBlack.fillStyle(0x000000)
+  transitionBlack.fillRect(0, 0, 1024, 768)
+  transitionBlack.setAlpha(1)
+  transitionBlack.setDepth(98)
+  this.tweens.add({
+    targets: transitionBlack,
+    alpha: { value: 0, duration: 500, ease: 'Power1' }
+  })
 
   // player
   if (name === 'IronMan') initIronMan(this)
@@ -50,6 +66,18 @@ export default function create () {
     coin.setScale(0.5, 0.5)
     coin.setBounceY(Phaser.Math.FloatBetween(0.6, 0.6))
     coin.setBounceX(Phaser.Math.FloatBetween(0.6, 0.6))
+  })
+
+  // hit effects
+  this.hitEffects = this.physics.add.group()
+  this.anims.create({
+    key: 'hit_effect',
+    frames: this.anims.generateFrameNumbers('hit_effect', {
+      start: 0,
+      end: 7
+    }),
+    frameRate: 7,
+    repeat: 0
   })
 
   // slimes
@@ -93,28 +121,6 @@ export default function create () {
       slime.anims.play('slime_red', true)
       slime.slimeType = 'red'
     }
-  })
-
-  // web
-  this.webs = this.physics.add.group()
-  this.webs_hit = this.physics.add.group()
-  this.anims.create({
-    key: 'web',
-    frames: this.anims.generateFrameNumbers('web', {
-      start: 63,
-      end: 68
-    }),
-    frameRate: 6,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'web_hit',
-    frames: this.anims.generateFrameNumbers('web', {
-      start: 66,
-      end: 68
-    }),
-    frameRate: 5,
-    repeat: 1
   })
 
   // red projectile from slime
@@ -187,6 +193,7 @@ export default function create () {
     .refreshBody()
 
   // controls
+  this.keyZ = this.input.keyboard.addKey('Z')
   this.keyX = this.input.keyboard.addKey('X')
   this.cursors = this.input.keyboard.createCursorKeys()
 
@@ -201,9 +208,13 @@ export default function create () {
   this.physics.add.collider(this.slimes, this.platforms)
   this.physics.add.collider(this.slimes, this.invisibleWalls)
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
-    let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
-    this.player.hp -= floatSlimeDmg
-    drawDamageText(this, player, floatSlimeDmg)
+    if (!this.player.invincible) {
+      let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
+      this.player.hp -= floatSlimeDmg
+      drawDamageText(this, player, floatSlimeDmg)
+    } else {
+      slime.hp -= 30
+    }
     knockBack(this, player, slime)
   })
 
@@ -211,10 +222,13 @@ export default function create () {
     this.player,
     this.red_projectiles,
     (player, red_projectile) => {
-      let floatProjectileDmg = Math.floor(Math.random() * 15) + 15
-      this.player.hp -= floatProjectileDmg
-      drawDamageText(this, player, floatProjectileDmg)
-      knockBack(this, player, red_projectile)
+      if (!this.player.invincible) {
+        let floatProjectileDmg = Math.floor(Math.random() * 15) + 15
+        this.player.hp -= floatProjectileDmg
+        drawDamageText(this, player, floatProjectileDmg)
+        knockBack(this, player, red_projectile)
+      }
+      hitEffect(this, red_projectile)
       red_projectile.disableBody(true, true)
       red_projectile.destroy()
     }
@@ -222,7 +236,8 @@ export default function create () {
 
   if (this.player.name === 'IronMan') {
     this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
-      beamHitEffect(this, beam)
+      hitEffect(this, beam)
+      beam.disableBody(true, true)
       slime.hp -= Math.floor(Math.random() * 15) + 10
     })
     this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
@@ -243,14 +258,15 @@ export default function create () {
     this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
       if (shield.damageable) {
         shield.damageable = false
-        shieldHitEffect(this, shield)
-        slime.hp -= Math.floor(Math.random() * 25) + 10
+        hitEffect(this, shield)
+        slime.hp -= Math.floor(Math.random() * 30) + 20
       }
     })
     this.physics.add.overlap(this.player, this.shields, (player, shield) => {
       shield.damageable = true
       shield.disableBody(true, true)
       this.player.shootable = true
+      this.player.shieldOn = true
     })
   }
 
@@ -259,8 +275,8 @@ export default function create () {
       if (hammer.damageable) {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
-        hammerHitEffect(this, hammer)
-        slime.hp -= Math.floor(Math.random() * 35) + 10
+        hitEffect(this, hammer)
+        slime.hp -= Math.floor(Math.random() * 30) + 10
       }
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
@@ -299,31 +315,6 @@ export default function create () {
   this.collectionText = this.add.text(60, 7, this.money, {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
-  })
-  let restartButton = this.add.text(750, 20, 'Restart', { fontSize: 22 })
-  restartButton.setInteractive()
-  restartButton.on('pointerdown', () => {
-    this.scene.restart()
-  })
-  let menuButton = this.add.text(880, 20, 'Main Menu', { fontSize: 22 })
-  menuButton.setInteractive()
-  menuButton.on('pointerdown', () => {
-    let animsList = [
-      'idle',
-      'walk',
-      'attack',
-      'attack2',
-      'hit',
-      'dead',
-      'beam',
-      'beam-hit',
-      'shield',
-      'shield-hit'
-    ]
-    animsList.forEach(i => {
-      this.anims.remove(i)
-    })
-    this.scene.start('SceneA')
   })
 }
 
