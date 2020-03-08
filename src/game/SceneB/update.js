@@ -54,7 +54,7 @@ export default function update () {
       }
 
       // player shoots
-      if (this.cursors.space.isDown && this.player.shootable) {
+      if (this.keyZ.isDown && this.player.shootable) {
         if (this.player.facing === 'right') {
           this.player.flipX = false
         } else if (this.player.facing === 'left') {
@@ -88,8 +88,8 @@ export default function update () {
         this.player.body.setVelocityX(0)
       }
 
-      if (this.cursors.space._justUp) {
-        this.cursors.space._justUp = false
+      if (this.keyZ._justUp) {
+        this.keyZ._justUp = false
 
         if (this.player.name === 'IronMan') {
           this.player.shootable = true
@@ -105,8 +105,8 @@ export default function update () {
           this.player.mp >= 20
         ) {
           this.player.shootable = false
-          if (this.cursors.space.duration < 2500) {
-            this.player.thorSwing = this.cursors.space.duration
+          if (this.keyZ.duration < 2500) {
+            this.player.thorSwing = this.keyZ.duration
           } else {
             this.player.thorSwing = 2500
           }

@@ -193,6 +193,7 @@ export default function create () {
     .refreshBody()
 
   // controls
+  this.keyZ = this.input.keyboard.addKey('Z')
   this.keyX = this.input.keyboard.addKey('X')
   this.cursors = this.input.keyboard.createCursorKeys()
 
