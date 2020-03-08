@@ -96,7 +96,7 @@ export default function update () {
         }
 
         if (this.player.name === 'CaptainAmerica') {
-          this.player.shootable = false
+          // this.player.shootable = false
         }
 
         if (
@@ -104,7 +104,7 @@ export default function update () {
           this.player.thorSwing &&
           this.player.mp >= 20
         ) {
-          this.player.shootable = false
+          // this.player.shootable = false
           if (this.keyZ.duration < 2500) {
             this.player.thorSwing = this.keyZ.duration
           } else {
