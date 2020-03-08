@@ -13,7 +13,6 @@ export default function initThor (scene) {
   scene.player.thorSwing = 0
   // Thor throws hammer
   scene.hammers = scene.physics.add.group()
-  scene.hammers_hit = scene.physics.add.group()
   // Thor animations
 
   scene.anims.create({
@@ -78,15 +77,6 @@ export default function initThor (scene) {
       end: 30
     }),
     frameRate: 1,
-    repeat: 0
-  })
-  scene.anims.create({
-    key: 'hammer_hit',
-    frames: scene.anims.generateFrameNumbers('hit_effect', {
-      start: 0,
-      end: 7
-    }),
-    frameRate: 7,
     repeat: 0
   })
 }

@@ -119,8 +119,9 @@ export default function update () {
         }
       }
 
-      // Iron Man special move, Unibeam
+      // Special moves, Unibeam, Shield Dash
       if (this.keyX.isDown) {
+        // Iron Man
         if (this.player.name === 'IronMan') {
           this.player.shootable = false
           this.player.body.setVelocityX(0)
@@ -138,9 +139,24 @@ export default function update () {
             this.player.anims.play('special', true)
           }
         }
+        // Captain Ameirca
+        if (this.player.name === 'CaptainAmerica') {
+          if (this.player.facing === 'right') {
+            this.player.flipX = false
+            this.player.body.setVelocityX(300)
+          } else if (this.player.facing === 'left') {
+            this.player.flipX = true
+            this.player.body.setVelocityX(-300)
+          }
+          this.player.shootable = false
+          this.player.invincible = true
+          this.player.anims.play('dash', true)
+        }
       }
 
       if (this.keyX._justUp) {
+        this.keyX._justUp = false
+
         if (this.player.name === 'IronMan') {
           if (this.player.mp >= 150) {
             this.player.mp -= 150
@@ -154,7 +170,11 @@ export default function update () {
             this.player.shootable = true
           }
         }
-        this.keyX._justUp = false
+
+        if (this.player.name === 'CaptainAmerica') {
+          this.player.shootable = true
+          this.player.invincible = false
+        }
       }
     }
 

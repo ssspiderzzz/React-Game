@@ -9,6 +9,29 @@ export default function initSpiderMan (scene) {
   scene.player.bar = scene.add.graphics()
   scene.player.hp = 100
   scene.player.mp = 100
+
+  // web
+  this.webs = this.physics.add.group()
+  this.webs_hit = this.physics.add.group()
+  this.anims.create({
+    key: 'web',
+    frames: this.anims.generateFrameNumbers('web', {
+      start: 63,
+      end: 68
+    }),
+    frameRate: 6,
+    repeat: 0
+  })
+  this.anims.create({
+    key: 'web_hit',
+    frames: this.anims.generateFrameNumbers('web', {
+      start: 66,
+      end: 68
+    }),
+    frameRate: 5,
+    repeat: 1
+  })
+
   scene.anims.create({
     key: 'walk',
     frames: scene.anims.generateFrameNumbers('spiderman', {

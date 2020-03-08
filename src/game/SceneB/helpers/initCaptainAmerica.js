@@ -6,6 +6,7 @@ export default function initCaptainAmerica (scene) {
   scene.player.setSize(22, 45, 0, 0).setOffset(24, 10)
   scene.player.alive = true
   scene.player.shootable = true
+  scene.player.invincible = false
   scene.player.body.collideWorldBounds = true
   scene.player.facing = 'right'
   scene.player.bar = scene.add.graphics()
@@ -14,7 +15,6 @@ export default function initCaptainAmerica (scene) {
   scene.player.mp = 100
   // CaptainAmerica throws shield
   scene.shields = scene.physics.add.group()
-  scene.shields_hit = scene.physics.add.group()
   // CaptainAmerica animations
 
   scene.anims.create({
@@ -42,7 +42,7 @@ export default function initCaptainAmerica (scene) {
       start: 10,
       end: 12
     }),
-    frameRate: 10,
+    frameRate: 20,
     repeat: 0
   })
   scene.anims.create({
@@ -50,6 +50,15 @@ export default function initCaptainAmerica (scene) {
     frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 12,
       end: 12
+    }),
+    frameRate: 1,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'dash',
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
+      start: 17,
+      end: 17
     }),
     frameRate: 1,
     repeat: 0
@@ -79,15 +88,6 @@ export default function initCaptainAmerica (scene) {
       end: 28
     }),
     frameRate: 1,
-    repeat: 0
-  })
-  scene.anims.create({
-    key: 'shield_hit',
-    frames: scene.anims.generateFrameNumbers('hit_effect', {
-      start: 0,
-      end: 7
-    }),
-    frameRate: 7,
     repeat: 0
   })
 }

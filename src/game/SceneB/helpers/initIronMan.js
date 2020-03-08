@@ -19,7 +19,6 @@ export default function initIronMan (scene) {
   // IronMan shoots beams
   scene.beams = scene.physics.add.group()
   scene.uniBeams = scene.physics.add.group()
-  scene.beams_hit = scene.physics.add.group()
   // IronMan animations
   scene.anims.create({
     key: 'idle',
@@ -82,15 +81,6 @@ export default function initIronMan (scene) {
       end: 26
     }),
     frameRate: 3,
-    repeat: 0
-  })
-  scene.anims.create({
-    key: 'beam_hit',
-    frames: scene.anims.generateFrameNumbers('hit_effect', {
-      start: 0,
-      end: 7
-    }),
-    frameRate: 7,
     repeat: 0
   })
   scene.anims.create({

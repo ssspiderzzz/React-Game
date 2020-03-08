@@ -6,9 +6,7 @@ import {
   captainShieldReturn,
   thorHammerReturn,
   knockBack,
-  beamHitEffect,
-  shieldHitEffect,
-  hammerHitEffect,
+  hitEffect,
   drawDamageText
 } from './helpers'
 
@@ -70,6 +68,18 @@ export default function create () {
     coin.setBounceX(Phaser.Math.FloatBetween(0.6, 0.6))
   })
 
+  // hit effects
+  this.hitEffects = this.physics.add.group()
+  this.anims.create({
+    key: 'hit_effect',
+    frames: this.anims.generateFrameNumbers('hit_effect', {
+      start: 0,
+      end: 7
+    }),
+    frameRate: 7,
+    repeat: 0
+  })
+
   // slimes
   this.slimes = this.physics.add.group({
     key: 'slime_blue',
@@ -111,28 +121,6 @@ export default function create () {
       slime.anims.play('slime_red', true)
       slime.slimeType = 'red'
     }
-  })
-
-  // web
-  this.webs = this.physics.add.group()
-  this.webs_hit = this.physics.add.group()
-  this.anims.create({
-    key: 'web',
-    frames: this.anims.generateFrameNumbers('web', {
-      start: 63,
-      end: 68
-    }),
-    frameRate: 6,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'web_hit',
-    frames: this.anims.generateFrameNumbers('web', {
-      start: 66,
-      end: 68
-    }),
-    frameRate: 5,
-    repeat: 1
   })
 
   // red projectile from slime
@@ -219,9 +207,13 @@ export default function create () {
   this.physics.add.collider(this.slimes, this.platforms)
   this.physics.add.collider(this.slimes, this.invisibleWalls)
   this.physics.add.collider(this.player, this.slimes, (player, slime) => {
-    let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
-    this.player.hp -= floatSlimeDmg
-    drawDamageText(this, player, floatSlimeDmg)
+    if (!this.player.invincible) {
+      let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
+      this.player.hp -= floatSlimeDmg
+      drawDamageText(this, player, floatSlimeDmg)
+    } else {
+      slime.hp -= 30
+    }
     knockBack(this, player, slime)
   })
 
@@ -229,10 +221,13 @@ export default function create () {
     this.player,
     this.red_projectiles,
     (player, red_projectile) => {
-      let floatProjectileDmg = Math.floor(Math.random() * 15) + 15
-      this.player.hp -= floatProjectileDmg
-      drawDamageText(this, player, floatProjectileDmg)
-      knockBack(this, player, red_projectile)
+      if (!this.player.invincible) {
+        let floatProjectileDmg = Math.floor(Math.random() * 15) + 15
+        this.player.hp -= floatProjectileDmg
+        drawDamageText(this, player, floatProjectileDmg)
+        knockBack(this, player, red_projectile)
+      }
+      hitEffect(this, red_projectile)
       red_projectile.disableBody(true, true)
       red_projectile.destroy()
     }
@@ -240,7 +235,8 @@ export default function create () {
 
   if (this.player.name === 'IronMan') {
     this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
-      beamHitEffect(this, beam)
+      hitEffect(this, beam)
+      beam.disableBody(true, true)
       slime.hp -= Math.floor(Math.random() * 15) + 10
     })
     this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
@@ -261,7 +257,7 @@ export default function create () {
     this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
       if (shield.damageable) {
         shield.damageable = false
-        shieldHitEffect(this, shield)
+        hitEffect(this, shield)
         slime.hp -= Math.floor(Math.random() * 25) + 10
       }
     })
@@ -277,7 +273,7 @@ export default function create () {
       if (hammer.damageable) {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
-        hammerHitEffect(this, hammer)
+        hitEffect(this, hammer)
         slime.hp -= Math.floor(Math.random() * 35) + 10
       }
     })
