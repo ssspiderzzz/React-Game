@@ -258,7 +258,7 @@ export default function create () {
       if (shield.damageable) {
         shield.damageable = false
         hitEffect(this, shield)
-        slime.hp -= Math.floor(Math.random() * 25) + 10
+        slime.hp -= Math.floor(Math.random() * 30) + 20
       }
     })
     this.physics.add.overlap(this.player, this.shields, (player, shield) => {
@@ -275,7 +275,7 @@ export default function create () {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
         hitEffect(this, hammer)
-        slime.hp -= Math.floor(Math.random() * 35) + 10
+        slime.hp -= Math.floor(Math.random() * 30) + 10
       }
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {

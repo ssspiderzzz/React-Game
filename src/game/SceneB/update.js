@@ -161,6 +161,22 @@ export default function update () {
           this.player.invincible = true
           this.player.anims.play('block', true)
         }
+        // Thor
+        if (this.player.name === 'Thor') {
+          this.player.shootable = false
+          this.player.body.setVelocityX(0)
+          if (this.cursors.right.isDown) {
+            this.player.facing = 'right'
+            this.player.flipX = false
+          } else if (this.cursors.left.isDown) {
+            this.player.facing = 'left'
+            this.player.flipX = true
+          }
+          if (this.player.mp < 99) {
+            this.player.mp += 1
+          }
+          this.player.anims.play('special', true)
+        }
       }
 
       if (this.keyX._justUp) {
@@ -183,6 +199,10 @@ export default function update () {
         if (this.player.name === 'CaptainAmerica') {
           this.player.shootable = true
           this.player.invincible = false
+        }
+
+        if (this.player.name === 'Thor') {
+          this.player.shootable = true
         }
       }
     }
@@ -288,8 +308,11 @@ export default function update () {
     }
   }
 
-  // Thor's Special move, shield comeback
+  // Thor's Special move, hammer comeback
   if (this.player.name === 'Thor') {
+    if (this.player.mp <= 100) {
+      this.player.mp += 0.1
+    }
     if (this.hammers.children.size > 0) {
       this.hammers.children.iterate(hammer => {
         if (hammer.return) {

@@ -53,6 +53,15 @@ export default function initThor (scene) {
     repeat: 0
   })
   scene.anims.create({
+    key: 'special',
+    frames: scene.anims.generateFrameNumbers('Thor', {
+      start: 16,
+      end: 18
+    }),
+    frameRate: 3,
+    repeat: 0
+  })
+  scene.anims.create({
     key: 'hit',
     frames: scene.anims.generateFrameNumbers('Thor', {
       start: 24,
