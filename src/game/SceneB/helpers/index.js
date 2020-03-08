@@ -91,6 +91,9 @@ export function captainAmericaShooter (scene, shootDirection) {
   let shootSpeed
   let shootX
   let flipX
+  // throw out shield
+  scene.player.shieldOn = false
+
   if (shootDirection === 'right') {
     shootSpeed = 600
     shootX = 50

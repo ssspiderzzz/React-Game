@@ -5,6 +5,7 @@ export default function initCaptainAmerica (scene) {
   scene.player.name = 'CaptainAmerica'
   scene.player.setSize(22, 45, 0, 0).setOffset(24, 10)
   scene.player.alive = true
+  scene.player.shieldOn = true
   scene.player.shootable = true
   scene.player.invincible = false
   scene.player.body.collideWorldBounds = true
@@ -55,7 +56,7 @@ export default function initCaptainAmerica (scene) {
     repeat: 0
   })
   scene.anims.create({
-    key: 'dash',
+    key: 'block',
     frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 17,
       end: 17

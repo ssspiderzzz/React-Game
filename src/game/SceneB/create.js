@@ -265,6 +265,7 @@ export default function create () {
       shield.damageable = true
       shield.disableBody(true, true)
       this.player.shootable = true
+      this.player.shieldOn = true
     })
   }
 

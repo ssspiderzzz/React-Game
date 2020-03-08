@@ -11,11 +11,12 @@ import {
 } from './helpers'
 
 export default function update () {
+  // hp and mp bar drawing
+  drawHealthBar(this, this.player)
+  drawEnergyBar(this, this.player)
+
   // player
   if (this.player.alive) {
-    drawHealthBar(this, this.player)
-    drawEnergyBar(this, this.player)
-
     // player runs and stands
     if (!this.knockBack) {
       if (this.player.shootable) {
@@ -134,23 +135,31 @@ export default function update () {
           }
           if (this.player.mp <= 151) {
             this.player.mp += 1
-            this.player.anims.play('special', true)
-          } else {
-            this.player.anims.play('special', true)
           }
+          this.player.anims.play('special', true)
         }
         // Captain Ameirca
-        if (this.player.name === 'CaptainAmerica') {
-          if (this.player.facing === 'right') {
+        if (
+          this.player.name === 'CaptainAmerica' &&
+          this.player.mp > 1 &&
+          this.player.shieldOn
+        ) {
+          if (this.cursors.right.isDown) {
             this.player.flipX = false
-            this.player.body.setVelocityX(300)
-          } else if (this.player.facing === 'left') {
+            this.player.body.setVelocityX(150)
+            this.player.facing = 'right'
+          } else if (this.cursors.left.isDown) {
             this.player.flipX = true
-            this.player.body.setVelocityX(-300)
+            this.player.body.setVelocityX(-150)
+            this.player.facing = 'left'
+          } else {
+            this.player.body.setVelocityX(0)
           }
+
+          this.player.mp -= 0.5
           this.player.shootable = false
           this.player.invincible = true
-          this.player.anims.play('dash', true)
+          this.player.anims.play('block', true)
         }
       }
 
@@ -248,8 +257,14 @@ export default function update () {
     }
   }
 
-  // Captain America's Special move, shield comeback
-  if (this.player.name === 'CaptainAmerica') {
+  // Captain America's Special move, shield comeback, health regeneration
+  if (this.player.name === 'CaptainAmerica' && this.player.alive) {
+    if (this.player.hp < 98) {
+      if (Math.random() < 0.01) this.player.hp += 1
+    }
+    if (this.player.mp <= 100) {
+      this.player.mp += 0.1
+    }
     if (this.shields.children.size > 0) {
       this.shields.children.iterate(shield => {
         if (shield.return) {
