@@ -23,7 +23,7 @@ export default function create () {
   pause.setInteractive()
   pause.on('pointerdown', () => {
     this.scene.pause()
-    this.scene.launch('SceneC')
+    this.scene.launch('SceneC', { currentSelect: this.select })
     transitionBlack.setAlpha(0.5)
   })
 
@@ -317,17 +317,6 @@ export default function create () {
   this.collectionText = this.add.text(60, 7, this.money, {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
-  })
-  let restartButton = this.add.text(750, 20, 'Restart', { fontSize: 22 })
-  restartButton.setInteractive()
-  restartButton.on('pointerdown', () => {
-    this.scene.restart()
-  })
-  let menuButton = this.add.text(880, 20, 'Main Menu', { fontSize: 22 })
-  menuButton.setInteractive()
-  menuButton.on('pointerdown', () => {
-    this.anims.anims.clear()
-    this.scene.start('SceneA')
   })
 }
 
