@@ -11,7 +11,11 @@ import {
   drawEnergyBar
 } from './helpers'
 
-export default function update () {
+export default function update (time, delta) {
+  // timer
+  this.timer += delta
+  this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
+
   // hp and mp bar drawing
   drawHealthBar(this, this.player)
   drawEnergyBar(this, this.player)

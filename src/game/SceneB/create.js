@@ -13,6 +13,12 @@ import {
 export default function create () {
   let name = this.select
 
+  // timmer
+  this.timeText = this.add
+    .text(512, 35)
+    .setDepth(5)
+    .setOrigin(0.5)
+  this.timer = 0
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
