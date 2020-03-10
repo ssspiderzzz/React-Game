@@ -126,10 +126,10 @@ export default function update (time, delta) {
           this.player.mp >= 10
         ) {
           // this.player.shootable = false
-          if (this.keyZ.duration < 2500) {
+          if (this.keyZ.duration < 1000) {
             this.player.thorSwing = this.keyZ.duration
           } else {
-            this.player.thorSwing = 2500
+            this.player.thorSwing = 1000
           }
           if (this.player.facing === 'right') {
             thorShooter(this, 'right', this.player.thorSwing)
