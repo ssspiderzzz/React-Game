@@ -11,6 +11,7 @@ import captain_america_sprites from '../../assets/characters/captain_america_spr
 import thor_sprites from '../../assets/characters/thor_sprites.png'
 import pause from '../../assets/pause.png'
 import options from '../../assets/options.png'
+import lightning from '../../assets/lightning700x700.png'
 
 export default function preload () {
   this.load.crossOrigin = true
@@ -58,5 +59,9 @@ export default function preload () {
   this.load.spritesheet('Thor', thor_sprites, {
     frameWidth: 70,
     frameHeight: 55
+  })
+  this.load.spritesheet('lightning', lightning, {
+    frameWidth: 350,
+    frameHeight: 350
   })
 }

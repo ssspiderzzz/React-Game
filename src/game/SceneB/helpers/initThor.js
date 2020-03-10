@@ -69,7 +69,7 @@ export default function initThor (scene) {
       start: 22,
       end: 23
     }),
-    frameRate: 1,
+    frameRate: 3,
     repeat: 0
   })
   scene.anims.create({
@@ -80,6 +80,15 @@ export default function initThor (scene) {
     }),
     frameRate: 1,
     repeat: 0
+  })
+  scene.anims.create({
+    key: 'lightning',
+    frames: scene.anims.generateFrameNumbers('lightning', {
+      start: 0,
+      end: 2
+    }),
+    frameRate: 10,
+    repeat: -1
   })
   scene.anims.create({
     key: 'hit',

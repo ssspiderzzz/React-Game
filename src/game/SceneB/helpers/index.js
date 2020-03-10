@@ -133,7 +133,7 @@ export function thorShooter (scene, shootDirection, swingDuration) {
   let shootX
   let flipX
   // energy cost for normal attack
-  scene.player.mp -= 20
+  scene.player.mp -= 10
 
   let swingModifier = swingDuration / 2500
   swingModifier < 0.25
@@ -183,34 +183,37 @@ export function thorThunder (scene, shootDirection) {
   let shootSpeed
   let shootX
   let flipX
-  // energy cost for thunder
-
-  if (shootDirection === 'right') {
-    shootSpeed = 500
-    shootX = 50
-    flipX = false
-  }
-  if (shootDirection === 'left') {
-    shootSpeed = -500
-    shootX = -50
-    flipX = true
-  }
-
-  let lightningRod = scene.lightningRods.create(
-    scene.player.x + shootX,
-    scene.player.y + 10,
-    'lightningRod'
-  )
-  lightningRod.body.setSize(8, 5, 0, 0).setOffset(23.5, 25)
-  lightningRod.body.collideWorldBounds = false
-  lightningRod.body.allowGravity = false
-  lightningRod.anims.play('lightningRod', true)
-  lightningRod.flipX = flipX
-  lightningRod.body.velocity.x = shootSpeed
-
   setTimeout(() => {
-    lightningRod.destroy()
-  }, 3000)
+    // energy cost for thunder
+    scene.player.mp -= 50
+    if (shootDirection === 'right') {
+      shootSpeed = 900
+      shootX = 50
+      flipX = false
+    }
+    if (shootDirection === 'left') {
+      shootSpeed = -900
+      shootX = -50
+      flipX = true
+    }
+
+    let lightningRod = scene.lightningRods.create(
+      scene.player.x + shootX,
+      scene.player.y + 10,
+      'lightningRod'
+    )
+    lightningRod.body.setSize(8, 5, 0, 0).setOffset(23.5, 25)
+    lightningRod.body.collideWorldBounds = false
+    lightningRod.body.allowGravity = false
+    lightningRod.anims.play('lightningRod', true)
+    lightningRod.flipX = flipX
+    lightningRod.body.velocity.x = shootSpeed
+    lightningRod.setVisible(false)
+
+    setTimeout(() => {
+      lightningRod.destroy()
+    }, 3000)
+  }, 333)
 }
 
 export function spiderManShooter (scene, shootDirection, shootSpeed) {

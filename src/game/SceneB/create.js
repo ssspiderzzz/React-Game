@@ -297,10 +297,51 @@ export default function create () {
       (slime, lightningRod) => {
         if (slime.hurtable) {
           slime.hurtable = false
-          slime.hp -= Math.floor(Math.random() * 50) + 10
+          slime.hp -= Math.floor(Math.random() * 100) + 30
+
+          let lightning = this.lightnings.create(
+            slime.x,
+            slime.y - 353,
+            'lightning'
+          )
+          lightning.followObject = slime
+          lightning.setScale(1, 2.5)
+          lightning.body.collideWorldBounds = false
+          lightning.body.allowGravity = false
+          lightning.anims.play('lightning', true)
+
+          this.tweens.add({
+            targets: lightning,
+            alphaTopLeft: {
+              value: 0,
+              duration: 500,
+              ease: 'Linear'
+            },
+            alphaTopRight: {
+              value: 0,
+              duration: 500,
+              ease: 'Linear'
+            },
+            alphaBottomLeft: {
+              value: 0,
+              duration: 2000,
+              ease: 'Linear'
+            },
+            alphaBottomRight: {
+              value: 0,
+              duration: 2000,
+              ease: 'Linear'
+            },
+            loop: 0
+          })
+
           setTimeout(() => {
             slime.hurtable = true
-          }, 1000)
+          }, 200)
+
+          setTimeout(() => {
+            lightning.destroy()
+          }, 2000)
         }
       }
     )

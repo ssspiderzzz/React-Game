@@ -103,7 +103,7 @@ export default function update () {
         if (
           this.player.name === 'Thor' &&
           this.player.thorSwing &&
-          this.player.mp >= 20
+          this.player.mp >= 10
         ) {
           // this.player.shootable = false
           if (this.keyZ.duration < 2500) {
@@ -125,7 +125,7 @@ export default function update () {
         } else if (
           this.player.name === 'Thor' &&
           this.player.thorSwing &&
-          this.player.mp < 20
+          this.player.mp < 10
         ) {
           this.player.shootable = true
           this.player.thorSwing = false
@@ -191,7 +191,7 @@ export default function update () {
             this.player.flipX = true
           }
           if (this.player.mp < 99) {
-            this.player.mp += 20
+            this.player.mp += 0.1
           }
           this.player.anims.play('charging', true)
         }
@@ -220,14 +220,13 @@ export default function update () {
         }
 
         if (this.player.name === 'Thor') {
-          if (this.player.mp >= 99) {
-            this.player.mp -= 100
+          if (this.player.mp >= 50) {
             this.player.anims.play('specialShoot', true)
             thorThunder(this, this.player.facing)
 
             setTimeout(() => {
               this.player.shootable = true
-            }, 1000)
+            }, 1500)
           } else {
             this.player.shootable = true
           }
