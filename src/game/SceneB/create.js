@@ -20,6 +20,7 @@ export default function create () {
     .setOrigin(0.5)
   this.timer = 0
   this.startTimer = false
+  this.triggerOnce = 1
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 

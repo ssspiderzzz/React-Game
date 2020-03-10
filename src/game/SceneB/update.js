@@ -14,13 +14,18 @@ import {
 export default function update (time, delta) {
   // timer
   if (
-    this.cursors.right.isDown ||
+    (this.triggerOnce && this.cursors.right.isDown) ||
     this.cursors.left.isDown ||
     this.cursors.up.isDown ||
     this.keyZ.isDown ||
     this.keyX.isDown
   ) {
     this.startTimer = true
+    this.triggerOnce -= 1
+  }
+  if (this.slimes.children.size === 0) {
+    this.startTimer = false
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
   }
   if (this.startTimer) {
     this.timer += delta
