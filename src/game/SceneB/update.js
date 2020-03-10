@@ -3,6 +3,7 @@ import {
   ironManUnibeam,
   captainAmericaShooter,
   thorShooter,
+  thorThunder,
   spiderManShooter,
   randomMove,
   shootProjectile,
@@ -10,7 +11,27 @@ import {
   drawEnergyBar
 } from './helpers'
 
-export default function update () {
+export default function update (time, delta) {
+  // timer
+  if (
+    (this.triggerOnce && this.cursors.right.isDown) ||
+    this.cursors.left.isDown ||
+    this.cursors.up.isDown ||
+    this.keyZ.isDown ||
+    this.keyX.isDown
+  ) {
+    this.startTimer = true
+    this.triggerOnce -= 1
+  }
+  if (this.slimes.children.size === 0) {
+    this.startTimer = false
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
+  }
+  if (this.startTimer) {
+    this.timer += delta
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
+  }
+
   // hp and mp bar drawing
   drawHealthBar(this, this.player)
   drawEnergyBar(this, this.player)
@@ -102,7 +123,7 @@ export default function update () {
         if (
           this.player.name === 'Thor' &&
           this.player.thorSwing &&
-          this.player.mp >= 20
+          this.player.mp >= 10
         ) {
           // this.player.shootable = false
           if (this.keyZ.duration < 2500) {
@@ -124,7 +145,7 @@ export default function update () {
         } else if (
           this.player.name === 'Thor' &&
           this.player.thorSwing &&
-          this.player.mp < 20
+          this.player.mp < 10
         ) {
           this.player.shootable = true
           this.player.thorSwing = false
@@ -166,11 +187,17 @@ export default function update () {
           } else {
             this.player.body.setVelocityX(0)
           }
-
           this.player.mp -= 0.5
           this.player.shootable = false
           this.player.invincible = true
           this.player.anims.play('block', true)
+        } else if (
+          this.player.name === 'CaptainAmerica' &&
+          this.player.mp <= 1 &&
+          this.player.shieldOn
+        ) {
+          this.player.shootable = true
+          this.player.invincible = false
         }
         // Thor
         if (this.player.name === 'Thor') {
@@ -184,9 +211,9 @@ export default function update () {
             this.player.flipX = true
           }
           if (this.player.mp < 99) {
-            this.player.mp += 1
+            this.player.mp += 0.1
           }
-          this.player.anims.play('special', true)
+          this.player.anims.play('charging', true)
         }
       }
 
@@ -213,7 +240,16 @@ export default function update () {
         }
 
         if (this.player.name === 'Thor') {
-          this.player.shootable = true
+          if (this.player.mp >= 50) {
+            this.player.anims.play('specialShoot', true)
+            thorThunder(this, this.player.facing)
+
+            setTimeout(() => {
+              this.player.shootable = true
+            }, 1500)
+          } else {
+            this.player.shootable = true
+          }
         }
       }
     }

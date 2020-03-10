@@ -94,41 +94,38 @@ export function captainAmericaShooter (scene, shootDirection) {
   // throw out shield
   scene.player.shieldOn = false
 
-  if (shootDirection === 'right') {
-    shootSpeed = 600
-    shootX = 50
-    flipX = false
-  }
-  if (shootDirection === 'left') {
-    shootSpeed = -600
-    shootX = -50
-    flipX = true
-  }
-
-  let shield = scene.shields.create(
-    scene.player.x + shootX,
-    scene.player.y + 10,
-    'shield'
-  )
-  shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
-  shield.setCollideWorldBounds(true)
-  shield.damageable = true
-  shield.body.onWorldBounds = true
-  shield.body.allowGravity = false
-  shield.anims.play('shield', true)
-  shield.shieldTravelSpeedX = Math.abs(shootSpeed)
-  shield.flipX = flipX
-  shield.setScale(2, 2)
-  shield.setVisible(false)
-
   setTimeout(() => {
+    if (shootDirection === 'right') {
+      shootSpeed = 600
+      shootX = 50
+      flipX = false
+    }
+    if (shootDirection === 'left') {
+      shootSpeed = -600
+      shootX = -50
+      flipX = true
+    }
+
+    let shield = scene.shields.create(
+      scene.player.x + shootX,
+      scene.player.y + 10,
+      'shield'
+    )
+    shield.body.setSize(15, 15, 0, 0).setOffset(27.5, 20)
+    shield.setCollideWorldBounds(true)
+    shield.damageable = true
+    shield.body.onWorldBounds = true
+    shield.body.allowGravity = false
+    shield.anims.play('shield', true)
+    shield.shieldTravelSpeedX = Math.abs(shootSpeed)
+    shield.flipX = flipX
+    shield.setScale(2, 2)
     shield.body.velocity.x = shootSpeed
-    shield.setVisible(true)
-  }, 100)
 
-  setTimeout(() => {
-    shield.destroy()
-  }, 5000)
+    setTimeout(() => {
+      shield.destroy()
+    }, 5000)
+  }, 100)
 }
 
 export function thorShooter (scene, shootDirection, swingDuration) {
@@ -136,7 +133,7 @@ export function thorShooter (scene, shootDirection, swingDuration) {
   let shootX
   let flipX
   // energy cost for normal attack
-  scene.player.mp -= 20
+  scene.player.mp -= 10
 
   let swingModifier = swingDuration / 2500
   swingModifier < 0.25
@@ -180,6 +177,43 @@ export function thorShooter (scene, shootDirection, swingDuration) {
   setTimeout(() => {
     hammer.destroy()
   }, 3000)
+}
+
+export function thorThunder (scene, shootDirection) {
+  let shootSpeed
+  let shootX
+  let flipX
+  setTimeout(() => {
+    // energy cost for thunder
+    scene.player.mp -= 50
+    if (shootDirection === 'right') {
+      shootSpeed = 900
+      shootX = 50
+      flipX = false
+    }
+    if (shootDirection === 'left') {
+      shootSpeed = -900
+      shootX = -50
+      flipX = true
+    }
+
+    let lightningRod = scene.lightningRods.create(
+      scene.player.x + shootX,
+      scene.player.y + 10,
+      'lightningRod'
+    )
+    lightningRod.body.setSize(8, 5, 0, 0).setOffset(23.5, 25)
+    lightningRod.body.collideWorldBounds = false
+    lightningRod.body.allowGravity = false
+    lightningRod.anims.play('lightningRod', true)
+    lightningRod.flipX = flipX
+    lightningRod.body.velocity.x = shootSpeed
+    lightningRod.setVisible(false)
+
+    setTimeout(() => {
+      lightningRod.destroy()
+    }, 3000)
+  }, 333)
 }
 
 export function spiderManShooter (scene, shootDirection, shootSpeed) {

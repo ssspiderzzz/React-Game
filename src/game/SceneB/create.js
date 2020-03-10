@@ -13,6 +13,14 @@ import {
 export default function create () {
   let name = this.select
 
+  // timmer
+  this.timeText = this.add
+    .text(512, 35)
+    .setDepth(5)
+    .setOrigin(0.5)
+  this.timer = 0
+  this.startTimer = false
+  this.triggerOnce = 1
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
@@ -110,6 +118,7 @@ export default function create () {
   })
   this.slimes.children.iterate((slime, index) => {
     slime.bar = this.add.graphics()
+    slime.hurtable = true
     slime.hp = 100
     slime.body.collideWorldBounds = true
     slime.setScale(2, 2)
@@ -251,15 +260,21 @@ export default function create () {
       () => {
         this.shields.children.iterate(shield => {
           captainShieldReturn(this.player, shield)
+          this.slimes.children.iterate(slime => {
+            slime.hurtable = true
+          })
         })
       },
       this
     )
     this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
-      if (shield.damageable) {
-        shield.damageable = false
+      if (slime.hurtable) {
+        slime.hurtable = false
         hitEffect(this, shield)
         slime.hp -= Math.floor(Math.random() * 30) + 20
+        setTimeout(() => {
+          slime.hurtable = true
+        }, 200)
       }
     })
     this.physics.add.overlap(this.player, this.shields, (player, shield) => {
@@ -284,6 +299,60 @@ export default function create () {
       hammer.disableBody(true, true)
       this.player.shootable = true
     })
+    this.physics.add.overlap(
+      this.slimes,
+      this.lightningRods,
+      (slime, lightningRod) => {
+        if (slime.hurtable) {
+          slime.hurtable = false
+          slime.hp -= Math.floor(Math.random() * 100) + 30
+
+          let lightning = this.lightnings.create(
+            slime.x,
+            slime.y - 353,
+            'lightning'
+          )
+          lightning.followObject = slime
+          lightning.setScale(1, 2.5)
+          lightning.body.collideWorldBounds = false
+          lightning.body.allowGravity = false
+          lightning.anims.play('lightning', true)
+
+          this.tweens.add({
+            targets: lightning,
+            alphaTopLeft: {
+              value: 0,
+              duration: 500,
+              ease: 'Linear'
+            },
+            alphaTopRight: {
+              value: 0,
+              duration: 500,
+              ease: 'Linear'
+            },
+            alphaBottomLeft: {
+              value: 0,
+              duration: 2000,
+              ease: 'Linear'
+            },
+            alphaBottomRight: {
+              value: 0,
+              duration: 2000,
+              ease: 'Linear'
+            },
+            loop: 0
+          })
+
+          setTimeout(() => {
+            slime.hurtable = true
+          }, 200)
+
+          setTimeout(() => {
+            lightning.destroy()
+          }, 2000)
+        }
+      }
+    )
   }
 
   if (this.player.name === 'SpiderMan') {
