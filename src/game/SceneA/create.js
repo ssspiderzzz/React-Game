@@ -58,10 +58,20 @@ export default function create () {
     )
     .setVisible(false)
   let thor_passive_text = this.add
-    .text(775, 480, ['God of Thunder (Passive)', '   He is basically God'], {
-      fontSize: 14,
-      align: 'Left'
-    })
+    .text(
+      775,
+      480,
+      [
+        'God of Thunder (Passive)',
+        '   Lightning attacks have',
+        '   chance to instantly',
+        '   kill the target'
+      ],
+      {
+        fontSize: 14,
+        align: 'Left'
+      }
+    )
     .setVisible(false)
 
   // play button
