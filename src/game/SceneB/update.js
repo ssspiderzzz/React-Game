@@ -13,8 +13,19 @@ import {
 
 export default function update (time, delta) {
   // timer
-  this.timer += delta
-  this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
+  if (
+    this.cursors.right.isDown ||
+    this.cursors.left.isDown ||
+    this.cursors.up.isDown ||
+    this.keyZ.isDown ||
+    this.keyX.isDown
+  ) {
+    this.startTimer = true
+  }
+  if (this.startTimer) {
+    this.timer += delta
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
+  }
 
   // hp and mp bar drawing
   drawHealthBar(this, this.player)

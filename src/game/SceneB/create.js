@@ -19,6 +19,7 @@ export default function create () {
     .setDepth(5)
     .setOrigin(0.5)
   this.timer = 0
+  this.startTimer = false
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
