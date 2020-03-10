@@ -133,18 +133,18 @@ export function thorShooter (scene, shootDirection, swingDuration) {
   let shootX
   let flipX
   // energy cost for normal attack
-  scene.player.mp -= 10
+  scene.player.mp -= 5
 
-  let swingModifier = swingDuration / 2500
+  let swingModifier = swingDuration / 1000
   swingModifier < 0.25
     ? (swingModifier = 1)
     : swingModifier < 0.5
-    ? (swingModifier = 1.5)
+    ? (swingModifier = 1.33)
     : swingModifier < 0.75
-    ? (swingModifier = 1.5)
+    ? (swingModifier = 1.66)
     : swingModifier < 1
-    ? (swingModifier = 2.5)
-    : (swingModifier = 3)
+    ? (swingModifier = 2)
+    : (swingModifier = 2.5)
 
   if (shootDirection === 'right') {
     shootSpeed = 450 * swingModifier
