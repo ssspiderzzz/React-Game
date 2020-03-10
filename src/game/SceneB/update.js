@@ -167,11 +167,17 @@ export default function update () {
           } else {
             this.player.body.setVelocityX(0)
           }
-
           this.player.mp -= 0.5
           this.player.shootable = false
           this.player.invincible = true
           this.player.anims.play('block', true)
+        } else if (
+          this.player.name === 'CaptainAmerica' &&
+          this.player.mp <= 1 &&
+          this.player.shieldOn
+        ) {
+          this.player.shootable = true
+          this.player.invincible = false
         }
         // Thor
         if (this.player.name === 'Thor') {
