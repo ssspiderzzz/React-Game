@@ -122,6 +122,8 @@ export function captainAmericaShooter (scene, shootDirection) {
   shield.setVisible(false)
 
   setTimeout(() => {
+    shield.body.x = scene.player.x + shootX
+    shield.body.y = scene.player.y + 10
     shield.body.velocity.x = shootSpeed
     shield.setVisible(true)
   }, 100)

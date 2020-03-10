@@ -69,7 +69,7 @@ export default function initThor (scene) {
       start: 22,
       end: 23
     }),
-    frameRate: 2,
+    frameRate: 1,
     repeat: 0
   })
   scene.anims.create({

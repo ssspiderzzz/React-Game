@@ -110,6 +110,7 @@ export default function create () {
   })
   this.slimes.children.iterate((slime, index) => {
     slime.bar = this.add.graphics()
+    slime.hurtable = true
     slime.hp = 100
     slime.body.collideWorldBounds = true
     slime.setScale(2, 2)
@@ -251,15 +252,21 @@ export default function create () {
       () => {
         this.shields.children.iterate(shield => {
           captainShieldReturn(this.player, shield)
+          this.slimes.children.iterate(slime => {
+            slime.hurtable = true
+          })
         })
       },
       this
     )
     this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
-      if (shield.damageable) {
-        shield.damageable = false
+      if (slime.hurtable) {
+        slime.hurtable = false
         hitEffect(this, shield)
         slime.hp -= Math.floor(Math.random() * 30) + 20
+        setTimeout(() => {
+          slime.hurtable = true
+        }, 200)
       }
     })
     this.physics.add.overlap(this.player, this.shields, (player, shield) => {
@@ -284,6 +291,19 @@ export default function create () {
       hammer.disableBody(true, true)
       this.player.shootable = true
     })
+    this.physics.add.overlap(
+      this.slimes,
+      this.lightningRods,
+      (slime, lightningRod) => {
+        if (slime.hurtable) {
+          slime.hurtable = false
+          slime.hp -= Math.floor(Math.random() * 50) + 10
+          setTimeout(() => {
+            slime.hurtable = true
+          }, 1000)
+        }
+      }
+    )
   }
 
   if (this.player.name === 'SpiderMan') {
