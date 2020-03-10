@@ -3,6 +3,7 @@ import {
   ironManUnibeam,
   captainAmericaShooter,
   thorShooter,
+  thorThunder,
   spiderManShooter,
   randomMove,
   shootProjectile,
@@ -184,9 +185,9 @@ export default function update () {
             this.player.flipX = true
           }
           if (this.player.mp < 99) {
-            this.player.mp += 1
+            this.player.mp += 20
           }
-          this.player.anims.play('special', true)
+          this.player.anims.play('charging', true)
         }
       }
 
@@ -213,7 +214,17 @@ export default function update () {
         }
 
         if (this.player.name === 'Thor') {
-          this.player.shootable = true
+          if (this.player.mp >= 99) {
+            this.player.mp -= 100
+            this.player.anims.play('specialShoot', true)
+            thorThunder(this, this.player.facing)
+
+            setTimeout(() => {
+              this.player.shootable = true
+            }, 1000)
+          } else {
+            this.player.shootable = true
+          }
         }
       }
     }

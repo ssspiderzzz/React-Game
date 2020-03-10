@@ -13,6 +13,8 @@ export default function initThor (scene) {
   scene.player.thorSwing = 0
   // Thor throws hammer
   scene.hammers = scene.physics.add.group()
+  scene.lightningRods = scene.physics.add.group()
+  scene.lightnings = scene.physics.add.group()
   // Thor animations
 
   scene.anims.create({
@@ -53,12 +55,30 @@ export default function initThor (scene) {
     repeat: 0
   })
   scene.anims.create({
-    key: 'special',
+    key: 'charging',
     frames: scene.anims.generateFrameNumbers('Thor', {
-      start: 16,
-      end: 18
+      start: 19,
+      end: 20
     }),
-    frameRate: 3,
+    frameRate: 5,
+    repeat: -1
+  })
+  scene.anims.create({
+    key: 'specialShoot',
+    frames: scene.anims.generateFrameNumbers('Thor', {
+      start: 22,
+      end: 23
+    }),
+    frameRate: 2,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'lightningRod',
+    frames: scene.anims.generateFrameNumbers('Thor', {
+      start: 32,
+      end: 32
+    }),
+    frameRate: 1,
     repeat: 0
   })
   scene.anims.create({

@@ -182,6 +182,40 @@ export function thorShooter (scene, shootDirection, swingDuration) {
   }, 3000)
 }
 
+export function thorThunder (scene, shootDirection) {
+  let shootSpeed
+  let shootX
+  let flipX
+  // energy cost for thunder
+
+  if (shootDirection === 'right') {
+    shootSpeed = 500
+    shootX = 50
+    flipX = false
+  }
+  if (shootDirection === 'left') {
+    shootSpeed = -500
+    shootX = -50
+    flipX = true
+  }
+
+  let lightningRod = scene.lightningRods.create(
+    scene.player.x + shootX,
+    scene.player.y + 10,
+    'lightningRod'
+  )
+  lightningRod.body.setSize(8, 5, 0, 0).setOffset(23.5, 25)
+  lightningRod.body.collideWorldBounds = false
+  lightningRod.body.allowGravity = false
+  lightningRod.anims.play('lightningRod', true)
+  lightningRod.flipX = flipX
+  lightningRod.body.velocity.x = shootSpeed
+
+  setTimeout(() => {
+    lightningRod.destroy()
+  }, 3000)
+}
+
 export function spiderManShooter (scene, shootDirection, shootSpeed) {
   let web = scene.webs.create(
     scene.player.x + shootDirection,
