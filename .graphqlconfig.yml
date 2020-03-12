@@ -1,0 +1,12 @@
+projects:
+  reactgameapi:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - generate
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: src/graphql
