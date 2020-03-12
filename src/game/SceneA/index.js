@@ -8,4 +8,5 @@ export default class SceneA extends Phaser.Scene {
     this.preload = preload
     this.create = create
   }
+  init () {}
 }
