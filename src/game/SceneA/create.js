@@ -1,4 +1,23 @@
-export default function create () {
+import { API, graphqlOperation } from 'aws-amplify'
+import * as queries from '../../graphql/queries'
+// import * as mutations from '../../graphql/mutations'
+// import * as subscriptions from './graphql/subscriptions';
+
+export default async function create () {
+  // leaderboard
+  const allTodos = await API.graphql(graphqlOperation(queries.listTodos))
+  console.log(allTodos)
+  //   const newTodo = await API.graphql(
+  //     graphqlOperation(mutations.createTodo, {
+  //       input: {
+  //         name: 'Bin',
+  //         character: 'Iron Man',
+  //         timeRecord: 20.12,
+  //         score: 7829
+  //       }
+  //     })
+  //   )
+
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
