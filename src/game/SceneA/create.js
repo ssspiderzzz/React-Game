@@ -13,21 +13,19 @@ export default async function create () {
   this.add.image(159, 400, 'announcement_board').setScale(0.85)
   allTodos.data.listTodos.items.forEach((i, index) => {
     this.add
+      .text(60, 260 + 30 * index, [i.name], {
+        fontSize: 15,
+        align: 'Center'
+      })
+      .setOrigin(0.5)
+    this.add
       .text(
-        159,
-        260 + 20 * index,
-        [
-          i.name +
-            '  ' +
-            i.character +
-            '  ' +
-            i.timeRecord.toFixed(2) +
-            's  ' +
-            i.score
-        ],
+        220,
+        260 + 30 * index,
+        [i.timeRecord.toFixed(2) + 's  ' + i.score],
         {
           fontSize: 15,
-          align: 'Left'
+          align: 'Center'
         }
       )
       .setOrigin(0.5)
