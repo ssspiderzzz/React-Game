@@ -12,6 +12,9 @@ import announcement_board from '../../assets/announcement_board.png'
 import iron_man_passive from '../../assets/characters/iron_man_passive.png'
 import captain_america_passive from '../../assets/characters/captain_america_passive.png'
 import thor_passive from '../../assets/characters/thor_passive.png'
+import iron_man_icon from '../../assets/characters/iron_man_icon.png'
+import captain_america_icon from '../../assets/characters/captain_america_icon.png'
+import thor_icon from '../../assets/characters/thor_icon.png'
 
 export default function preload () {
   this.load.crossOrigin = true
@@ -27,6 +30,9 @@ export default function preload () {
   this.textures.addBase64('iron_man_passive', iron_man_passive)
   this.textures.addBase64('captain_america_passive', captain_america_passive)
   this.textures.addBase64('thor_passive', thor_passive)
+  this.textures.addBase64('iron_man_icon', iron_man_icon)
+  this.textures.addBase64('captain_america_icon', captain_america_icon)
+  this.textures.addBase64('thor_icon', thor_icon)
 
   this.load.spritesheet('IronMan', iron_man_sprites, {
     frameWidth: 55,

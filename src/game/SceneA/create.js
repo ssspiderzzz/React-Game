@@ -4,6 +4,7 @@ import * as queries from '../../graphql/queries'
 export default async function create () {
   // leaderboard
   const allTodos = await API.graphql(graphqlOperation(queries.listTodos))
+  let leaderboard = allTodos.data.listTodos.items
   console.log(allTodos.data.listTodos.items)
 
   // background
@@ -11,24 +12,38 @@ export default async function create () {
 
   // leaderboard
   this.add.image(159, 400, 'announcement_board').setScale(0.85)
-  allTodos.data.listTodos.items.forEach((i, index) => {
-    this.add
-      .text(60, 260 + 30 * index, [i.name], {
-        fontSize: 15,
-        align: 'Center'
-      })
-      .setOrigin(0.5)
-    this.add
-      .text(
-        220,
-        260 + 30 * index,
-        [i.timeRecord.toFixed(2) + 's  ' + i.score],
-        {
+  leaderboard.sort((a, b) =>
+    a.timeRecord > b.timeRecord ? 1 : b.timeRecord > a.timeRecord ? -1 : 0
+  )
+  leaderboard.forEach((i, index) => {
+    if (index <= 10) {
+      let icon
+      if (i.character === 'IronMan') icon = 'iron_man_icon'
+      if (i.character === 'CaptainAmerica') icon = 'captain_america_icon'
+      if (i.character === 'Thor') icon = 'thor_icon'
+
+      this.add
+        .text(60, 280 + 33 * index, [index + 1], {
           fontSize: 15,
           align: 'Center'
-        }
-      )
-      .setOrigin(0.5)
+        })
+        .setOrigin(0.5)
+      this.add
+        .image(120, 280 + 33 * index, icon)
+        .setOrigin(0.5)
+        .setScale(0.2)
+      this.add
+        .text(
+          220,
+          280 + 33 * index,
+          [i.timeRecord.toFixed(2) + 's  ' + i.score],
+          {
+            fontSize: 15,
+            align: 'Center'
+          }
+        )
+        .setOrigin(0.5)
+    }
   })
 
   // announcement board
