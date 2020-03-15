@@ -1,28 +1,40 @@
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
-// import * as mutations from '../../graphql/mutations'
-// import * as subscriptions from './graphql/subscriptions';
 
 export default async function create () {
   // leaderboard
   const allTodos = await API.graphql(graphqlOperation(queries.listTodos))
-  console.log(allTodos)
-  //   const newTodo = await API.graphql(
-  //     graphqlOperation(mutations.createTodo, {
-  //       input: {
-  //         name: 'Bin',
-  //         character: 'Iron Man',
-  //         timeRecord: 20.12,
-  //         score: 7829
-  //       }
-  //     })
-  //   )
+  console.log(allTodos.data.listTodos.items)
 
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+  // leaderboard
+  this.add.image(159, 400, 'announcement_board').setScale(0.85)
+  allTodos.data.listTodos.items.forEach((i, index) => {
+    this.add
+      .text(
+        159,
+        260 + 20 * index,
+        [
+          i.name +
+            '  ' +
+            i.character +
+            '  ' +
+            i.timeRecord.toFixed(2) +
+            's  ' +
+            i.score
+        ],
+        {
+          fontSize: 15,
+          align: 'Left'
+        }
+      )
+      .setOrigin(0.5)
+  })
+
   // announcement board
-  this.add.image(865, 400, 'announcement_board').setScale(0.8)
+  this.add.image(865, 400, 'announcement_board').setScale(0.85)
   this.add
     .text(
       860,
