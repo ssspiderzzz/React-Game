@@ -37,7 +37,7 @@ export default async function update (time, delta) {
     const character = this.player.name
     const timeRecord = (this.timer / 1000).toFixed(2)
     const score = timeRecord * 100 + this.player.hp * 10 + this.money * 100
-    const newTodo = await API.graphql(
+    API.graphql(
       graphqlOperation(mutations.createTodo, {
         input: {
           name: 'Bin',

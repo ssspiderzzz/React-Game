@@ -43,7 +43,7 @@ export default async function create () {
       this.add
         .image(120, 280 + 33 * index, icon)
         .setOrigin(0.5)
-        .setScale(0.2)
+        .setScale(0.6)
       this.add
         .text(
           220,

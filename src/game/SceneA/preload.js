@@ -30,9 +30,9 @@ export default function preload () {
   this.textures.addBase64('iron_man_passive', iron_man_passive)
   this.textures.addBase64('captain_america_passive', captain_america_passive)
   this.textures.addBase64('thor_passive', thor_passive)
-  this.textures.addBase64('iron_man_icon', iron_man_icon)
-  this.textures.addBase64('captain_america_icon', captain_america_icon)
-  this.textures.addBase64('thor_icon', thor_icon)
+  this.load.image('iron_man_icon', iron_man_icon)
+  this.load.image('captain_america_icon', captain_america_icon)
+  this.load.image('thor_icon', thor_icon)
 
   this.load.spritesheet('IronMan', iron_man_sprites, {
     frameWidth: 55,
