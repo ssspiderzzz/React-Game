@@ -3,20 +3,32 @@ import * as queries from '../../graphql/queries'
 
 export default async function create () {
   // leaderboard
-  const allTodos = await API.graphql(graphqlOperation(queries.listTodos))
-  let leaderboard = allTodos.data.listTodos.items
-  console.log(allTodos.data.listTodos.items)
+  const fetchAllData = await API.graphql(
+    graphqlOperation(queries.listTodos, {
+      limit: 1000,
+      sortBy: { timeRecord: 'gte' }
+    })
+  )
+
+  let leaderboard = fetchAllData.data.listTodos.items
+  console.log(leaderboard)
 
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
   // leaderboard
   this.add.image(159, 400, 'announcement_board').setScale(0.85)
+  this.add
+    .text(159, 250, 'Rank Character Time Score', {
+      align: 'Center',
+      color: 'gold'
+    })
+    .setOrigin(0.5)
   leaderboard.sort((a, b) =>
     a.timeRecord > b.timeRecord ? 1 : b.timeRecord > a.timeRecord ? -1 : 0
   )
   leaderboard.forEach((i, index) => {
-    if (index <= 10) {
+    if (index <= 9) {
       let icon
       if (i.character === 'IronMan') icon = 'iron_man_icon'
       if (i.character === 'CaptainAmerica') icon = 'captain_america_icon'
