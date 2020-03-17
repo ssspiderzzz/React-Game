@@ -5,8 +5,7 @@ export default async function create () {
   // leaderboard
   const fetchAllData = await API.graphql(
     graphqlOperation(queries.listTodos, {
-      limit: 1000,
-      sortBy: { timeRecord: 'gte' }
+      limit: 1000
     })
   )
 
