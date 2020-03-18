@@ -1,7 +1,11 @@
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
+import React from 'react'
+import Name from './nameform'
 
 export default async function create () {
+  let userName = prompt('Please enter your name below', '')
+  console.log(userName)
   // leaderboard
   const fetchAllData = await API.graphql(
     graphqlOperation(queries.listTodos, {
@@ -10,10 +14,23 @@ export default async function create () {
   )
 
   let leaderboard = fetchAllData.data.listTodos.items
-  console.log(leaderboard)
+  // console.log(leaderboard)
 
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
+
+  const text = this.add.text(250, 250, 'Toggle UI', {
+    backgroundColor: 'white',
+    color: 'blue',
+    fontSize: 48
+  })
+
+  text.setInteractive({ useHandCursor: true })
+
+  text.on('pointerup', () => {
+    console.log(`trace1`)
+    return <Name data={1}></Name>
+  })
 
   // leaderboard
   this.add.image(159, 400, 'announcement_board').setScale(0.85)
