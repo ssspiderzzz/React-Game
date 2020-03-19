@@ -1,12 +1,13 @@
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
-import React from 'react'
-import Name from './nameform'
+import store from '../../store'
+import { TOGGLE_UI } from '../../store/gameReducer.ts'
 
 export default async function create () {
-  let userName = prompt('Please enter your name below', '')
-  console.log(userName)
+  // let userName = prompt('Please enter your name below', '')
+  // console.log(userName)
   // leaderboard
+
   const fetchAllData = await API.graphql(
     graphqlOperation(queries.listTodos, {
       limit: 1000
@@ -28,8 +29,7 @@ export default async function create () {
   text.setInteractive({ useHandCursor: true })
 
   text.on('pointerup', () => {
-    console.log(`trace1`)
-    return <Name data={1}></Name>
+    store.dispatch({ type: TOGGLE_UI })
   })
 
   // leaderboard
