@@ -1,7 +1,7 @@
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
 import store from '../../store'
-import { TOGGLE_UI } from '../../store/gameReducer.ts'
+import { TOGGLE_UI } from '../../store/gameReducer.js'
 
 export default async function create () {
   // let userName = prompt('Please enter your name below', '')

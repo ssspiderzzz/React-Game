@@ -1,6 +1,6 @@
 export const TOGGLE_UI = 'TOGGLE_UI'
 
-const initState: { showUi: boolean } = {
+const initState = {
   showUi: false
 }
 
@@ -8,10 +8,7 @@ export const toggleUi = () => ({
   type: TOGGLE_UI
 })
 
-export const gameReducer = (
-  state = initState,
-  action: { type: string; payload?: any }
-) => {
+export const gameReducer = (state = initState, action) => {
   console.log('Action:', action)
   switch (action.type) {
     case TOGGLE_UI:
