@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { useTransition, animated } from 'react-spring'
 
@@ -8,22 +8,26 @@ function UI (props) {
     enter: { marginTop: 0 },
     leave: { marginTop: -100 }
   })
-  console.log(transitions)
 
   return (
     <div>
       {/* Top */}
       <div>
-        {props.showUi && (
-          <div
-            style={{
-              position: 'absolute',
-              width: 200,
-              height: 100,
-              top: 0,
-              backgroundColor: '#fcfcfc'
-            }}
-          />
+        {transitions.map(
+          ({ item, key, props }) =>
+            item && (
+              <animated.div
+                key={key}
+                style={{
+                  ...props,
+                  position: 'absolute',
+                  width: 400,
+                  height: 100,
+                  top: 0,
+                  backgroundColor: '#fcfcfc'
+                }}
+              />
+            )
         )}
       </div>
     </div>

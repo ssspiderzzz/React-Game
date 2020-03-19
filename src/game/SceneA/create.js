@@ -148,10 +148,16 @@ export default async function create () {
 
   // play button
   let playButtonBronze = this.add.image(1024 / 2, 650, 'play_now_bronze')
-  playButtonBronze.setVisible(true).setInteractive()
+  playButtonBronze
+    .setVisible(true)
+    .setInteractive()
+    .setScale(0.8)
 
   let playButtonRed = this.add.image(1024 / 2, 650, 'play_now_red')
-  playButtonRed.setVisible(false).setInteractive()
+  playButtonRed
+    .setVisible(false)
+    .setInteractive()
+    .setScale(0.8)
 
   let transitionBlack = this.add.graphics()
   transitionBlack.fillStyle(0x000000)
