@@ -20,16 +20,19 @@ export default async function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
-  const text = this.add.text(250, 250, 'Toggle UI', {
-    backgroundColor: 'white',
-    color: 'blue',
-    fontSize: 48
-  })
+  const enterName = this.add
+    .text(1024 / 2, 590, 'Please Enter Your Name Here', {
+      backgroundColor: 'white',
+      color: 'blue',
+      fontSize: 26
+    })
+    .setOrigin(0.5)
 
-  text.setInteractive({ useHandCursor: true })
+  enterName.setInteractive({ useHandCursor: true })
 
-  text.on('pointerup', () => {
+  enterName.on('pointerup', () => {
     store.dispatch({ type: TOGGLE_UI })
+    console.log(store.getState())
   })
 
   // leaderboard
