@@ -1,12 +1,13 @@
 export const TOGGLE_UI = 'TOGGLE_UI'
 
 const initState = {
-  showUi: false
+  showUi: false,
+  playerName: ''
 }
 
-export const toggleUi = () => ({
-  type: TOGGLE_UI
-})
+// export const toggleUi = () => ({
+//   type: TOGGLE_UI
+// })
 
 export const gameReducer = (state = initState, action) => {
   console.log('Action:', action)
