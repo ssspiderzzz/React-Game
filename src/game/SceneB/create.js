@@ -247,7 +247,7 @@ export default function create () {
     this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
       hitEffect(this, beam)
       beam.disableBody(true, true)
-      slime.hp -= Math.floor(Math.random() * 20) + 15
+      slime.hp -= Math.floor(Math.random() * 15) + 15
     })
     this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
       slime.hp -= Math.floor(Math.random() * 1) + 1

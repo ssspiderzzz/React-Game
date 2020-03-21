@@ -2,6 +2,7 @@ import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
 import store from '../../store'
 import { TOGGLE_UI, TOGGLE_UI_ON } from '../../store/gameReducer.js'
+import { leaderboardToggle } from './helpers'
 
 export default async function create () {
   const fetchAllData = await API.graphql(
@@ -46,9 +47,27 @@ export default async function create () {
       color: 'gold'
     })
     .setOrigin(0.5)
+
   leaderboard.sort((a, b) =>
     a.timeRecord > b.timeRecord ? 1 : b.timeRecord > a.timeRecord ? -1 : 0
   )
+
+  this.rotation = 0
+  let sortKey = this.add
+    .text(265, 250, 'Sort', {
+      align: 'center',
+      color: 'white'
+    })
+    .setOrigin(0.5)
+    .setInteractive()
+  sortKey.on('pointerdown', () => {
+    this.leaderboardTexts.forEach(item => {
+      item.destroy()
+    })
+    leaderboardToggle(leaderboard, this)
+  })
+
+  this.leaderboardTexts = []
   leaderboard.forEach((i, index) => {
     if (index <= 9) {
       let icon
@@ -60,29 +79,31 @@ export default async function create () {
         nameShow = nameShow.substring(0, 8) + '..'
       }
 
-      this.add
+      let rank_text = this.add
         .text(55, 280 + 33 * index, index + 1, {
           fontSize: 15,
           align: 'center'
         })
         .setOrigin(0.5)
-      this.add
+      let name_text = this.add
         .text(130, 280 + 33 * index, nameShow, {
           fontSize: 15,
           color: 'yellow',
           align: 'center'
         })
         .setOrigin(0.5)
-      this.add
+      let time_text = this.add
         .text(215, 280 + 33 * index, i.timeRecord.toFixed(2) + 's ', {
           fontSize: 15,
           align: 'center'
         })
         .setOrigin(0.5)
-      this.add
+      let role_icon = this.add
         .image(265, 280 + 33 * index, icon)
         .setOrigin(0.5)
         .setScale(0.6)
+
+      this.leaderboardTexts.push(rank_text, name_text, time_text, role_icon)
     }
   })
 

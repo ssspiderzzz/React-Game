@@ -10,7 +10,7 @@ export default function initIronMan (scene) {
   scene.player.bar = scene.add.graphics()
   scene.player.barMP = scene.add.graphics()
   scene.player.hp = 100
-  scene.player.mp = 0
+  scene.player.mp = 100
 
   // main core power laser: when power reach 150%,
   //      Iron Man can fire out a powerful laser from the main chest reactor
