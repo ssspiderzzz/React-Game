@@ -10,26 +10,44 @@ import {
   drawHealthBar,
   drawEnergyBar
 } from './helpers'
+import { API, graphqlOperation } from 'aws-amplify'
+import * as mutations from '../../graphql/mutations'
+import store from '../../store'
 
-export default function update (time, delta) {
+export default async function update (time, delta) {
   // timer
   if (
-    (this.triggerOnce && this.cursors.right.isDown) ||
-    this.cursors.left.isDown ||
-    this.cursors.up.isDown ||
-    this.keyZ.isDown ||
-    this.keyX.isDown
+    this.triggerOnce === 1 &&
+    (this.cursors.right.isDown ||
+      this.cursors.left.isDown ||
+      this.cursors.up.isDown)
   ) {
     this.startTimer = true
     this.triggerOnce -= 1
   }
-  if (this.slimes.children.size === 0) {
-    this.startTimer = false
-    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
-  }
   if (this.startTimer) {
     this.timer += delta
-    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(1) + 's')
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
+  }
+  if (this.slimes.children.size === 0 && this.triggerOnce === 0) {
+    console.log(`Game End`)
+    this.startTimer = false
+    this.triggerOnce -= 1
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
+
+    const character = this.player.name
+    const timeRecord = (this.timer / 1000).toFixed(2)
+    const score = timeRecord * 100 + this.player.hp * 10 + this.money * 100
+    API.graphql(
+      graphqlOperation(mutations.createTodo, {
+        input: {
+          name: store.getState().playerName,
+          character: character,
+          timeRecord: timeRecord,
+          score: score
+        }
+      })
+    )
   }
 
   // hp and mp bar drawing

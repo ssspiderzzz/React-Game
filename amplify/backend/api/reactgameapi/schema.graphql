@@ -1,0 +1,7 @@
+type Todo @model {
+  id: ID!
+  name: String
+  character: String
+  timeRecord: Float
+  score: Float
+}

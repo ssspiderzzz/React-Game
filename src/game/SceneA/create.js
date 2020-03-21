@@ -1,9 +1,114 @@
-export default function create () {
+import { API, graphqlOperation } from 'aws-amplify'
+import * as queries from '../../graphql/queries'
+import store from '../../store'
+import { TOGGLE_UI, TOGGLE_UI_ON } from '../../store/gameReducer.js'
+import { leaderboardToggle } from './helpers'
+
+export default async function create () {
+  const fetchAllData = await API.graphql(
+    graphqlOperation(queries.listTodos, {
+      limit: 1000
+    })
+  )
+
+  let leaderboard = fetchAllData.data.listTodos.items
+  // console.log(leaderboard)
+  // this.scale.startFullscreen()
+
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
+  // save the player name that show in scene for UI component to call
+  this.enterName = this.add
+    .text(1024 / 2, 590, 'Please Enter Your Name Here', {
+      align: 'center',
+      color: 'white',
+      stroke: 'black',
+      strokeThickness: 5,
+      fontSize: 22
+    })
+    .setOrigin(0.5)
+  if (store.getState().playerName) {
+    this.enterName.setText(store.getState().playerName)
+    this.enterName.setColor('gold')
+  }
+
+  this.enterName.setInteractive({ useHandCursor: true })
+
+  this.enterName.on('pointerup', () => {
+    store.dispatch({ type: TOGGLE_UI })
+  })
+
+  // leaderboard
+  this.add.image(159, 400, 'announcement_board').setScale(0.85)
+  this.add
+    .text(159, 250, 'Rank   Player   Time     ', {
+      align: 'center',
+      color: 'gold'
+    })
+    .setOrigin(0.5)
+
+  leaderboard.sort((a, b) =>
+    a.timeRecord > b.timeRecord ? 1 : b.timeRecord > a.timeRecord ? -1 : 0
+  )
+
+  this.rotation = 0
+  let sortKey = this.add
+    .text(265, 250, 'Sort', {
+      align: 'center',
+      color: 'white'
+    })
+    .setOrigin(0.5)
+    .setInteractive()
+  sortKey.on('pointerdown', () => {
+    this.leaderboardTexts.forEach(item => {
+      item.destroy()
+    })
+    leaderboardToggle(leaderboard, this)
+  })
+
+  this.leaderboardTexts = []
+  leaderboard.forEach((i, index) => {
+    if (index <= 9) {
+      let icon
+      if (i.character === 'IronMan') icon = 'iron_man_icon'
+      if (i.character === 'CaptainAmerica') icon = 'captain_america_icon'
+      if (i.character === 'Thor') icon = 'thor_icon'
+      let nameShow = i.name
+      if (nameShow.length >= 10) {
+        nameShow = nameShow.substring(0, 8) + '..'
+      }
+
+      let rank_text = this.add
+        .text(55, 280 + 33 * index, index + 1, {
+          fontSize: 15,
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      let name_text = this.add
+        .text(130, 280 + 33 * index, nameShow, {
+          fontSize: 15,
+          color: 'yellow',
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      let time_text = this.add
+        .text(215, 280 + 33 * index, i.timeRecord.toFixed(2) + 's ', {
+          fontSize: 15,
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      let role_icon = this.add
+        .image(265, 280 + 33 * index, icon)
+        .setOrigin(0.5)
+        .setScale(0.6)
+
+      this.leaderboardTexts.push(rank_text, name_text, time_text, role_icon)
+    }
+  })
+
   // announcement board
-  this.add.image(865, 400, 'announcement_board').setScale(0.8)
+  this.add.image(865, 400, 'announcement_board').setScale(0.85)
   this.add
     .text(
       860,
@@ -76,10 +181,16 @@ export default function create () {
 
   // play button
   let playButtonBronze = this.add.image(1024 / 2, 650, 'play_now_bronze')
-  playButtonBronze.setVisible(true).setInteractive()
+  playButtonBronze
+    .setVisible(true)
+    .setInteractive()
+    .setScale(0.8)
 
   let playButtonRed = this.add.image(1024 / 2, 650, 'play_now_red')
-  playButtonRed.setVisible(false).setInteractive()
+  playButtonRed
+    .setVisible(false)
+    .setInteractive()
+    .setScale(0.8)
 
   let transitionBlack = this.add.graphics()
   transitionBlack.fillStyle(0x000000)
@@ -87,6 +198,7 @@ export default function create () {
   transitionBlack.setAlpha(0)
   transitionBlack.setDepth(99)
 
+  // title
   let title = this.add
     .image(1024 / 2, 100, 'title')
     .setOrigin(0.5)
@@ -123,7 +235,10 @@ export default function create () {
     this.selectName = this.add
       .text(1024 / 2 - 150, 300, ['Iron Man'], {
         fontSize: 22,
-        align: 'center'
+        align: 'center',
+        color: 'red',
+        stroke: 'black',
+        strokeThickness: 5
       })
       .setOrigin(0.5)
     playButtonBronze.setVisible(true)
@@ -143,7 +258,10 @@ export default function create () {
     this.selectName = this.add
       .text(1024 / 2, 300, ['Captain America'], {
         fontSize: 22,
-        align: 'center'
+        align: 'center',
+        color: 'CornflowerBlue',
+        stroke: 'black',
+        strokeThickness: 5
       })
       .setOrigin(0.5)
     playButtonBronze.setVisible(true)
@@ -163,7 +281,10 @@ export default function create () {
     this.selectName = this.add
       .text(1024 / 2 + 150, 300, ['Thor'], {
         fontSize: 22,
-        align: 'center'
+        align: 'center',
+        color: 'yellow',
+        stroke: 'black',
+        strokeThickness: 5
       })
       .setOrigin(0.5)
     playButtonBronze.setVisible(true)
@@ -268,12 +389,16 @@ export default function create () {
   })
 
   playButtonRed.on('pointerdown', () => {
-    this.tweens.add({
-      targets: transitionBlack,
-      alpha: { value: 1, duration: 500, ease: 'Power1' }
-    })
-    setTimeout(() => {
-      this.scene.start('SceneB', { select: this.select })
-    }, 500)
+    if (!store.getState().playerName) {
+      store.dispatch({ type: TOGGLE_UI_ON })
+    } else {
+      this.tweens.add({
+        targets: transitionBlack,
+        alpha: { value: 1, duration: 500, ease: 'Power1' }
+      })
+      setTimeout(() => {
+        this.scene.start('SceneB', { select: this.select })
+      }, 500)
+    }
   })
 }

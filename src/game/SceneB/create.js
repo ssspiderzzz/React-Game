@@ -247,7 +247,7 @@ export default function create () {
     this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
       hitEffect(this, beam)
       beam.disableBody(true, true)
-      slime.hp -= Math.floor(Math.random() * 15) + 10
+      slime.hp -= Math.floor(Math.random() * 15) + 15
     })
     this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
       slime.hp -= Math.floor(Math.random() * 1) + 1
@@ -271,7 +271,7 @@ export default function create () {
       if (slime.hurtable) {
         slime.hurtable = false
         hitEffect(this, shield)
-        slime.hp -= Math.floor(Math.random() * 30) + 20
+        slime.hp -= Math.floor(Math.random() * 20) + 18
         setTimeout(() => {
           slime.hurtable = true
         }, 200)
@@ -291,7 +291,7 @@ export default function create () {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
         hitEffect(this, hammer)
-        slime.hp -= Math.floor(Math.random() * 30) + 10
+        slime.hp -= Math.floor(Math.random() * 20) + 25
       }
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
