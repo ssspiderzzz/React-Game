@@ -22,6 +22,12 @@ function UI (props) {
 
   function handleSubmmit (playerName) {
     store.dispatch({ type: SET_PLAYER_NAME, playerName: playerName })
+    let enterName = props.game.scene.getScene('SceneA').enterName
+    if (store.getState().playerName) {
+      enterName.setText(store.getState().playerName).setColor('gold')
+    } else {
+      enterName.setText('Please Enter Your Name Here').setColor('white')
+    }
   }
 
   function handleCancel () {

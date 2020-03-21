@@ -12,22 +12,13 @@ export default async function create () {
 
   let leaderboard = fetchAllData.data.listTodos.items
   // console.log(leaderboard)
-  this.scale.startFullscreen()
+  // this.scale.startFullscreen()
 
   // background
-  let background = this.add.image(0, 0, 'background').setOrigin(0, 0)
-  background.setInteractive()
-  background.on('pointerup', () => {
-    if (store.getState().playerName) {
-      enterName.setText(store.getState().playerName)
-      enterName.setColor('gold')
-    } else {
-      enterName.setText('Please Enter Your Name Here')
-      enterName.setColor('white')
-    }
-  })
+  this.add.image(0, 0, 'background').setOrigin(0, 0)
 
-  let enterName = this.add
+  // save the player name that show in scene for UI component to call
+  this.enterName = this.add
     .text(1024 / 2, 590, 'Please Enter Your Name Here', {
       align: 'center',
       color: 'white',
@@ -37,13 +28,13 @@ export default async function create () {
     })
     .setOrigin(0.5)
   if (store.getState().playerName) {
-    enterName.setText(store.getState().playerName)
-    enterName.setColor('gold')
+    this.enterName.setText(store.getState().playerName)
+    this.enterName.setColor('gold')
   }
 
-  enterName.setInteractive({ useHandCursor: true })
+  this.enterName.setInteractive({ useHandCursor: true })
 
-  enterName.on('pointerup', () => {
+  this.enterName.on('pointerup', () => {
     store.dispatch({ type: TOGGLE_UI })
   })
 

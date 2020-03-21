@@ -14,12 +14,12 @@ import store from './store'
 export default function App (props) {
   Amplify.configure(awsconfig)
 
-  new Phaser.Game(config)
+  let game = new Phaser.Game(config)
 
   return (
     <div className='App'>
       <Provider store={store}>
-        <UI />
+        <UI game={game} />
       </Provider>
       <Router history={history}></Router>
     </div>
