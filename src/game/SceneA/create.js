@@ -41,7 +41,7 @@ export default async function create () {
   // leaderboard
   this.add.image(159, 400, 'announcement_board').setScale(0.85)
   this.add
-    .text(159, 250, 'Rank Character Time Score', {
+    .text(159, 250, 'Rank   Player   Time     ', {
       align: 'center',
       color: 'gold'
     })
@@ -55,28 +55,34 @@ export default async function create () {
       if (i.character === 'IronMan') icon = 'iron_man_icon'
       if (i.character === 'CaptainAmerica') icon = 'captain_america_icon'
       if (i.character === 'Thor') icon = 'thor_icon'
+      let nameShow = i.name
+      if (nameShow.length >= 10) {
+        nameShow = nameShow.substring(0, 8) + '..'
+      }
 
       this.add
-        .text(60, 280 + 33 * index, [index + 1], {
+        .text(55, 280 + 33 * index, index + 1, {
           fontSize: 15,
           align: 'center'
         })
         .setOrigin(0.5)
       this.add
-        .image(120, 280 + 33 * index, icon)
+        .text(130, 280 + 33 * index, nameShow, {
+          fontSize: 15,
+          color: 'yellow',
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      this.add
+        .text(215, 280 + 33 * index, i.timeRecord.toFixed(2) + 's ', {
+          fontSize: 15,
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      this.add
+        .image(265, 280 + 33 * index, icon)
         .setOrigin(0.5)
         .setScale(0.6)
-      this.add
-        .text(
-          220,
-          280 + 33 * index,
-          [i.timeRecord.toFixed(2) + 's  ' + i.score],
-          {
-            fontSize: 15,
-            align: 'center'
-          }
-        )
-        .setOrigin(0.5)
     }
   })
 
