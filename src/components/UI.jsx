@@ -51,11 +51,9 @@ function UI (props) {
                   ...props
                 }}
               >
-                <div className='nameForm_lineOne'>You're an avenger now</div>
+                <div className='nameForm_lineOne'>You're an avenger now!</div>
                 <br />
-                <div className='nameForm_lineTwo'>
-                  Please enter your name below
-                </div>
+                <div className='nameForm_lineTwo'>Enter your name below</div>
                 <input
                   className='nameForm_input'
                   placeholder='Enter Your Name'
