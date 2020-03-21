@@ -5,6 +5,7 @@ import store from '../store'
 import { SET_PLAYER_NAME, TOGGLE_UI } from '../store/gameReducer.js'
 import yes_icon from '../assets/yes.png'
 import no_icon from '../assets/no.png'
+import './UI.css'
 
 function UI (props) {
   const [name, setName] = useState('')
@@ -24,6 +25,7 @@ function UI (props) {
   }
 
   function handleCancel () {
+    setName(store.getState().playerName)
     store.dispatch({ type: TOGGLE_UI })
   }
 
@@ -36,17 +38,9 @@ function UI (props) {
             item && (
               <animated.div
                 key={key}
+                className='nameForm'
                 style={{
-                  ...props,
-                  position: 'absolute',
-                  width: '50vw',
-                  height: '30vw',
-                  backgroundColor: '#fcfcfc',
-                  left: '50%',
-                  marginLeft: '-25vw',
-                  marginTop: '-15vw',
-                  borderRadius: '5vw',
-                  opacity: 0.8
+                  ...props
                 }}
               >
                 <div

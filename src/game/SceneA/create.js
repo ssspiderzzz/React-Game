@@ -1,13 +1,9 @@
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
 import store from '../../store'
-import { TOGGLE_UI } from '../../store/gameReducer.js'
+import { TOGGLE_UI, TOGGLE_UI_ON } from '../../store/gameReducer.js'
 
 export default async function create () {
-  // let userName = prompt('Please enter your name below', '')
-  // console.log(userName)
-  // leaderboard
-
   const fetchAllData = await API.graphql(
     graphqlOperation(queries.listTodos, {
       limit: 1000
@@ -16,30 +12,46 @@ export default async function create () {
 
   let leaderboard = fetchAllData.data.listTodos.items
   // console.log(leaderboard)
+  this.scale.startFullscreen()
 
   // background
-  this.add.image(0, 0, 'background').setOrigin(0, 0)
+  let background = this.add.image(0, 0, 'background').setOrigin(0, 0)
+  background.setInteractive()
+  background.on('pointerup', () => {
+    if (store.getState().playerName) {
+      enterName.setText(store.getState().playerName)
+      enterName.setColor('gold')
+    } else {
+      enterName.setText('Please Enter Your Name Here')
+      enterName.setColor('white')
+    }
+  })
 
-  const enterName = this.add
+  let enterName = this.add
     .text(1024 / 2, 590, 'Please Enter Your Name Here', {
-      backgroundColor: 'white',
-      color: 'blue',
-      fontSize: 26
+      align: 'center',
+      color: 'white',
+      stroke: 'black',
+      strokeThickness: 5,
+      fontSize: 22
     })
     .setOrigin(0.5)
+  if (store.getState().playerName) {
+    enterName.setText(store.getState().playerName)
+    enterName.setColor('gold')
+  }
 
   enterName.setInteractive({ useHandCursor: true })
 
   enterName.on('pointerup', () => {
     store.dispatch({ type: TOGGLE_UI })
-    console.log(store.getState())
   })
 
   // leaderboard
   this.add.image(159, 400, 'announcement_board').setScale(0.85)
   this.add
     .text(159, 250, 'Rank Character Time Score', {
-      align: 'Center',
+      align: 'center',
       color: 'gold'
     })
     .setOrigin(0.5)
@@ -56,7 +68,7 @@ export default async function create () {
       this.add
         .text(60, 280 + 33 * index, [index + 1], {
           fontSize: 15,
-          align: 'Center'
+          align: 'center'
         })
         .setOrigin(0.5)
       this.add
@@ -70,7 +82,7 @@ export default async function create () {
           [i.timeRecord.toFixed(2) + 's  ' + i.score],
           {
             fontSize: 15,
-            align: 'Center'
+            align: 'center'
           }
         )
         .setOrigin(0.5)
@@ -168,6 +180,7 @@ export default async function create () {
   transitionBlack.setAlpha(0)
   transitionBlack.setDepth(99)
 
+  // title
   let title = this.add
     .image(1024 / 2, 100, 'title')
     .setOrigin(0.5)
@@ -204,7 +217,10 @@ export default async function create () {
     this.selectName = this.add
       .text(1024 / 2 - 150, 300, ['Iron Man'], {
         fontSize: 22,
-        align: 'center'
+        align: 'center',
+        color: 'red',
+        stroke: 'black',
+        strokeThickness: 5
       })
       .setOrigin(0.5)
     playButtonBronze.setVisible(true)
@@ -224,7 +240,10 @@ export default async function create () {
     this.selectName = this.add
       .text(1024 / 2, 300, ['Captain America'], {
         fontSize: 22,
-        align: 'center'
+        align: 'center',
+        color: 'CornflowerBlue',
+        stroke: 'black',
+        strokeThickness: 5
       })
       .setOrigin(0.5)
     playButtonBronze.setVisible(true)
@@ -244,7 +263,10 @@ export default async function create () {
     this.selectName = this.add
       .text(1024 / 2 + 150, 300, ['Thor'], {
         fontSize: 22,
-        align: 'center'
+        align: 'center',
+        color: 'yellow',
+        stroke: 'black',
+        strokeThickness: 5
       })
       .setOrigin(0.5)
     playButtonBronze.setVisible(true)
@@ -349,12 +371,16 @@ export default async function create () {
   })
 
   playButtonRed.on('pointerdown', () => {
-    this.tweens.add({
-      targets: transitionBlack,
-      alpha: { value: 1, duration: 500, ease: 'Power1' }
-    })
-    setTimeout(() => {
-      this.scene.start('SceneB', { select: this.select })
-    }, 500)
+    if (!store.getState().playerName) {
+      store.dispatch({ type: TOGGLE_UI_ON })
+    } else {
+      this.tweens.add({
+        targets: transitionBlack,
+        alpha: { value: 1, duration: 500, ease: 'Power1' }
+      })
+      setTimeout(() => {
+        this.scene.start('SceneB', { select: this.select })
+      }, 500)
+    }
   })
 }

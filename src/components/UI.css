@@ -1,0 +1,21 @@
+.nameForm {
+  position: absolute;
+  width: 512px;
+  height: 307px;
+  background-color: #fcfcfc;
+  left: 50%;
+  margin-left: -256px;
+  margin-top: -153.5px;
+  border-radius: 25px;
+  opacity: 0.8;
+}
+
+@media (max-width: 1024px) {
+  .nameForm {
+    width: 50vw;
+    height: 30vw;
+    margin-left: -25vw;
+    margin-top: -15vw;
+    border-radius: 5vw;
+  }
+}
