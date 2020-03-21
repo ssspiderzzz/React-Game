@@ -69,6 +69,7 @@ function UI (props) {
                   value={name}
                   onChange={e => onNameChange(e)}
                   style={{
+                    backgroundColor: 'transparent',
                     width: '42vw',
                     height: '10vw',
                     opacity: 1,
