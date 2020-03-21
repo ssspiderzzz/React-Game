@@ -12,6 +12,7 @@ import {
 } from './helpers'
 import { API, graphqlOperation } from 'aws-amplify'
 import * as mutations from '../../graphql/mutations'
+import store from '../../store'
 
 export default async function update (time, delta) {
   // timer
@@ -40,7 +41,7 @@ export default async function update (time, delta) {
     API.graphql(
       graphqlOperation(mutations.createTodo, {
         input: {
-          name: 'Bin',
+          name: store.getState().playerName,
           character: character,
           timeRecord: timeRecord,
           score: score

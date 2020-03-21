@@ -17,7 +17,9 @@ function UI (props) {
   })
 
   function onNameChange (e) {
-    setName(e.target.value)
+    if (e.target.value.length <= 20) {
+      setName(e.target.value)
+    }
   }
 
   function handleSubmmit (playerName) {
