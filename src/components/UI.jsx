@@ -43,66 +43,29 @@ function UI (props) {
                   ...props
                 }}
               >
-                <div
-                  style={{
-                    marginTop: '3vw',
-                    color: 'black',
-                    fontSize: '3vw',
-                    textAlign: 'center'
-                  }}
-                >
-                  You're an avenger now
-                </div>
+                <div className='nameForm_lineOne'>You're an avenger now</div>
                 <br />
-                <div
-                  style={{
-                    marginTop: '-1vw',
-                    color: 'black',
-                    fontSize: '3vw',
-                    textAlign: 'center'
-                  }}
-                >
+                <div className='nameForm_lineTwo'>
                   Please enter your name below
                 </div>
                 <input
+                  className='nameForm_input'
                   placeholder='Enter Your Name'
                   value={name}
                   onChange={e => onNameChange(e)}
-                  style={{
-                    backgroundColor: 'transparent',
-                    width: '42vw',
-                    height: '10vw',
-                    opacity: 1,
-                    left: '50%',
-                    top: '50%',
-                    marginLeft: '-21vw',
-                    // marginTop: '-5vw',
-                    position: 'relative',
-                    border: 'none',
-                    outline: 'none',
-                    textAlign: 'center',
-                    fontSize: '4vw'
-                  }}
                 />
-                <div
-                  style={{
-                    left: '50%',
-                    textAlign: 'center'
-                  }}
-                >
+                <div className='nameForm_icons'>
                   <img
+                    className='no_icon'
                     alt='no_icon'
                     src={no_icon}
-                    style={{
-                      height: '5vw'
-                    }}
                     onClick={() => handleCancel()}
                   />
                   <img
+                    className='yes_icon'
                     alt='yes_icon'
                     src={yes_icon}
                     style={{
-                      height: '5vw',
                       marginLeft: '10vw'
                     }}
                     onClick={() => handleSubmmit(name)}

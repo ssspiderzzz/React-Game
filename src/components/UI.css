@@ -10,6 +10,48 @@
   opacity: 0.8;
 }
 
+.nameForm_lineOne {
+  color: black;
+  text-align: center;
+  margin-top: 30px;
+  font-size: 30px;
+}
+
+.nameForm_lineTwo {
+  color: black;
+  text-align: center;
+  margin-top: -10px;
+  font-size: 30px;
+}
+
+.nameForm_input {
+  background-color: transparent;
+  opacity: 1;
+  left: 50%;
+  top: 50%;
+  position: relative;
+  border: none;
+  outline: none;
+  text-align: center;
+  width: 432px;
+  height: 104px;
+  margin-left: -215px;
+  font-size: 40px;
+}
+
+.nameForm_icons {
+  left: 50%;
+  text-align: center;
+}
+
+.no_icon {
+  height: 55px;
+}
+
+.yes_icon {
+  height: 55px;
+}
+
 @media (max-width: 1024px) {
   .nameForm {
     width: 50vw;
@@ -17,5 +59,30 @@
     margin-left: -25vw;
     margin-top: -15vw;
     border-radius: 5vw;
+  }
+
+  .nameForm_lineOne {
+    margin-top: 3vw;
+    font-size: 3vw;
+  }
+
+  .nameForm_lineTwo {
+    margin-top: -1vw;
+    font-size: 3vw;
+  }
+
+  .nameForm_input {
+    width: 42vw;
+    height: 10vw;
+    margin-left: -21vw;
+    font-size: 4vw;
+  }
+
+  .no_icon {
+    height: 5vw;
+  }
+
+  .yes_icon {
+    height: 5vw;
   }
 }
