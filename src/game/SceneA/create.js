@@ -53,14 +53,17 @@ export default async function create () {
   )
 
   this.rotation = 0
-  let sortKey = this.add
+
+  let sortTextButton = this.add
     .text(265, 250, 'Sort', {
       align: 'center',
-      color: 'white'
+      color: 'white',
+      stroke: 'gold',
+      strokeThickness: 2
     })
     .setOrigin(0.5)
     .setInteractive()
-  sortKey.on('pointerdown', () => {
+  sortTextButton.on('pointerdown', () => {
     this.leaderboardTexts.forEach(item => {
       item.destroy()
     })
