@@ -8,7 +8,6 @@ import Amplify from 'aws-amplify'
 import awsconfig from './aws-exports'
 import UI from './components/UI.jsx'
 import { Provider } from 'react-redux'
-
 import store from './store'
 
 export default function App (props) {
