@@ -2,4 +2,4 @@
 
 ## Deployment
 
-https://adoring-hypatia-9619f0.netlify.com/
+https://avengersminigame.netlify.com/
