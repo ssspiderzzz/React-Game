@@ -1,0 +1,15 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-react-game-dev-193613-authRole",
+            "UnauthRoleArn": "arn:aws:iam::785234773672:role/amplify-react-game-dev-193613-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::785234773672:role/amplify-react-game-dev-193613-authRole",
+            "Region": "us-west-2",
+            "DeploymentBucketName": "amplify-react-game-dev-193613-deployment",
+            "UnauthRoleName": "amplify-react-game-dev-193613-unauthRole",
+            "StackName": "amplify-react-game-dev-193613",
+            "StackId": "arn:aws:cloudformation:us-west-2:785234773672:stack/amplify-react-game-dev-193613/3ec463d0-640a-11ea-a72a-0a5e64882f36",
+            "AmplifyAppId": "d1cdc2ktjosyvk"
+        }
+    }
+}
