@@ -11,6 +11,15 @@ import { Provider } from 'react-redux'
 import store from './store'
 
 export default function App (props) {
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
+    // Take the user to a different screen here.
+    console.log(navigator.userAgent)
+  }
+
   Amplify.configure(awsconfig)
 
   let game = new Phaser.Game(config)

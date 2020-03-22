@@ -21,6 +21,7 @@ export default function create () {
   this.timer = 0
   this.startTimer = false
   this.triggerOnce = 1
+
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
@@ -35,6 +36,19 @@ export default function create () {
 
   this.events.on('resume', function () {
     transitionBlack.setAlpha(0)
+  })
+
+  // virtual joystick
+  let joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+    x: 100,
+    y: 650,
+    radius: 50
+    // base: baseGameObject,
+    // thumb: thumbGameObject,
+    // dir: '8dir',
+    // forceMin: 16,
+    // fixed: true,
+    // enable: true
   })
 
   // transition
