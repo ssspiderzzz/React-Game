@@ -209,9 +209,15 @@ export default function create () {
   this.cursors = this.input.keyboard.createCursorKeys()
   if (store.getState().mobileDevice) {
     // virtual joystick
+    let joystick_x = 100
+    let joystick_y = 650
+    this.add
+      .image(joystick_x, joystick_y, 'jarvis_circle')
+      .setOrigin(0.5)
+      .setScale(0.15)
     let joystick = this.plugins.get('rexVirtualJoystick').add(this, {
-      x: 100,
-      y: 650,
+      x: joystick_x,
+      y: joystick_y,
       radius: 50
       // base: baseGameObject,
       // thumb: thumbGameObject,
