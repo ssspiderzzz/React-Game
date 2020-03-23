@@ -9,6 +9,7 @@ import {
   hitEffect,
   drawDamageText
 } from './helpers'
+import store from '../../store'
 
 export default function create () {
   let name = this.select
@@ -21,6 +22,7 @@ export default function create () {
   this.timer = 0
   this.startTimer = false
   this.triggerOnce = 1
+
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
@@ -205,6 +207,55 @@ export default function create () {
   this.keyZ = this.input.keyboard.addKey('Z')
   this.keyX = this.input.keyboard.addKey('X')
   this.cursors = this.input.keyboard.createCursorKeys()
+  if (store.getState().mobileDevice) {
+    // virtual joystick
+    let joystick_x = 100
+    let joystick_y = 650
+    this.add
+      .image(joystick_x, joystick_y, 'jarvis_circle')
+      .setOrigin(0.5)
+      .setScale(0.15)
+
+    let virtualZ = this.add
+      .image(875, 718, 'tech_button_circle')
+      .setOrigin(0.5)
+      .setScale(0.08)
+      .setAlpha(0.5)
+      .setInteractive()
+    let virtualX = this.add
+      .image(975, 618, 'tech_button_circle')
+      .setOrigin(0.5)
+      .setScale(0.08)
+      .setAlpha(0.5)
+      .setInteractive()
+    virtualZ.on('pointerover', () => {
+      this.keyZ.isDown = true
+    })
+    virtualX.on('pointerover', () => {
+      this.keyX.isDown = true
+    })
+    virtualZ.on('pointerout', () => {
+      this.keyZ.isDown = false
+      this.keyZ._justUp = true
+    })
+    virtualX.on('pointerout', () => {
+      this.keyX.isDown = false
+      this.keyX._justUp = true
+    })
+    let joystick = this.plugins.get('rexVirtualJoystick').add(this, {
+      x: joystick_x,
+      y: joystick_y,
+      radius: 50
+      // base: baseGameObject,
+      // thumb: thumbGameObject,
+      // dir: '8dir',
+      // forceMin: 16,
+      // fixed: true,
+      // enable: true
+    })
+    this.joystickCursors = joystick.createCursorKeys()
+    this.cursors = this.joystickCursors
+  }
 
   this.physics.add.collider(this.player, this.platforms)
   this.physics.add.collider(this.coins, this.platforms)

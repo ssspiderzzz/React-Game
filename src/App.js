@@ -9,8 +9,17 @@ import awsconfig from './aws-exports'
 import UI from './components/UI.jsx'
 import { Provider } from 'react-redux'
 import store from './store'
+import { MOBILE_DEVICE } from './store/gameReducer'
 
 export default function App (props) {
+  if (
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
+      navigator.userAgent
+    )
+  ) {
+    store.dispatch({ type: MOBILE_DEVICE })
+  }
+
   Amplify.configure(awsconfig)
   
   let game = new Phaser.Game(config)
