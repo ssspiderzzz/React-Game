@@ -13,6 +13,7 @@ import pause from '../../assets/pause.png'
 import options from '../../assets/options.png'
 import lightning from '../../assets/lightning700x700.png'
 import jarvis_circle from '../../assets/jarvis_circle.png'
+import tech_button_circle from '../../assets/tech_button_circle.png'
 
 export default function preload () {
   this.load.crossOrigin = true
@@ -21,6 +22,7 @@ export default function preload () {
   this.load.image('pause', pause)
   this.load.image('options', options)
   this.load.image('jarvis_circle', jarvis_circle)
+  this.load.image('tech_button_circle', tech_button_circle)
 
   this.load.spritesheet('spiderman', spiderman, {
     frameWidth: 80,

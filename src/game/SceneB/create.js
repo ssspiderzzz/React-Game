@@ -215,6 +215,33 @@ export default function create () {
       .image(joystick_x, joystick_y, 'jarvis_circle')
       .setOrigin(0.5)
       .setScale(0.15)
+
+    let virtualZ = this.add
+      .image(875, 718, 'tech_button_circle')
+      .setOrigin(0.5)
+      .setScale(0.08)
+      .setAlpha(0.5)
+      .setInteractive()
+    let virtualX = this.add
+      .image(975, 618, 'tech_button_circle')
+      .setOrigin(0.5)
+      .setScale(0.08)
+      .setAlpha(0.5)
+      .setInteractive()
+    virtualZ.on('pointerover', () => {
+      this.keyZ.isDown = true
+    })
+    virtualX.on('pointerover', () => {
+      this.keyX.isDown = true
+    })
+    virtualZ.on('pointerout', () => {
+      this.keyZ.isDown = false
+      this.keyZ._justUp = true
+    })
+    virtualX.on('pointerout', () => {
+      this.keyX.isDown = false
+      this.keyX._justUp = true
+    })
     let joystick = this.plugins.get('rexVirtualJoystick').add(this, {
       x: joystick_x,
       y: joystick_y,
