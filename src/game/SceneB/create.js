@@ -9,6 +9,7 @@ import {
   hitEffect,
   drawDamageText
 } from './helpers'
+import store from '../../store'
 
 export default function create () {
   let name = this.select
@@ -36,19 +37,6 @@ export default function create () {
 
   this.events.on('resume', function () {
     transitionBlack.setAlpha(0)
-  })
-
-  // virtual joystick
-  let joyStick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
-    x: 100,
-    y: 650,
-    radius: 50
-    // base: baseGameObject,
-    // thumb: thumbGameObject,
-    // dir: '8dir',
-    // forceMin: 16,
-    // fixed: true,
-    // enable: true
   })
 
   // transition
@@ -219,6 +207,22 @@ export default function create () {
   this.keyZ = this.input.keyboard.addKey('Z')
   this.keyX = this.input.keyboard.addKey('X')
   this.cursors = this.input.keyboard.createCursorKeys()
+  if (store.getState().mobileDevice) {
+    // virtual joystick
+    let joystick = this.plugins.get('rexvirtualjoystickplugin').add(this, {
+      x: 100,
+      y: 650,
+      radius: 50
+      // base: baseGameObject,
+      // thumb: thumbGameObject,
+      // dir: '8dir',
+      // forceMin: 16,
+      // fixed: true,
+      // enable: true
+    })
+    this.joystickCursors = joystick.createCursorKeys()
+    this.cursors = this.joystickCursors
+  }
 
   this.physics.add.collider(this.player, this.platforms)
   this.physics.add.collider(this.coins, this.platforms)

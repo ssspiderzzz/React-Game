@@ -9,6 +9,7 @@ import awsconfig from './aws-exports'
 import UI from './components/UI.jsx'
 import { Provider } from 'react-redux'
 import store from './store'
+import { MOBILE_DEVICE } from './store/gameReducer'
 
 export default function App (props) {
   if (
@@ -16,8 +17,7 @@ export default function App (props) {
       navigator.userAgent
     )
   ) {
-    // Take the user to a different screen here.
-    console.log(navigator.userAgent)
+    store.dispatch({ type: MOBILE_DEVICE })
   }
 
   Amplify.configure(awsconfig)
