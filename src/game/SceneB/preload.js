@@ -16,12 +16,6 @@ import lightning from '../../assets/lightning700x700.png'
 export default function preload () {
   this.load.crossOrigin = true
 
-  this.load.plugin(
-    'rexvirtualjoystickplugin',
-    'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexvirtualjoystickplugin.min.js',
-    true
-  )
-
   this.load.image('background', background)
   this.load.image('pause', pause)
   this.load.image('options', options)

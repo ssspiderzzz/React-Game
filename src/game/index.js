@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import SceneA from './SceneA'
 import SceneB from './SceneB'
 import SceneC from './SceneC'
+import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js'
 
 export let config = {
   type: Phaser.AUTO,
@@ -28,6 +29,14 @@ export let config = {
       gravity: { y: 500 }
     }
   },
-
+  plugins: {
+    global: [
+      {
+        key: 'rexVirtualJoystick',
+        plugin: VirtualJoystickPlugin,
+        start: true
+      }
+    ]
+  },
   scene: [SceneA, SceneB, SceneC]
 }

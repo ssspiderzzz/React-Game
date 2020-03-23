@@ -23,13 +23,17 @@ export default async function update (time, delta) {
       this.cursors.up.isDown)
   ) {
     this.startTimer = true
-    this.triggerOnce -= 1
+    this.triggerOnce--
   }
   if (this.startTimer) {
     this.timer += delta
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
   }
-  if (this.triggerOnce === 0 && this.slimes.children.size === 0) {
+  if (
+    this.slimes.children &&
+    this.slimes.children.size === 0 &&
+    this.triggerOnce === 0
+  ) {
     console.log(`Game End`)
     this.startTimer = false
     this.triggerOnce -= 1
