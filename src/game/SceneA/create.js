@@ -379,19 +379,16 @@ export default async function create () {
   this.Thor.anims.play('ThorIdle', true)
 
   // pointer interactive events
-  playButtonBronze.on('pointerover', () => {
+  playButtonBronze.on('pointerdown', () => {
     if (this.select) {
       playButtonBronze.setVisible(false)
       playButtonRed.setVisible(true)
     }
   })
 
-  playButtonRed.on('pointerout', () => {
+  playButtonRed.on('pointerup', () => {
     playButtonBronze.setVisible(true)
     playButtonRed.setVisible(false)
-  })
-
-  playButtonRed.on('pointerdown', () => {
     if (!store.getState().playerName) {
       store.dispatch({ type: TOGGLE_UI_ON })
     } else {
