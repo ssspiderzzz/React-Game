@@ -215,6 +215,26 @@ export default function create () {
       .image(joystick_x, joystick_y, 'jarvis_circle')
       .setOrigin(0.5)
       .setScale(0.15)
+    this.add
+      .text(875, 718, 'Normal', {
+        fontSize: 18,
+        align: 'center',
+        color: 'CornflowerBlue',
+        stroke: 'black',
+        strokeThickness: 4
+      })
+      .setOrigin(0.5)
+      .setAlpha(0.5)
+    this.add
+      .text(975, 618, 'Special', {
+        fontSize: 18,
+        align: 'center',
+        color: 'CornflowerBlue',
+        stroke: 'black',
+        strokeThickness: 4
+      })
+      .setOrigin(0.5)
+      .setAlpha(0.5)
 
     let virtualZ = this.add
       .image(875, 718, 'tech_button_circle')
