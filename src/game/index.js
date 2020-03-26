@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import Preloader from './Preloader'
 import SceneA from './SceneA'
 import SceneB from './SceneB'
 import SceneC from './SceneC'
@@ -38,5 +39,5 @@ export let config = {
       }
     ]
   },
-  scene: [SceneA, SceneB, SceneC]
+  scene: [Preloader, SceneA, SceneB, SceneC]
 }
