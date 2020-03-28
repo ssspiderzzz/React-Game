@@ -9,7 +9,7 @@ export let config = {
   type: Phaser.AUTO,
   width: 1024,
   height: 768,
-  backgroundColor: 0x222222,
+  backgroundColor: 'white',
   dom: {
     createContainer: true
   },

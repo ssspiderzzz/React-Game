@@ -37,11 +37,11 @@ export default function preload () {
   let progressBar = this.add.graphics()
   let progressBox = this.add.graphics()
   progressBox.fillStyle(0x222222, 0.8)
-  progressBox.fillRect(240, 270, 320, 50)
+  progressBox.fillRect(midX - 160, midY, 320, 50)
 
   let loadingText = this.make.text({
     x: midX,
-    y: midY - 50,
+    y: midY - 20,
     text: 'Loading...',
     style: {
       font: '20px monospace',
@@ -52,7 +52,7 @@ export default function preload () {
 
   let percentText = this.make.text({
     x: midX,
-    y: midY - 5,
+    y: midY + 25,
     text: '0%',
     style: {
       font: '18px monospace',
@@ -63,7 +63,7 @@ export default function preload () {
 
   let assetText = this.make.text({
     x: midX,
-    y: midY + 50,
+    y: midY + 70,
     text: '',
     style: {
       font: '18px monospace',
@@ -77,7 +77,7 @@ export default function preload () {
     percentText.setText(parseInt(value * 100) + '%')
     progressBar.clear()
     progressBar.fillStyle(0xffffff, 1)
-    progressBar.fillRect(250, 280, 300 * value, 30)
+    progressBar.fillRect(midX - 150, midY + 10, 300 * value, 30)
   })
 
   this.load.on('fileprogress', function (file) {
