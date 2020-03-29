@@ -5,18 +5,21 @@ import { TOGGLE_UI, TOGGLE_UI_ON } from '../../store/gameReducer.js'
 import { leaderboardToggle } from './helpers'
 
 export default async function create () {
-  const fetchAllData = await API.graphql(
-    graphqlOperation(queries.listTodos, {
-      limit: 1000
-    })
-  )
-
-  let leaderboard = fetchAllData.data.listTodos.items
-  // console.log(leaderboard)
-  // this.scale.startFullscreen()
+  this.rotation = 0
 
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
+
+  // transition
+  let transitionBlack = this.add.graphics()
+  transitionBlack.fillStyle(0x000000)
+  transitionBlack.fillRect(0, 0, 1024, 768)
+  transitionBlack.setAlpha(1)
+  transitionBlack.setDepth(99)
+  this.tweens.add({
+    targets: transitionBlack,
+    alpha: { value: 0, duration: 500, ease: 'Power1' }
+  })
 
   // save the player name that show in scene for UI component to call
   this.enterName = this.add
@@ -48,12 +51,6 @@ export default async function create () {
     })
     .setOrigin(0.5)
 
-  leaderboard.sort((a, b) =>
-    a.timeRecord > b.timeRecord ? 1 : b.timeRecord > a.timeRecord ? -1 : 0
-  )
-
-  this.rotation = 0
-
   let sortTextButton = this.add
     .text(265, 250, 'Sort', {
       align: 'center',
@@ -63,52 +60,6 @@ export default async function create () {
     })
     .setOrigin(0.5)
     .setInteractive()
-  sortTextButton.on('pointerdown', () => {
-    this.leaderboardTexts.forEach(item => {
-      item.destroy()
-    })
-    leaderboardToggle(leaderboard, this)
-  })
-
-  this.leaderboardTexts = []
-  leaderboard.forEach((i, index) => {
-    if (index <= 9) {
-      let icon
-      if (i.character === 'IronMan') icon = 'iron_man_icon'
-      if (i.character === 'CaptainAmerica') icon = 'captain_america_icon'
-      if (i.character === 'Thor') icon = 'thor_icon'
-      let nameShow = i.name
-      if (nameShow.length >= 10) {
-        nameShow = nameShow.substring(0, 8) + '..'
-      }
-
-      let rank_text = this.add
-        .text(55, 280 + 33 * index, index + 1, {
-          fontSize: 15,
-          align: 'center'
-        })
-        .setOrigin(0.5)
-      let name_text = this.add
-        .text(130, 280 + 33 * index, nameShow, {
-          fontSize: 15,
-          color: 'yellow',
-          align: 'center'
-        })
-        .setOrigin(0.5)
-      let time_text = this.add
-        .text(215, 280 + 33 * index, i.timeRecord.toFixed(2) + 's ', {
-          fontSize: 15,
-          align: 'center'
-        })
-        .setOrigin(0.5)
-      let role_icon = this.add
-        .image(265, 280 + 33 * index, icon)
-        .setOrigin(0.5)
-        .setScale(0.6)
-
-      this.leaderboardTexts.push(rank_text, name_text, time_text, role_icon)
-    }
-  })
 
   // announcement board
   this.add.image(865, 400, 'announcement_board').setScale(0.85)
@@ -194,12 +145,6 @@ export default async function create () {
     .setVisible(false)
     .setInteractive()
     .setScale(0.8)
-
-  let transitionBlack = this.add.graphics()
-  transitionBlack.fillStyle(0x000000)
-  transitionBlack.fillRect(0, 0, 1024, 768)
-  transitionBlack.setAlpha(0)
-  transitionBlack.setDepth(99)
 
   // title
   let title = this.add
@@ -399,6 +344,64 @@ export default async function create () {
       setTimeout(() => {
         this.scene.start('SceneB', { select: this.select })
       }, 500)
+    }
+  })
+
+  // fetch leaderboard data (async) from server
+  const fetchAllData = await API.graphql(
+    graphqlOperation(queries.listTodos, {
+      limit: 1000
+    })
+  )
+  let leaderboard = fetchAllData.data.listTodos.items
+  leaderboard.sort((a, b) =>
+    a.timeRecord > b.timeRecord ? 1 : b.timeRecord > a.timeRecord ? -1 : 0
+  )
+
+  sortTextButton.on('pointerdown', () => {
+    this.leaderboardTexts.forEach(item => {
+      item.destroy()
+    })
+    leaderboardToggle(leaderboard, this)
+  })
+
+  this.leaderboardTexts = []
+  leaderboard.forEach((i, index) => {
+    if (index <= 9) {
+      let icon
+      if (i.character === 'IronMan') icon = 'iron_man_icon'
+      if (i.character === 'CaptainAmerica') icon = 'captain_america_icon'
+      if (i.character === 'Thor') icon = 'thor_icon'
+      let nameShow = i.name
+      if (nameShow.length >= 10) {
+        nameShow = nameShow.substring(0, 8) + '..'
+      }
+
+      let rank_text = this.add
+        .text(55, 280 + 33 * index, index + 1, {
+          fontSize: 15,
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      let name_text = this.add
+        .text(130, 280 + 33 * index, nameShow, {
+          fontSize: 15,
+          color: 'yellow',
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      let time_text = this.add
+        .text(215, 280 + 33 * index, i.timeRecord.toFixed(2) + 's ', {
+          fontSize: 15,
+          align: 'center'
+        })
+        .setOrigin(0.5)
+      let role_icon = this.add
+        .image(265, 280 + 33 * index, icon)
+        .setOrigin(0.5)
+        .setScale(0.6)
+
+      this.leaderboardTexts.push(rank_text, name_text, time_text, role_icon)
     }
   })
 }
