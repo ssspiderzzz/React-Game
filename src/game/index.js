@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import Preloader from './Preloader'
 import SceneA from './SceneA'
 import SceneB from './SceneB'
 import SceneC from './SceneC'
@@ -8,7 +9,7 @@ export let config = {
   type: Phaser.AUTO,
   width: 1024,
   height: 768,
-  backgroundColor: 0x222222,
+  backgroundColor: 'white',
   dom: {
     createContainer: true
   },
@@ -38,5 +39,5 @@ export let config = {
       }
     ]
   },
-  scene: [SceneA, SceneB, SceneC]
+  scene: [Preloader, SceneA, SceneB, SceneC]
 }
