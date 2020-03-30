@@ -347,6 +347,16 @@ export default async function create () {
     }
   })
 
+  // full screen setter
+  let fullscreen_icon = this.add
+    .image(994, 30, 'fullscreen')
+    .setOrigin(0.5)
+    .setScale(0.1)
+    .setInteractive()
+  fullscreen_icon.on('pointerdown', function () {
+    this.scene.scale.toggleFullscreen()
+  })
+
   // fetch leaderboard data (async) from server
   const fetchAllData = await API.graphql(
     graphqlOperation(queries.listTodos, {

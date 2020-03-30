@@ -214,7 +214,8 @@ export default function create () {
     this.add
       .image(joystick_x, joystick_y, 'jarvis_circle')
       .setOrigin(0.5)
-      .setScale(0.15)
+      .setScale(0.23)
+      .setAlpha(0.5)
     this.add
       .text(875, 718, 'Normal', {
         fontSize: 18,
@@ -265,7 +266,7 @@ export default function create () {
     let joystick = this.plugins.get('rexVirtualJoystick').add(this, {
       x: joystick_x,
       y: joystick_y,
-      radius: 50
+      radius: 75
       // base: baseGameObject,
       // thumb: thumbGameObject,
       // dir: '8dir',
