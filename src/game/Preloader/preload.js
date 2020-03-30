@@ -27,6 +27,7 @@ import options from '../../assets/options.png'
 import lightning from '../../assets/lightning700x700.png'
 import jarvis_circle from '../../assets/jarvis_circle.png'
 import tech_button_circle from '../../assets/tech_button_circle.png'
+import fullscreen from '../../assets/fullscreen.png'
 
 export default function preload () {
   let width = this.cameras.main.width
@@ -112,6 +113,7 @@ export default function preload () {
   this.load.image('options', options)
   this.load.image('jarvis_circle', jarvis_circle)
   this.load.image('tech_button_circle', tech_button_circle)
+  this.load.image('fullscreen', fullscreen)
 
   this.load.spritesheet('IronMan', iron_man_sprites, {
     frameWidth: 55,
