@@ -26,15 +26,6 @@ export default function create () {
   // background
   this.add.image(0, 0, 'background').setOrigin(0, 0)
 
-  let pause = this.add.image(984, 40, 'pause').setOrigin(0.5)
-  pause.setScale(0.5, 0.5)
-  pause.setInteractive()
-  pause.on('pointerdown', () => {
-    this.scene.pause()
-    this.scene.launch('SceneC', { currentSelect: this.select })
-    transitionBlack.setAlpha(0.5)
-  })
-
   this.events.on('resume', function () {
     transitionBlack.setAlpha(0)
   })
@@ -456,6 +447,28 @@ export default function create () {
   this.collectionText = this.add.text(60, 7, this.money, {
     fontFamily: '"Roboto Condensed"',
     fontSize: 33
+  })
+
+  // Pause button
+  let pause = this.add
+    .image(984, 40, 'pause')
+    .setOrigin(0.5)
+    .setScale(0.5)
+    .setInteractive()
+  pause.on('pointerdown', () => {
+    this.scene.pause()
+    this.scene.launch('SceneC', { currentSelect: this.select })
+    transitionBlack.setAlpha(0.5)
+  })
+
+  // full screen setter
+  let fullscreen_icon = this.add
+    .image(924, 40, 'fullscreen')
+    .setOrigin(0.5)
+    .setScale(0.1)
+    .setInteractive()
+  fullscreen_icon.on('pointerdown', function () {
+    this.scene.scale.toggleFullscreen()
   })
 }
 
