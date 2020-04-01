@@ -3,27 +3,31 @@ import * as queries from '../../graphql/queries'
 import store from '../../store'
 import { TOGGLE_UI, TOGGLE_UI_ON } from '../../store/gameReducer.js'
 import { leaderboardToggle } from './helpers'
+import { width, height } from '../index'
 
 export default async function create () {
   this.rotation = 0
 
   // background
-  this.add.image(0, 0, 'background').setOrigin(0, 0)
+  this.add
+    .image(0, 0, 'background')
+    .setOrigin(0, 0)
+    .setScale(0.66)
 
   // transition
   let transitionBlack = this.add.graphics()
   transitionBlack.fillStyle(0x000000)
-  transitionBlack.fillRect(0, 0, 1024, 768)
+  transitionBlack.fillRect(0, 0, width, height)
   transitionBlack.setAlpha(1)
   transitionBlack.setDepth(99)
   this.tweens.add({
     targets: transitionBlack,
-    alpha: { value: 0, duration: 500, ease: 'Power1' }
+    alpha: { value: 0, duration: 350, ease: 'Power1' }
   })
 
   // save the player name that show in scene for UI component to call
   this.enterName = this.add
-    .text(1024 / 2, 590, 'Please Enter Your Name Here', {
+    .text(width / 2, 590, 'Please Enter Your Name Here', {
       align: 'center',
       color: 'white',
       stroke: 'black',
@@ -43,9 +47,10 @@ export default async function create () {
   })
 
   // leaderboard
-  this.add.image(159, 400, 'announcement_board').setScale(0.85)
+  let leftBoard = { x: width / 2 - 480, y: 400 }
+  this.add.image(leftBoard.x, leftBoard.y, 'announcement_board').setScale(0.85)
   this.add
-    .text(159, 250, 'Rank   Player   Time     ', {
+    .text(leftBoard.x, 250, 'Rank   Player   Time     ', {
       align: 'center',
       color: 'gold'
     })
@@ -62,10 +67,13 @@ export default async function create () {
     .setInteractive()
 
   // announcement board
-  this.add.image(865, 400, 'announcement_board').setScale(0.85)
+  let rightBoard = { x: width / 2 + 480, y: 400 }
+  this.add
+    .image(rightBoard.x, rightBoard.y, 'announcement_board')
+    .setScale(0.85)
   this.add
     .text(
-      860,
+      rightBoard.x,
       330,
       [
         'Press or Hold "Z":',
@@ -84,15 +92,17 @@ export default async function create () {
     )
     .setOrigin(0.5)
   let iron_man_passive = this.add
-    .image(865, 450, 'iron_man_passive')
+    .image(rightBoard.x, 450, 'iron_man_passive')
     .setVisible(false)
   let captain_america_passive = this.add
-    .image(865, 450, 'captain_america_passive')
+    .image(rightBoard.x, 450, 'captain_america_passive')
     .setVisible(false)
-  let thor_passive = this.add.image(865, 450, 'thor_passive').setVisible(false)
+  let thor_passive = this.add
+    .image(rightBoard.x, 450, 'thor_passive')
+    .setVisible(false)
   let iron_man_passive_text = this.add
     .text(
-      775,
+      rightBoard.x - 90,
       480,
       ['Arc Reactor (Passive)', '   Increases energy', '   regeneration rate'],
       {
@@ -103,7 +113,7 @@ export default async function create () {
     .setVisible(false)
   let captain_america_passive_text = this.add
     .text(
-      775,
+      rightBoard.x - 90,
       480,
       [
         'Super-Soldier (Passive)',
@@ -118,7 +128,7 @@ export default async function create () {
     .setVisible(false)
   let thor_passive_text = this.add
     .text(
-      775,
+      rightBoard.x - 90,
       480,
       [
         'God of Thunder (Passive)',
@@ -134,13 +144,13 @@ export default async function create () {
     .setVisible(false)
 
   // play button
-  let playButtonBronze = this.add.image(1024 / 2, 650, 'play_now_bronze')
+  let playButtonBronze = this.add.image(width / 2, 650, 'play_now_bronze')
   playButtonBronze
     .setVisible(true)
     .setInteractive()
     .setScale(0.8)
 
-  let playButtonRed = this.add.image(1024 / 2, 650, 'play_now_red')
+  let playButtonRed = this.add.image(width / 2, 650, 'play_now_red')
   playButtonRed
     .setVisible(false)
     .setInteractive()
@@ -148,7 +158,7 @@ export default async function create () {
 
   // title
   let title = this.add
-    .image(1024 / 2, 100, 'title')
+    .image(width / 2, 100, 'title')
     .setOrigin(0.5)
     .setAlpha(0)
 
@@ -163,13 +173,13 @@ export default async function create () {
 
   // face icons
   let iron_man_face = this.add
-    .image(1024 / 2 - 150, 400, 'iron_man_face')
+    .image(width / 2 - 150, 400, 'iron_man_face')
     .setScale(2, 2)
   let captain_america_face = this.add
-    .image(1024 / 2, 400, 'captain_america_face')
+    .image(width / 2, 400, 'captain_america_face')
     .setScale(2, 2)
   let thor_face = this.add
-    .image(1024 / 2 + 150, 400, 'thor_face')
+    .image(width / 2 + 150, 400, 'thor_face')
     .setScale(2, 2)
 
   iron_man_face.setInteractive()
@@ -181,7 +191,7 @@ export default async function create () {
     this.select = 'IronMan'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2 - 150, 300, ['Iron Man'], {
+      .text(width / 2 - 150, 300, ['Iron Man'], {
         fontSize: 22,
         align: 'center',
         color: 'red',
@@ -204,7 +214,7 @@ export default async function create () {
     this.select = 'CaptainAmerica'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2, 300, ['Captain America'], {
+      .text(width / 2, 300, ['Captain America'], {
         fontSize: 22,
         align: 'center',
         color: 'CornflowerBlue',
@@ -227,7 +237,7 @@ export default async function create () {
     this.select = 'Thor'
     this.selectName.destroy()
     this.selectName = this.add
-      .text(1024 / 2 + 150, 300, ['Thor'], {
+      .text(width / 2 + 150, 300, ['Thor'], {
         fontSize: 22,
         align: 'center',
         color: 'yellow',
@@ -248,7 +258,7 @@ export default async function create () {
   })
 
   this.IronMan = this.physics.add
-    .sprite(1024 / 2 - 150, 500, 'IronMan')
+    .sprite(width / 2 - 150, 500, 'IronMan')
     .setScale(2, 2)
   this.IronMan.setSize(23, 45, 0, 0).setOffset(16, 10)
   this.IronMan.body.allowGravity = false
@@ -274,7 +284,7 @@ export default async function create () {
   this.IronMan.flipX = true
 
   this.CaptainAmerica = this.physics.add
-    .sprite(1024 / 2, 500, 'CaptainAmerica')
+    .sprite(width / 2, 500, 'CaptainAmerica')
     .setScale(2, 2)
   this.CaptainAmerica.setSize(22, 45, 0, 0).setOffset(24, 10)
   this.CaptainAmerica.body.allowGravity = false
@@ -299,7 +309,7 @@ export default async function create () {
   this.CaptainAmerica.anims.play('CaptainAmericaIdle', true)
 
   this.Thor = this.physics.add
-    .sprite(1024 / 2 + 150, 500, 'Thor')
+    .sprite(width / 2 + 150, 500, 'Thor')
     .setScale(2, 2)
   this.Thor.setSize(22, 45, 0, 0).setOffset(24, 10)
   this.Thor.body.allowGravity = false
