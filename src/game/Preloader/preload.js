@@ -1,4 +1,5 @@
-import background from '../../assets/background.png'
+import background from '../../assets/avengersBattleField.jpeg'
+// import background from '../../assets/background.png'
 import iron_man_face from '../../assets/characters/iron_man_face.jpg'
 import captain_america_face from '../../assets/characters/captain_america_face.jpg'
 import thor_face from '../../assets/characters/thor_face.jpg'

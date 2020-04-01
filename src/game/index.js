@@ -7,8 +7,8 @@ import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-p
 
 export let config = {
   type: Phaser.AUTO,
-  width: 1024,
-  height: 768,
+  width: 1920,
+  height: 1080,
   backgroundColor: 'white',
   dom: {
     createContainer: true
