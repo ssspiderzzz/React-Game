@@ -1,19 +1,21 @@
+import { width, height } from '../index'
+
 export default function create () {
   let currentSelect = this.scene.settings.data.currentSelect
 
-  let options = this.add.image(1024 / 2, 768 / 2, 'options').setOrigin(0.5)
+  let options = this.add.image(width / 2, height / 2, 'options').setOrigin(0.5)
   options.setDepth(99)
 
   let resume = this.add
-    .rectangle(1024 / 2, 768 / 2 - 70, 275, 75, 0x00000)
+    .rectangle(width / 2, height / 2 - 70, 275, 75, 0x00000)
     .setDepth(100)
     .setAlpha(0.001)
   let restart = this.add
-    .rectangle(1024 / 2, 768 / 2 + 33, 275, 75, 0x00000)
+    .rectangle(width / 2, height / 2 + 33, 275, 75, 0x00000)
     .setDepth(100)
     .setAlpha(0.001)
   let exit = this.add
-    .rectangle(1024 / 2, 768 / 2 + 136, 275, 75, 0x00000)
+    .rectangle(width / 2, height / 2 + 136, 275, 75, 0x00000)
     .setDepth(100)
     .setAlpha(0.001)
 

@@ -1,6 +1,6 @@
 export default function initCaptainAmerica (scene) {
   scene.player = scene.physics.add
-    .sprite(512, 300, 'CaptainAmerica')
+    .sprite(640, 200, 'CaptainAmerica')
     .setScale(2, 2)
   scene.player.name = 'CaptainAmerica'
   scene.player.setSize(22, 45, 0, 0).setOffset(24, 10)

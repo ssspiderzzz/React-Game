@@ -1,4 +1,5 @@
-import background from '../../assets/background.png'
+import background from '../../assets/avengersBattleField.jpeg'
+// import background from '../../assets/background.png'
 import iron_man_face from '../../assets/characters/iron_man_face.jpg'
 import captain_america_face from '../../assets/characters/captain_america_face.jpg'
 import thor_face from '../../assets/characters/thor_face.jpg'
@@ -28,10 +29,9 @@ import lightning from '../../assets/lightning700x700.png'
 import jarvis_circle from '../../assets/jarvis_circle.png'
 import tech_button_circle from '../../assets/tech_button_circle.png'
 import fullscreen from '../../assets/fullscreen.png'
+import { width, height } from '../index'
 
 export default function preload () {
-  let width = this.cameras.main.width
-  let height = this.cameras.main.height
   let midX = width / 2
   let midY = height / 2
 

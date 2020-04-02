@@ -1,5 +1,5 @@
 export default function initThor (scene) {
-  scene.player = scene.physics.add.sprite(512, 300, 'Thor').setScale(2, 2)
+  scene.player = scene.physics.add.sprite(640, 200, 'Thor').setScale(2, 2)
   scene.player.name = 'Thor'
   scene.player.setSize(22, 45, 0, 0).setOffset(24, 10)
   scene.player.alive = true

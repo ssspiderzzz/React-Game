@@ -5,10 +5,13 @@ import SceneB from './SceneB'
 import SceneC from './SceneC'
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js'
 
+export let width = 1280
+export let height = 720
+
 export let config = {
   type: Phaser.AUTO,
-  width: 1024,
-  height: 768,
+  width: width,
+  height: height,
   backgroundColor: 'white',
   dom: {
     createContainer: true

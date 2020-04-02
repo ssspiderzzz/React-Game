@@ -1,5 +1,5 @@
 export default function initIronMan (scene) {
-  scene.player = scene.physics.add.sprite(512, 300, 'IronMan').setScale(2, 2)
+  scene.player = scene.physics.add.sprite(640, 200, 'IronMan').setScale(2, 2)
   scene.player.name = 'IronMan'
   scene.player.setSize(21, 45, 0, 0).setOffset(17, 10)
   scene.player.alive = true
