@@ -445,13 +445,16 @@ export default function create () {
   // static text
   this.moneyIcon = this.physics.add.staticGroup()
   this.moneyIcon
-    .create(25, 25, 'coin', 0)
-    .setScale(0.3, 0.3)
+    .create(30, 30, 'coin', 0)
+    .setOrigin(0.5)
+    .setScale(0.3)
     .refreshBody()
-  this.collectionText = this.add.text(60, 7, this.money, {
-    fontFamily: '"Roboto Condensed"',
-    fontSize: 33
-  })
+  this.collectionText = this.add
+    .text(80, 30, this.money, {
+      fontFamily: '"Roboto Condensed"',
+      fontSize: 33
+    })
+    .setOrigin(0.5)
 
   // Pause button
   let pause = this.add
@@ -467,9 +470,9 @@ export default function create () {
 
   // full screen setter
   let fullscreen_icon = this.add
-    .image(width - 70, 30, 'fullscreen')
+    .image(width - 80, 30, 'fullscreen')
     .setOrigin(0.5)
-    .setScale(0.07)
+    .setScale(0.06)
     .setInteractive()
   fullscreen_icon.on('pointerdown', function () {
     this.scene.scale.toggleFullscreen()
