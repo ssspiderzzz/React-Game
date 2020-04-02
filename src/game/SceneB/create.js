@@ -10,13 +10,14 @@ import {
   drawDamageText
 } from './helpers'
 import store from '../../store'
+import { width, height } from '../index'
 
 export default function create () {
   let name = this.select
 
   // timmer
   this.timeText = this.add
-    .text(512, 35)
+    .text(width / 2, 35)
     .setDepth(5)
     .setOrigin(0.5)
   this.timer = 0
@@ -24,7 +25,10 @@ export default function create () {
   this.triggerOnce = 1
 
   // background
-  this.add.image(0, 0, 'background').setOrigin(0, 0)
+  this.add
+    .image(0, 0, 'background')
+    .setOrigin(0, 0)
+    .setScale(0.66)
 
   this.events.on('resume', function () {
     transitionBlack.setAlpha(0)
@@ -33,7 +37,7 @@ export default function create () {
   // transition
   let transitionBlack = this.add.graphics()
   transitionBlack.fillStyle(0x000000)
-  transitionBlack.fillRect(0, 0, 1024, 768)
+  transitionBlack.fillRect(0, 0, width, height)
   transitionBlack.setAlpha(1)
   transitionBlack.setDepth(98)
   this.tweens.add({
@@ -50,7 +54,7 @@ export default function create () {
   this.coins = this.physics.add.group({
     key: 'coin',
     repeat: 9,
-    setXY: { x: 20, y: 0, stepX: 110 }
+    setXY: { x: 10, y: 0, stepX: (width - 20) / 9 }
   })
   this.anims.create({
     key: 'coin_spin',
@@ -85,10 +89,10 @@ export default function create () {
   this.slimes = this.physics.add.group({
     key: 'slime_blue',
     repeat: 2,
-    setXY: { x: 100, y: 650, stepX: 412 }
+    setXY: { x: 100, y: 650, stepX: 540 }
   })
-  this.slimes.create(160, 450, 'slime_red')
-  this.slimes.create(864, 450, 'slime_red')
+  this.slimes.create(160, 400, 'slime_red')
+  this.slimes.create(width - 160, 400, 'slime_red')
   this.anims.create({
     key: 'slime_blue',
     frames: this.anims.generateFrameNumbers('slime', {
@@ -141,55 +145,55 @@ export default function create () {
   this.platforms = this.physics.add.staticGroup()
 
   this.platforms
-    .create(1024 / 2, 600, 'tiles', 0)
+    .create(width / 2, 550, 'tiles', 0)
     .setScale(8, 1)
     .refreshBody()
   this.platforms
-    .create(160, 500, 'tiles', 0)
+    .create(160, 450, 'tiles', 0)
     .setScale(10, 1)
     .refreshBody()
   this.platforms
-    .create(1024 - 160, 500, 'tiles', 0)
+    .create(width - 160, 450, 'tiles', 0)
     .setScale(10, 1)
     .refreshBody()
 
   this.platforms
-    .create(1024 / 2, 400, 'tiles', 3)
-    .setScale(3, 1)
+    .create(width / 2, 350, 'tiles', 3)
+    .setScale(5, 1)
     .refreshBody()
   this.platforms
-    .create((32 * 6) / 2, 300, 'tiles', 3)
+    .create(16 * 6, 250, 'tiles', 3)
     .setScale(6, 1)
     .refreshBody()
   this.platforms
-    .create(1024 - (32 * 6) / 2, 300, 'tiles', 3)
+    .create(width - 16 * 6, 250, 'tiles', 3)
     .setScale(6, 1)
     .refreshBody()
 
   this.platforms
-    .create(0, 752, 'tiles', 1)
-    .setScale(64, 1)
+    .create(0, height - 16, 'tiles', 1)
+    .setScale(width / 16, 1)
     .refreshBody()
 
   // invisible walls
   this.invisibleWalls = this.physics.add.staticGroup()
   this.invisibleWalls
-    .create(320, 470, 'tiles', 1)
+    .create(320, 420, 'tiles', 1)
     .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(704, 470, 'tiles', 1)
+    .create(width - 320, 420, 'tiles', 1)
     .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(320, 736, 'tiles', 1)
+    .create(420, height - 32, 'tiles', 1)
     .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(704, 736, 'tiles', 1)
+    .create(width - 420, height - 32, 'tiles', 1)
     .setScale(0.1, 1)
     .setAlpha(0)
     .refreshBody()
@@ -201,14 +205,14 @@ export default function create () {
   if (store.getState().mobileDevice) {
     // virtual joystick
     let joystick_x = 100
-    let joystick_y = 650
+    let joystick_y = width - 100
     this.add
       .image(joystick_x, joystick_y, 'jarvis_circle')
       .setOrigin(0.5)
       .setScale(0.23)
       .setAlpha(0.5)
     this.add
-      .text(875, 718, 'Normal', {
+      .text(width - 150, height - 100, 'Normal', {
         fontSize: 18,
         align: 'center',
         color: 'CornflowerBlue',
@@ -218,7 +222,7 @@ export default function create () {
       .setOrigin(0.5)
       .setAlpha(0.5)
     this.add
-      .text(975, 618, 'Special', {
+      .text(width - 100, height - 150, 'Special', {
         fontSize: 18,
         align: 'center',
         color: 'CornflowerBlue',
@@ -229,13 +233,13 @@ export default function create () {
       .setAlpha(0.5)
 
     let virtualZ = this.add
-      .image(875, 718, 'tech_button_circle')
+      .image(width - 150, height - 100, 'tech_button_circle')
       .setOrigin(0.5)
       .setScale(0.08)
       .setAlpha(0.5)
       .setInteractive()
     let virtualX = this.add
-      .image(975, 618, 'tech_button_circle')
+      .image(width - 100, height - 150, 'tech_button_circle')
       .setOrigin(0.5)
       .setScale(0.08)
       .setAlpha(0.5)
@@ -451,9 +455,9 @@ export default function create () {
 
   // Pause button
   let pause = this.add
-    .image(984, 40, 'pause')
+    .image(width - 30, 30, 'pause')
     .setOrigin(0.5)
-    .setScale(0.5)
+    .setScale(0.3)
     .setInteractive()
   pause.on('pointerdown', () => {
     this.scene.pause()
@@ -463,9 +467,9 @@ export default function create () {
 
   // full screen setter
   let fullscreen_icon = this.add
-    .image(924, 40, 'fullscreen')
+    .image(width - 70, 30, 'fullscreen')
     .setOrigin(0.5)
-    .setScale(0.1)
+    .setScale(0.07)
     .setInteractive()
   fullscreen_icon.on('pointerdown', function () {
     this.scene.scale.toggleFullscreen()
