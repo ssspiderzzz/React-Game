@@ -205,14 +205,14 @@ export default function create () {
   if (store.getState().mobileDevice) {
     // virtual joystick
     let joystick_x = 100
-    let joystick_y = width - 100
+    let joystick_y = height - 100
     this.add
       .image(joystick_x, joystick_y, 'jarvis_circle')
       .setOrigin(0.5)
       .setScale(0.23)
       .setAlpha(0.5)
     this.add
-      .text(width - 150, height - 100, 'Normal', {
+      .text(width - 175, height - 75, 'Normal', {
         fontSize: 18,
         align: 'center',
         color: 'CornflowerBlue',
@@ -222,7 +222,7 @@ export default function create () {
       .setOrigin(0.5)
       .setAlpha(0.5)
     this.add
-      .text(width - 100, height - 150, 'Special', {
+      .text(width - 75, height - 175, 'Special', {
         fontSize: 18,
         align: 'center',
         color: 'CornflowerBlue',
@@ -233,15 +233,15 @@ export default function create () {
       .setAlpha(0.5)
 
     let virtualZ = this.add
-      .image(width - 150, height - 100, 'tech_button_circle')
+      .image(width - 175, height - 75, 'tech_button_circle')
       .setOrigin(0.5)
-      .setScale(0.08)
+      .setScale(0.1)
       .setAlpha(0.5)
       .setInteractive()
     let virtualX = this.add
-      .image(width - 100, height - 150, 'tech_button_circle')
+      .image(width - 75, height - 175, 'tech_button_circle')
       .setOrigin(0.5)
-      .setScale(0.08)
+      .setScale(0.1)
       .setAlpha(0.5)
       .setInteractive()
     virtualZ.on('pointerover', () => {
@@ -261,7 +261,7 @@ export default function create () {
     let joystick = this.plugins.get('rexVirtualJoystick').add(this, {
       x: joystick_x,
       y: joystick_y,
-      radius: 75
+      radius: 50
       // base: baseGameObject,
       // thumb: thumbGameObject,
       // dir: '8dir',
