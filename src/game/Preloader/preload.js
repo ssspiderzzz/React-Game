@@ -1,4 +1,3 @@
-import preload_screen from '../../assets/avengers-1366x768-wallpaper.jpg'
 import background from '../../assets/avengersBattleField.jpeg'
 import iron_man_face from '../../assets/characters/iron_man_face.jpg'
 import captain_america_face from '../../assets/characters/captain_america_face.jpg'
@@ -32,11 +31,7 @@ import fullscreen from '../../assets/fullscreen.png'
 import { width, height } from '../index'
 
 export default function preload () {
-  this.load.image('preload_screen', preload_screen)
-  this.add
-    .image(0, 0, 'preload_screen')
-    .setOrigin(0, 0)
-    .setScale(0.9)
+  this.add.image(0, 0, 'preload_screen').setOrigin(0, 0)
 
   let midX = width / 2
   let midY = height / 2
