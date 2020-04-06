@@ -337,8 +337,31 @@ export default async function update (time, delta) {
     })
   }
 
-  if (this.boss.alive) {
+  if (this.boss.alive && !this.boss.snapping) {
     randomMove(this.boss)
+    if (this.boss.body.velocity.x !== 0) {
+      this.boss.anims.play('Thanos_walk', true)
+      if (this.boss.body.velocity.x > 0) {
+        this.boss.facing = 'right'
+      } else {
+        this.boss.facing = 'left'
+      }
+
+      if (this.boss.facing === 'right') {
+        this.boss.flipX = false
+      } else if (this.boss.facing === 'left') {
+        this.boss.flipX = true
+      }
+
+      if (Math.random() < 0.01) {
+        this.boss.body.velocity.x = 0
+        this.boss.snapping = true
+        this.boss.anims.play('Thanos_snap', true)
+        setTimeout(() => {
+          this.boss.snapping = false
+        }, 1000)
+      }
+    }
   }
 
   // Iron Man's Special move, energy regeneration

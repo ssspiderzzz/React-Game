@@ -276,7 +276,7 @@ export default function create () {
   // Thanos Test
   this.boss = this.physics.add.sprite(640, 300, 'Thanos').setScale(2, 2)
   this.boss.name = 'Thanos'
-  this.boss.setSize(22, 45, 0, 0).setOffset(24, 10)
+  this.boss.setSize(60, 90, 0, 0).setOffset(25, 20)
   this.boss.alive = true
   this.boss.shootable = true
   this.boss.invincible = false
@@ -284,6 +284,43 @@ export default function create () {
   this.boss.facing = 'right'
   this.boss.bar = this.add.graphics()
   this.boss.hp = 100
+  this.anims.create({
+    key: 'Thanos_idle',
+    frames: this.anims.generateFrameNumbers('Thanos', {
+      start: 0,
+      end: 0
+    }),
+    frameRate: 1,
+    repeat: -1
+  })
+  this.anims.create({
+    key: 'Thanos_walk',
+    frames: this.anims.generateFrameNumbers('Thanos', {
+      start: 1,
+      end: 4
+    }),
+    frameRate: 5,
+    yoyo: true,
+    repeat: -1
+  })
+  this.anims.create({
+    key: 'Thanos_snap',
+    frames: this.anims.generateFrameNumbers('Thanos', {
+      start: 5,
+      end: 8
+    }),
+    frameRate: 4,
+    repeat: 0
+  })
+  this.anims.create({
+    key: 'Thanos_attack',
+    frames: this.anims.generateFrameNumbers('Thanos', {
+      start: 9,
+      end: 12
+    }),
+    frameRate: 5,
+    repeat: 0
+  })
 
   // game physics
   this.physics.add.collider(this.player, this.platforms)
