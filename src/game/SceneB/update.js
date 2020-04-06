@@ -341,36 +341,40 @@ export default async function update (time, delta) {
     })
   }
 
-  if (this.boss.alive && !this.boss.snapping) {
-    randomMove(this.boss)
-    if (this.boss.body.velocity.x !== 0) {
-      this.boss.anims.play('Thanos_walk', true)
-      if (this.boss.body.velocity.x > 0) {
-        this.boss.facing = 'right'
+  // thanos
+  if (this.boss.alive) {
+    drawHealthBar(this, this.boss)
+    if (!this.boss.snapping) {
+      randomMove(this.boss)
+      if (this.boss.body.velocity.x !== 0) {
+        this.boss.anims.play('Thanos_walk', true)
+        if (this.boss.body.velocity.x > 0) {
+          this.boss.facing = 'right'
+        } else {
+          this.boss.facing = 'left'
+        }
+
+        if (this.boss.facing === 'right') {
+          this.boss.flipX = false
+        } else if (this.boss.facing === 'left') {
+          this.boss.flipX = true
+        }
+
+        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
+          this.boss.body.velocity.x = 0
+          this.boss.snapping = true
+          this.boss.skillCoolDown = true
+          this.boss.anims.play('Thanos_snap', true)
+          setTimeout(() => {
+            this.boss.snapping = false
+          }, 1200)
+          setTimeout(() => {
+            this.boss.skillCoolDown = false
+          }, 2000)
+        }
       } else {
-        this.boss.facing = 'left'
+        this.boss.anims.play('Thanos_idle', true)
       }
-
-      if (this.boss.facing === 'right') {
-        this.boss.flipX = false
-      } else if (this.boss.facing === 'left') {
-        this.boss.flipX = true
-      }
-
-      if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
-        this.boss.body.velocity.x = 0
-        this.boss.snapping = true
-        this.boss.skillCoolDown = true
-        this.boss.anims.play('Thanos_snap', true)
-        setTimeout(() => {
-          this.boss.snapping = false
-        }, 1200)
-        setTimeout(() => {
-          this.boss.skillCoolDown = false
-        }, 2000)
-      }
-    } else {
-      this.boss.anims.play('Thanos_idle', true)
     }
   }
 

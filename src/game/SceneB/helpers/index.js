@@ -238,7 +238,11 @@ export function randomMove (object) {
   let droidmover = Math.random()
   let turnChance = Math.random()
   //simple if statement to choose if and which way the droid moves
-  if (turnChance < 0.03) {
+  if (turnChance < 0.03 && !object.turnCoolDown) {
+    object.turnCoolDown = true
+    setTimeout(() => {
+      object.turnCoolDown = false
+    }, 1000)
     if (droidmover >= 0.5) {
       object.body.velocity.x = 100
     } else if (droidmover < 0.5) {
@@ -281,6 +285,7 @@ export function drawHealthBar (scene, object) {
   if (object.hp > 0 && object.hp < 100) {
     let x = object.x - 40
     let y = object.y - 50
+    if (object.name === 'Thanos') y -= 35
 
     object.bar.clear()
 
@@ -300,7 +305,7 @@ export function drawHealthBar (scene, object) {
 
     let d = Math.floor((76 / 100) * object.hp)
 
-    object.bar.fillRect(x + 2, y + 2, d, 12)
+    object.bar.fillRect(x + 2, y + 2, d, 12).setDepth(6)
 
     scene.add.existing(object.bar)
   }
