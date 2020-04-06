@@ -13,6 +13,7 @@ import {
 import { API, graphqlOperation } from 'aws-amplify'
 import * as mutations from '../../graphql/mutations'
 import store from '../../store'
+import bossThanos from './helpers/bossThanos'
 
 export default async function update (time, delta) {
   // timer
@@ -34,9 +35,13 @@ export default async function update (time, delta) {
     this.slimes.children.size === 0 &&
     this.triggerOnce === 0
   ) {
-    console.log(`Game End`)
-    this.startTimer = false
     this.triggerOnce -= 1
+    // init thanos
+    bossThanos(this)
+  }
+  if (this.triggerOnce === -1 && this.boss.alive === false) {
+    this.triggerOnce -= 1
+    this.startTimer = false
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
 
     const character = this.player.name

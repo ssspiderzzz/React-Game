@@ -20,6 +20,10 @@ export default function bossThanos (scene) {
   scene.boss.facing = 'right'
   scene.boss.bar = scene.add.graphics()
   scene.boss.hp = 99
+
+  scene.physics.add.collider(scene.boss, scene.platforms)
+  scene.physics.add.collider(scene.boss, scene.invisibleWalls)
+
   scene.anims.create({
     key: 'Thanos_idle',
     frames: scene.anims.generateFrameNumbers('Thanos', {

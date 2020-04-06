@@ -2,7 +2,6 @@ import Phaser from 'phaser'
 import initIronMan from './helpers/initIronMan'
 import initCaptainAmerica from './helpers/initCaptainAmerica'
 import initThor from './helpers/initThor'
-import bossThanos from './helpers/bossThanos'
 import {
   captainShieldReturn,
   thorHammerReturn,
@@ -51,8 +50,9 @@ export default function create () {
   if (name === 'CaptainAmerica') initCaptainAmerica(this)
   if (name === 'Thor') initThor(this)
 
-  // thanos
-  bossThanos(this)
+  // boss
+  this.boss = {}
+  this.boss.alive = false
 
   // coins
   this.coins = this.physics.add.group({
@@ -289,8 +289,6 @@ export default function create () {
 
   // game physics
   this.physics.add.collider(this.player, this.platforms)
-  this.physics.add.collider(this.boss, this.platforms)
-  this.physics.add.collider(this.boss, this.invisibleWalls)
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.player, this.coins, (player, coin) => {
     this.money++
