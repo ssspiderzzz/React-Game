@@ -323,8 +323,12 @@ export default async function update (time, delta) {
           } else {
             direction = 'left'
           }
-          if (fireRate < 0.003) {
+          if (fireRate < 0.003 && !slime.skillCoolDown) {
             shootProjectile(this, slime, direction)
+            slime.skillCoolDown = true
+            setTimeout(() => {
+              slime.skillCoolDown = false
+            }, 1000)
           }
         }
         if (slime.hp <= 0) {
@@ -353,14 +357,20 @@ export default async function update (time, delta) {
         this.boss.flipX = true
       }
 
-      if (Math.random() < 0.01) {
+      if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
         this.boss.body.velocity.x = 0
         this.boss.snapping = true
+        this.boss.skillCoolDown = true
         this.boss.anims.play('Thanos_snap', true)
         setTimeout(() => {
           this.boss.snapping = false
-        }, 1000)
+        }, 1200)
+        setTimeout(() => {
+          this.boss.skillCoolDown = false
+        }, 2000)
       }
+    } else {
+      this.boss.anims.play('Thanos_idle', true)
     }
   }
 

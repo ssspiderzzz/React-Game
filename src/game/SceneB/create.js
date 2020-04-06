@@ -2,6 +2,7 @@ import Phaser from 'phaser'
 import initIronMan from './helpers/initIronMan'
 import initCaptainAmerica from './helpers/initCaptainAmerica'
 import initThor from './helpers/initThor'
+import bossThanos from './helpers/bossThanos'
 import {
   captainShieldReturn,
   thorHammerReturn,
@@ -49,6 +50,9 @@ export default function create () {
   if (name === 'IronMan') initIronMan(this)
   if (name === 'CaptainAmerica') initCaptainAmerica(this)
   if (name === 'Thor') initThor(this)
+
+  // thanos
+  bossThanos(this)
 
   // coins
   this.coins = this.physics.add.group({
@@ -178,6 +182,16 @@ export default function create () {
   // invisible walls
   this.invisibleWalls = this.physics.add.staticGroup()
   this.invisibleWalls
+    .create(width / 2 - 128, 520, 'tiles', 1)
+    .setScale(0.1, 1)
+    .setAlpha(0)
+    .refreshBody()
+  this.invisibleWalls
+    .create(width / 2 + 128, 520, 'tiles', 1)
+    .setScale(0.1, 1)
+    .setAlpha(0)
+    .refreshBody()
+  this.invisibleWalls
     .create(320, 420, 'tiles', 1)
     .setScale(0.1, 1)
     .setAlpha(0)
@@ -273,58 +287,10 @@ export default function create () {
     this.cursors = this.joystickCursors
   }
 
-  // Thanos Test
-  this.boss = this.physics.add.sprite(640, 300, 'Thanos').setScale(2, 2)
-  this.boss.name = 'Thanos'
-  this.boss.setSize(60, 90, 0, 0).setOffset(25, 20)
-  this.boss.alive = true
-  this.boss.shootable = true
-  this.boss.invincible = false
-  this.boss.body.collideWorldBounds = true
-  this.boss.facing = 'right'
-  this.boss.bar = this.add.graphics()
-  this.boss.hp = 100
-  this.anims.create({
-    key: 'Thanos_idle',
-    frames: this.anims.generateFrameNumbers('Thanos', {
-      start: 0,
-      end: 0
-    }),
-    frameRate: 1,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'Thanos_walk',
-    frames: this.anims.generateFrameNumbers('Thanos', {
-      start: 1,
-      end: 4
-    }),
-    frameRate: 5,
-    yoyo: true,
-    repeat: -1
-  })
-  this.anims.create({
-    key: 'Thanos_snap',
-    frames: this.anims.generateFrameNumbers('Thanos', {
-      start: 5,
-      end: 8
-    }),
-    frameRate: 4,
-    repeat: 0
-  })
-  this.anims.create({
-    key: 'Thanos_attack',
-    frames: this.anims.generateFrameNumbers('Thanos', {
-      start: 9,
-      end: 12
-    }),
-    frameRate: 5,
-    repeat: 0
-  })
-
   // game physics
   this.physics.add.collider(this.player, this.platforms)
   this.physics.add.collider(this.boss, this.platforms)
+  this.physics.add.collider(this.boss, this.invisibleWalls)
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.player, this.coins, (player, coin) => {
     this.money++
