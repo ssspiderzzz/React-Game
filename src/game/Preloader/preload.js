@@ -6,6 +6,7 @@ import iron_man_sprites from '../../assets/characters/iron_man_sprites.png'
 import captain_america_sprites from '../../assets/characters/captain_america_sprites.png'
 import thor_sprites from '../../assets/characters/thor_sprites.png'
 import thanos_sprites from '../../assets/villain/thanos_sprites.png'
+import portal from '../../assets/villain/portal.png'
 import title from '../../assets/avengers_title.png'
 import play_now_bronze from '../../assets/PlayNowBronze.png'
 import play_now_red from '../../assets/PlayNowRed.png'
@@ -116,6 +117,7 @@ export default function preload () {
   this.load.image('jarvis_circle', jarvis_circle)
   this.load.image('tech_button_circle', tech_button_circle)
   this.load.image('fullscreen', fullscreen)
+  this.load.image('portal', portal)
 
   this.load.spritesheet('IronMan', iron_man_sprites, {
     frameWidth: 55,
