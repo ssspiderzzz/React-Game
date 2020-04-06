@@ -329,7 +329,7 @@ export function drawEnergyBar (scene, object) {
   }
 
   let d = Math.floor((76 / 100) * object.mp)
-  object.barMP.fillRect(x + 2, y, d, 6)
+  object.barMP.fillRect(x + 2, y, d, 6).setDepth(7)
   scene.add.existing(object.barMP)
 }
 
