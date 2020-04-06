@@ -337,6 +337,10 @@ export default async function update (time, delta) {
     })
   }
 
+  if (this.boss.alive) {
+    randomMove(this.boss)
+  }
+
   // Iron Man's Special move, energy regeneration
   if (this.player.name === 'IronMan' && this.player.alive) {
     if (this.player.mp <= 100) {

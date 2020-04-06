@@ -273,7 +273,21 @@ export default function create () {
     this.cursors = this.joystickCursors
   }
 
+  // Thanos Test
+  this.boss = this.physics.add.sprite(640, 300, 'Thanos').setScale(2, 2)
+  this.boss.name = 'Thanos'
+  this.boss.setSize(22, 45, 0, 0).setOffset(24, 10)
+  this.boss.alive = true
+  this.boss.shootable = true
+  this.boss.invincible = false
+  this.boss.body.collideWorldBounds = true
+  this.boss.facing = 'right'
+  this.boss.bar = this.add.graphics()
+  this.boss.hp = 100
+
+  // game physics
   this.physics.add.collider(this.player, this.platforms)
+  this.physics.add.collider(this.boss, this.platforms)
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.player, this.coins, (player, coin) => {
     this.money++

@@ -1,5 +1,5 @@
 export default function create () {
   setTimeout(() => {
-    // this.scene.start('SceneA')
-  }, 500)
+    this.scene.start('SceneA')
+  }, 400)
 }

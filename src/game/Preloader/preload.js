@@ -5,6 +5,7 @@ import thor_face from '../../assets/characters/thor_face.jpg'
 import iron_man_sprites from '../../assets/characters/iron_man_sprites.png'
 import captain_america_sprites from '../../assets/characters/captain_america_sprites.png'
 import thor_sprites from '../../assets/characters/thor_sprites.png'
+import thanos_sprites from '../../assets/villain/thanos_sprites.png'
 import title from '../../assets/avengers_title.png'
 import play_now_bronze from '../../assets/PlayNowBronze.png'
 import play_now_red from '../../assets/PlayNowRed.png'
@@ -127,6 +128,10 @@ export default function preload () {
   this.load.spritesheet('Thor', thor_sprites, {
     frameWidth: 70,
     frameHeight: 55
+  })
+  this.load.spritesheet('Thanos', thanos_sprites, {
+    frameWidth: 110,
+    frameHeight: 110
   })
   this.load.spritesheet('spiderman', spiderman, {
     frameWidth: 80,
