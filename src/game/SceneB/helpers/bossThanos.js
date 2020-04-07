@@ -1,5 +1,5 @@
 export default function bossThanos (scene) {
-  scene.boss = scene.physics.add.sprite(640, 300, 'Thanos').setScale(2, 2)
+  scene.boss = scene.physics.add.sprite(640, 400, 'Thanos').setScale(2, 2)
   scene.boss.name = 'Thanos'
   scene.boss
     .setSize(60, 90, 0, 0)

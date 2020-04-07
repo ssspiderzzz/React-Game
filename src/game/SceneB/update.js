@@ -25,7 +25,7 @@ export default async function update (time, delta) {
   ) {
     this.startTimer = true
     this.triggerOnce--
-    let portal = this.add.image(640, 300, 'portal').setScale(0)
+    let portal = this.add.image(640, 400, 'portal').setScale(0)
     this.tweens.add({
       targets: portal,
       scale: { value: 1, duration: 2000, ease: 'Power1' },
@@ -74,12 +74,11 @@ export default async function update (time, delta) {
     )
   }
 
-  // hp and mp bar drawing
-  drawHealthBar(this, this.player)
-  drawEnergyBar(this, this.player)
-
   // player
   if (this.player.alive) {
+    // hp and mp bar drawing
+    drawHealthBar(this, this.player)
+    drawEnergyBar(this, this.player)
     // player runs and stands
     if (!this.knockBack) {
       if (this.player.shootable) {
