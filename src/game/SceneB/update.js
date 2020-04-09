@@ -48,8 +48,8 @@ export default async function update (time, delta) {
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
   }
   if (
-    this.slimes.children &&
-    this.slimes.children.size === 0 &&
+    this.villains.children &&
+    this.villains.children.size === 0 &&
     this.triggerOnce === 0
   ) {
     this.triggerOnce -= 1
@@ -327,9 +327,9 @@ export default async function update (time, delta) {
     })
   }
 
-  // slimes
-  if (this.slimes.children.size > 0) {
-    this.slimes.children.iterate(slime => {
+  // villains
+  if (this.villains.children.size > 0) {
+    this.villains.children.iterate(slime => {
       if (slime) {
         drawHealthBar(this, slime)
         randomMove(slime)

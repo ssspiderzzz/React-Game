@@ -89,14 +89,14 @@ export default function create () {
     repeat: 0
   })
 
-  // slimes
-  this.slimes = this.physics.add.group({
+  // villains
+  this.villains = this.physics.add.group({
     key: 'slime_blue',
     repeat: 2,
     setXY: { x: 100, y: 650, stepX: 540 }
   })
-  this.slimes.create(160, 400, 'slime_red')
-  this.slimes.create(width - 160, 400, 'slime_red')
+  this.villains.create(160, 400, 'slime_red')
+  this.villains.create(width - 160, 400, 'slime_red')
   this.anims.create({
     key: 'slime_blue',
     frames: this.anims.generateFrameNumbers('slime', {
@@ -117,7 +117,7 @@ export default function create () {
     repeat: -1,
     yoyo: true
   })
-  this.slimes.children.iterate((slime, index) => {
+  this.villains.children.iterate((slime, index) => {
     slime.bar = this.add.graphics()
     slime.hurtable = true
     slime.hp = 100
@@ -296,9 +296,9 @@ export default function create () {
     coin.disableBody(true, true)
     coin.destroy()
   })
-  this.physics.add.collider(this.slimes, this.platforms)
-  this.physics.add.collider(this.slimes, this.invisibleWalls)
-  this.physics.add.collider(this.player, this.slimes, (player, slime) => {
+  this.physics.add.collider(this.villains, this.platforms)
+  this.physics.add.collider(this.villains, this.invisibleWalls)
+  this.physics.add.collider(this.player, this.villains, (player, slime) => {
     if (!this.player.invincible) {
       let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
       this.player.hp -= floatSlimeDmg
@@ -326,12 +326,12 @@ export default function create () {
   )
 
   if (this.player.name === 'IronMan') {
-    this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
+    this.physics.add.overlap(this.beams, this.villains, (beam, slime) => {
       hitEffect(this, beam)
       beam.disableBody(true, true)
       slime.hp -= Math.floor(Math.random() * 15) + 15
     })
-    this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
+    this.physics.add.overlap(this.uniBeams, this.villains, (uniBeam, slime) => {
       slime.hp -= Math.floor(Math.random() * 1) + 1
     })
   }
@@ -342,14 +342,14 @@ export default function create () {
       () => {
         this.shields.children.iterate(shield => {
           captainShieldReturn(this.player, shield)
-          this.slimes.children.iterate(slime => {
+          this.villains.children.iterate(slime => {
             slime.hurtable = true
           })
         })
       },
       this
     )
-    this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
+    this.physics.add.overlap(this.shields, this.villains, (shield, slime) => {
       if (slime.hurtable) {
         slime.hurtable = false
         hitEffect(this, shield)
@@ -368,7 +368,7 @@ export default function create () {
   }
 
   if (this.player.name === 'Thor') {
-    this.physics.add.overlap(this.hammers, this.slimes, (hammer, slime) => {
+    this.physics.add.overlap(this.hammers, this.villains, (hammer, slime) => {
       if (hammer.damageable) {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
@@ -382,7 +382,7 @@ export default function create () {
       this.player.shootable = true
     })
     this.physics.add.overlap(
-      this.slimes,
+      this.villains,
       this.lightningRods,
       (slime, lightningRod) => {
         if (slime.hurtable) {
@@ -440,7 +440,7 @@ export default function create () {
   if (this.player.name === 'SpiderMan') {
     this.physics.add.collider(this.webs, this.platforms)
     this.physics.add.overlap(this.webs, this.coins)
-    this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
+    this.physics.add.overlap(this.webs, this.villains, (web, slime) => {
       let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
       newWeb_hit.body.allowGravity = false
       newWeb_hit.body.setSize(15, 15, 5, 5)
