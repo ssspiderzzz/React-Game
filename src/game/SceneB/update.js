@@ -395,6 +395,17 @@ export default async function update (time, delta) {
         this.boss.anims.play('Thanos_idle', true)
       }
     }
+
+    if (this.boss.hp < 0) {
+      if (this.boss.facing === 'right') {
+        this.boss.flipX = false
+      } else if (this.boss.facing === 'left') {
+        this.boss.flipX = true
+      }
+      this.boss.alive = false
+      this.boss.anims.play('Thanos_die', true)
+      this.boss.bar.destroy()
+    }
   }
 
   // Iron Man's Special move, energy regeneration

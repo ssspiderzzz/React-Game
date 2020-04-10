@@ -411,3 +411,41 @@ export function hitEffect (scene, object) {
     hit_effect.destroy()
   }, 1000)
 }
+
+export function hitEffectLightning (scene, object) {
+  let lightning = scene.lightnings.create(object.x, object.y - 353, 'lightning')
+  lightning.followObject = object
+  lightning.setScale(1, 2.5)
+  lightning.body.collideWorldBounds = false
+  lightning.body.allowGravity = false
+  lightning.anims.play('lightning', true)
+
+  scene.tweens.add({
+    targets: lightning,
+    alphaTopLeft: {
+      value: 0,
+      duration: 500,
+      ease: 'Linear'
+    },
+    alphaTopRight: {
+      value: 0,
+      duration: 500,
+      ease: 'Linear'
+    },
+    alphaBottomLeft: {
+      value: 0,
+      duration: 2000,
+      ease: 'Linear'
+    },
+    alphaBottomRight: {
+      value: 0,
+      duration: 2000,
+      ease: 'Linear'
+    },
+    loop: 0
+  })
+
+  setTimeout(() => {
+    lightning.destroy()
+  }, 2000)
+}
