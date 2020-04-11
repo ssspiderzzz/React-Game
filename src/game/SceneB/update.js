@@ -384,6 +384,8 @@ export default async function update (time, delta) {
           this.boss.snapping = true
           this.boss.skillCoolDown = true
           this.boss.anims.play('Thanos_snap', true)
+          thanosShooter(this, this.boss, this.boss.facing)
+
           setTimeout(() => {
             this.boss.snapping = false
           }, 1200)
@@ -475,4 +477,33 @@ export default async function update (time, delta) {
       })
     }
   }
+}
+
+function thanosShooter (scene, thanos, direction) {
+  // shoot bullets
+  let plusX
+  let velocityX
+  let flipX
+  if (direction === 'right') {
+    plusX = 120
+    velocityX = 100
+    flipX = false
+  }
+  if (direction === 'left') {
+    plusX = -20
+    velocityX = -100
+    flipX = true
+  }
+  let newProjectile = scene.red_projectiles.create(
+    thanos.body.x + plusX,
+    thanos.body.y,
+    'red_projectiles'
+  )
+  newProjectile.setSize(90, 110, 0, 0).setOffset(35, 25)
+  // newProjectile.body.collideWorldBounds = true
+  newProjectile.body.allowGravity = false
+  newProjectile.flipX = flipX
+  newProjectile.anims.play('red_projectile', true)
+  newProjectile.body.velocity.x = velocityX
+  newProjectile.setScale(0.5, 0.2)
 }
