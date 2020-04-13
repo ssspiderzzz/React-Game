@@ -333,6 +333,53 @@ export function drawEnergyBar (scene, object) {
   scene.add.existing(object.barMP)
 }
 
+export function thanos_skill_A_shootAOE (scene, thanos, direction) {
+  let velocityXRotation = [100, 75, 0, -75, -100, -75, 0, 75]
+  let velocityYRotation = [0, 75, 100, 75, 0, -75, -100, -75]
+  let rotateAngle = Math.PI / 4
+  for (let i = 0; i <= 7; i++) {
+    setTimeout(() => {
+      // shoot bullets
+      let plusX
+      let velocityX
+      let velocityY
+      let flipX
+      let rotation = rotateAngle * i
+
+      if (direction === 'right') {
+        plusX = 110
+        velocityX = velocityXRotation[i]
+        velocityY = velocityYRotation[i]
+        flipX = false
+      }
+      if (direction === 'left') {
+        plusX = 10
+        velocityX = -velocityXRotation[i]
+        velocityY = -velocityYRotation[i]
+        flipX = true
+      }
+      let newProjectile = scene.red_projectiles.create(
+        thanos.body.x + plusX,
+        thanos.body.y,
+        'red_projectiles'
+      )
+      newProjectile.setSize(90, 110, 0, 0).setOffset(35, 25)
+      // newProjectile.body.collideWorldBounds = true
+      newProjectile.body.allowGravity = false
+      newProjectile.flipX = flipX
+      newProjectile.anims.play('red_projectile', true)
+      newProjectile.body.velocity.x = velocityX
+      newProjectile.body.velocity.y = velocityY
+      newProjectile.setScale(0.3, 0.3)
+      newProjectile.setDepth(6)
+      newProjectile.rotation = rotation
+      setTimeout(() => {
+        newProjectile.destroy()
+      }, 10000)
+    }, 125 * i)
+  }
+}
+
 // create functions
 
 export function captainShieldReturn (captain, shield) {
