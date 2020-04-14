@@ -187,12 +187,12 @@ export function thorThunder (scene, shootDirection) {
     // energy cost for thunder
     scene.player.mp -= 50
     if (shootDirection === 'right') {
-      shootSpeed = 900
+      shootSpeed = 1000
       shootX = 50
       flipX = false
     }
     if (shootDirection === 'left') {
-      shootSpeed = -900
+      shootSpeed = -1000
       shootX = -50
       flipX = true
     }
@@ -460,9 +460,16 @@ export function hitEffect (scene, object) {
 }
 
 export function hitEffectLightning (scene, object) {
-  let lightning = scene.lightnings.create(object.x, object.y - 353, 'lightning')
+  let lightning = scene.lightnings.create(
+    object.x,
+    object.y - 437.5 + 50 + object.height,
+    'lightning'
+  )
   lightning.followObject = object
-  lightning.setScale(1, 2.5)
+  lightning
+    .setScale(1, 2.5)
+    .setOrigin(0.5)
+    .setDepth(7)
   lightning.body.collideWorldBounds = false
   lightning.body.allowGravity = false
   lightning.anims.play('lightning', true)
