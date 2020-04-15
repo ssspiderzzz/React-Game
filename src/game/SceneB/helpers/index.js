@@ -202,7 +202,8 @@ export function thorThunder (scene, shootDirection) {
       scene.player.y + 10,
       'lightningRod'
     )
-    lightningRod.body.setSize(8, 5, 0, 0).setOffset(23.5, 25)
+    lightningRod.body.setSize(8, 150, 0, 0).setOffset(23.5, 0)
+    lightningRod.setOrigin(0.5)
     lightningRod.body.collideWorldBounds = false
     lightningRod.body.allowGravity = false
     lightningRod.anims.play('lightningRod', true)
