@@ -26,6 +26,17 @@ export default async function update (time, delta) {
   ) {
     this.startTimer = true
     this.triggerOnce--
+  }
+  if (this.startTimer) {
+    this.timer += delta
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
+  }
+  if (
+    this.villains.children &&
+    this.villains.children.size === 0 &&
+    this.triggerOnce === 0
+  ) {
+    this.triggerOnce -= 1
 
     // thanos' portal
     let portal = this.add.image(640, 400, 'portal').setScale(0)
@@ -45,17 +56,6 @@ export default async function update (time, delta) {
         portal.destroy()
       }, 2000)
     }, 1500)
-  }
-  if (this.startTimer) {
-    this.timer += delta
-    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
-  }
-  if (
-    this.villains.children &&
-    this.villains.children.size === 0 &&
-    this.triggerOnce === 0
-  ) {
-    this.triggerOnce -= 1
   }
   if (this.triggerOnce === -1 && this.boss.alive === false) {
     this.triggerOnce -= 1
