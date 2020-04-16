@@ -26,6 +26,8 @@ export default async function update (time, delta) {
   ) {
     this.startTimer = true
     this.triggerOnce--
+
+    // thanos' portal
     let portal = this.add.image(640, 400, 'portal').setScale(0)
     this.tweens.add({
       targets: portal,
@@ -82,28 +84,26 @@ export default async function update (time, delta) {
     drawEnergyBar(this, this.player)
     // player runs and stands
     if (!this.knockBack) {
-      if (this.player.shootable) {
-        if (this.cursors.right.isDown) {
-          this.player.anims.play('walk', true)
+      if (this.cursors.right.isDown) {
+        if (this.player.shootable) this.player.anims.play('walk', true)
+        this.player.flipX = false
+        this.player.body.setVelocityX(300)
+        this.player.facing = 'right'
+      } else if (this.cursors.left.isDown) {
+        if (this.player.shootable) this.player.anims.play('walk', true)
+        this.player.flipX = true
+        this.player.body.setVelocityX(-300)
+        this.player.facing = 'left'
+      } else {
+        if (this.player.facing === 'right') {
           this.player.flipX = false
-          this.player.body.setVelocityX(300)
-          this.player.facing = 'right'
-        } else if (this.cursors.left.isDown) {
-          this.player.anims.play('walk', true)
-          this.player.flipX = true
-          this.player.body.setVelocityX(-300)
-          this.player.facing = 'left'
-        } else {
-          if (this.player.facing === 'right') {
-            this.player.flipX = false
-            this.player.anims.play('idle', true)
-          }
-          if (this.player.facing === 'left') {
-            this.player.flipX = true
-            this.player.anims.play('idle', true)
-          }
-          this.player.body.setVelocityX(0)
+          if (this.player.shootable) this.player.anims.play('idle', true)
         }
+        if (this.player.facing === 'left') {
+          this.player.flipX = true
+          if (this.player.shootable) this.player.anims.play('idle', true)
+        }
+        this.player.body.setVelocityX(0)
       }
 
       // player jumps
