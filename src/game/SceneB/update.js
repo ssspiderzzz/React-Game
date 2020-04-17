@@ -57,7 +57,8 @@ export default async function update (time, delta) {
       }, 2000)
     }, 1500)
   }
-  if (this.triggerOnce === -1 && this.boss.alive === false) {
+
+  if (this.triggerOnce === -2) {
     this.triggerOnce -= 1
     this.startTimer = false
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
@@ -400,6 +401,10 @@ export default async function update (time, delta) {
     }
 
     if (this.boss.hp < 0) {
+      // trigger save leaderborad record
+      this.triggerOnce -= 1
+
+      // boss death anmiations
       if (this.boss.facing === 'right') {
         this.boss.flipX = false
       } else if (this.boss.facing === 'left') {
@@ -408,6 +413,14 @@ export default async function update (time, delta) {
       this.boss.alive = false
       this.boss.anims.play('Thanos_die', true)
       this.boss.bar.destroy()
+      this.tweens.add({
+        targets: this.boss,
+        alpha: { value: 0, duration: 3000, ease: 'Power1' }
+      })
+      setTimeout(() => {
+        this.boss.disableBody(true, true)
+        this.boss.destroy()
+      }, 3000)
     }
   }
 
