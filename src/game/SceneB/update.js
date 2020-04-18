@@ -54,7 +54,7 @@ export default async function update (time, delta) {
       })
       setTimeout(() => {
         portal.destroy()
-      }, 2000)
+      }, 2500)
     }, 1500)
   }
 
