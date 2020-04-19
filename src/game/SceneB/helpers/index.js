@@ -187,12 +187,12 @@ export function thorThunder (scene, shootDirection) {
     // energy cost for thunder
     scene.player.mp -= 50
     if (shootDirection === 'right') {
-      shootSpeed = 900
+      shootSpeed = 1000
       shootX = 50
       flipX = false
     }
     if (shootDirection === 'left') {
-      shootSpeed = -900
+      shootSpeed = -1000
       shootX = -50
       flipX = true
     }
@@ -202,7 +202,8 @@ export function thorThunder (scene, shootDirection) {
       scene.player.y + 10,
       'lightningRod'
     )
-    lightningRod.body.setSize(8, 5, 0, 0).setOffset(23.5, 25)
+    lightningRod.body.setSize(8, 150, 0, 0).setOffset(23.5, 0)
+    lightningRod.setOrigin(0.5)
     lightningRod.body.collideWorldBounds = false
     lightningRod.body.allowGravity = false
     lightningRod.anims.play('lightningRod', true)
@@ -238,7 +239,11 @@ export function randomMove (object) {
   let droidmover = Math.random()
   let turnChance = Math.random()
   //simple if statement to choose if and which way the droid moves
-  if (turnChance < 0.03) {
+  if (turnChance < 0.03 && !object.turnCoolDown) {
+    object.turnCoolDown = true
+    setTimeout(() => {
+      object.turnCoolDown = false
+    }, 1000)
     if (droidmover >= 0.5) {
       object.body.velocity.x = 100
     } else if (droidmover < 0.5) {
@@ -281,6 +286,7 @@ export function drawHealthBar (scene, object) {
   if (object.hp > 0 && object.hp < 100) {
     let x = object.x - 40
     let y = object.y - 50
+    if (object.name === 'Thanos') y -= 35
 
     object.bar.clear()
 
@@ -300,7 +306,7 @@ export function drawHealthBar (scene, object) {
 
     let d = Math.floor((76 / 100) * object.hp)
 
-    object.bar.fillRect(x + 2, y + 2, d, 12)
+    object.bar.fillRect(x + 2, y + 2, d, 12).setDepth(6)
 
     scene.add.existing(object.bar)
   }
@@ -324,8 +330,55 @@ export function drawEnergyBar (scene, object) {
   }
 
   let d = Math.floor((76 / 100) * object.mp)
-  object.barMP.fillRect(x + 2, y, d, 6)
+  object.barMP.fillRect(x + 2, y, d, 6).setDepth(7)
   scene.add.existing(object.barMP)
+}
+
+export function thanos_skill_A_shootAOE (scene, thanos, direction) {
+  let velocityXRotation = [100, 75, 0, -75, -100, -75, 0, 75]
+  let velocityYRotation = [0, 75, 100, 75, 0, -75, -100, -75]
+  let rotateAngle = Math.PI / 4
+  for (let i = 0; i <= 7; i++) {
+    setTimeout(() => {
+      // shoot bullets
+      let plusX
+      let velocityX
+      let velocityY
+      let flipX
+      let rotation = rotateAngle * i
+
+      if (direction === 'right') {
+        plusX = 110
+        velocityX = velocityXRotation[i]
+        velocityY = velocityYRotation[i]
+        flipX = false
+      }
+      if (direction === 'left') {
+        plusX = 10
+        velocityX = -velocityXRotation[i]
+        velocityY = -velocityYRotation[i]
+        flipX = true
+      }
+      let newProjectile = scene.red_projectiles.create(
+        thanos.body.x + plusX,
+        thanos.body.y,
+        'red_projectiles'
+      )
+      newProjectile.setSize(90, 110, 0, 0).setOffset(35, 25)
+      // newProjectile.body.collideWorldBounds = true
+      newProjectile.body.allowGravity = false
+      newProjectile.flipX = flipX
+      newProjectile.anims.play('red_projectile', true)
+      newProjectile.body.velocity.x = velocityX
+      newProjectile.body.velocity.y = velocityY
+      newProjectile.setScale(0.3, 0.3)
+      newProjectile.setDepth(6)
+      newProjectile.rotation = rotation
+      setTimeout(() => {
+        newProjectile.destroy()
+      }, 10000)
+    }, 125 * i)
+  }
 }
 
 // create functions
@@ -405,4 +458,49 @@ export function hitEffect (scene, object) {
   setTimeout(() => {
     hit_effect.destroy()
   }, 1000)
+}
+
+export function hitEffectLightning (scene, object) {
+  let lightning = scene.lightnings.create(
+    object.x,
+    object.y - 437.5 + 50 + object.height,
+    'lightning'
+  )
+  lightning.followObject = object
+  lightning
+    .setScale(1, 2.5)
+    .setOrigin(0.5)
+    .setDepth(7)
+  lightning.body.collideWorldBounds = false
+  lightning.body.allowGravity = false
+  lightning.anims.play('lightning', true)
+
+  scene.tweens.add({
+    targets: lightning,
+    alphaTopLeft: {
+      value: 0,
+      duration: 500,
+      ease: 'Linear'
+    },
+    alphaTopRight: {
+      value: 0,
+      duration: 500,
+      ease: 'Linear'
+    },
+    alphaBottomLeft: {
+      value: 0,
+      duration: 2000,
+      ease: 'Linear'
+    },
+    alphaBottomRight: {
+      value: 0,
+      duration: 2000,
+      ease: 'Linear'
+    },
+    loop: 0
+  })
+
+  setTimeout(() => {
+    lightning.destroy()
+  }, 2000)
 }

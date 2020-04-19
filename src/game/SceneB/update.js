@@ -8,11 +8,13 @@ import {
   randomMove,
   shootProjectile,
   drawHealthBar,
-  drawEnergyBar
+  drawEnergyBar,
+  thanos_skill_A_shootAOE
 } from './helpers'
 import { API, graphqlOperation } from 'aws-amplify'
 import * as mutations from '../../graphql/mutations'
 import store from '../../store'
+import bossThanos from './helpers/bossThanos'
 
 export default async function update (time, delta) {
   // timer
@@ -30,13 +32,35 @@ export default async function update (time, delta) {
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
   }
   if (
-    this.slimes.children &&
-    this.slimes.children.size === 0 &&
+    this.villains.children &&
+    this.villains.children.size === 0 &&
     this.triggerOnce === 0
   ) {
-    console.log(`Game End`)
-    this.startTimer = false
     this.triggerOnce -= 1
+
+    // thanos' portal
+    let portal = this.add.image(640, 400, 'portal').setScale(0)
+    this.tweens.add({
+      targets: portal,
+      scale: { value: 1, duration: 2000, ease: 'Power1' },
+      angle: { value: 360, ease: 'linear', repeat: -1 }
+    })
+    // init thanos
+    setTimeout(() => {
+      bossThanos(this)
+      this.tweens.add({
+        targets: portal,
+        scale: { value: 0, duration: 2000, ease: 'Power1' }
+      })
+      setTimeout(() => {
+        portal.destroy()
+      }, 2500)
+    }, 1500)
+  }
+
+  if (this.triggerOnce === -2) {
+    this.triggerOnce -= 1
+    this.startTimer = false
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
 
     const character = this.player.name
@@ -54,36 +78,33 @@ export default async function update (time, delta) {
     )
   }
 
-  // hp and mp bar drawing
-  drawHealthBar(this, this.player)
-  drawEnergyBar(this, this.player)
-
   // player
   if (this.player.alive) {
+    // hp and mp bar drawing
+    drawHealthBar(this, this.player)
+    drawEnergyBar(this, this.player)
     // player runs and stands
     if (!this.knockBack) {
-      if (this.player.shootable) {
-        if (this.cursors.right.isDown) {
-          this.player.anims.play('walk', true)
+      if (this.cursors.right.isDown) {
+        if (this.player.shootable) this.player.anims.play('walk', true)
+        this.player.flipX = false
+        this.player.body.setVelocityX(300)
+        this.player.facing = 'right'
+      } else if (this.cursors.left.isDown) {
+        if (this.player.shootable) this.player.anims.play('walk', true)
+        this.player.flipX = true
+        this.player.body.setVelocityX(-300)
+        this.player.facing = 'left'
+      } else {
+        if (this.player.facing === 'right') {
           this.player.flipX = false
-          this.player.body.setVelocityX(300)
-          this.player.facing = 'right'
-        } else if (this.cursors.left.isDown) {
-          this.player.anims.play('walk', true)
-          this.player.flipX = true
-          this.player.body.setVelocityX(-300)
-          this.player.facing = 'left'
-        } else {
-          if (this.player.facing === 'right') {
-            this.player.flipX = false
-            this.player.anims.play('idle', true)
-          }
-          if (this.player.facing === 'left') {
-            this.player.flipX = true
-            this.player.anims.play('idle', true)
-          }
-          this.player.body.setVelocityX(0)
+          if (this.player.shootable) this.player.anims.play('idle', true)
         }
+        if (this.player.facing === 'left') {
+          this.player.flipX = true
+          if (this.player.shootable) this.player.anims.play('idle', true)
+        }
+        this.player.body.setVelocityX(0)
       }
 
       // player jumps
@@ -308,9 +329,9 @@ export default async function update (time, delta) {
     })
   }
 
-  // slimes
-  if (this.slimes.children.size > 0) {
-    this.slimes.children.iterate(slime => {
+  // villains
+  if (this.villains.children.size > 0) {
+    this.villains.children.iterate(slime => {
       if (slime) {
         drawHealthBar(this, slime)
         randomMove(slime)
@@ -323,8 +344,12 @@ export default async function update (time, delta) {
           } else {
             direction = 'left'
           }
-          if (fireRate < 0.003) {
+          if (fireRate < 0.003 && !slime.skillCoolDown) {
             shootProjectile(this, slime, direction)
+            slime.skillCoolDown = true
+            setTimeout(() => {
+              slime.skillCoolDown = false
+            }, 1000)
           }
         }
         if (slime.hp <= 0) {
@@ -335,6 +360,68 @@ export default async function update (time, delta) {
         }
       }
     })
+  }
+
+  // thanos
+  if (this.boss.alive) {
+    drawHealthBar(this, this.boss)
+    if (!this.boss.snapping) {
+      randomMove(this.boss)
+      if (this.boss.body.velocity.x !== 0) {
+        this.boss.anims.play('Thanos_walk', true)
+        if (this.boss.body.velocity.x > 0) {
+          this.boss.facing = 'right'
+        } else {
+          this.boss.facing = 'left'
+        }
+
+        if (this.boss.facing === 'right') {
+          this.boss.flipX = false
+        } else if (this.boss.facing === 'left') {
+          this.boss.flipX = true
+        }
+
+        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
+          this.boss.body.velocity.x = 0
+          this.boss.snapping = true
+          this.boss.skillCoolDown = true
+          this.boss.anims.play('Thanos_snap', true)
+          thanos_skill_A_shootAOE(this, this.boss, this.boss.facing)
+
+          setTimeout(() => {
+            this.boss.snapping = false
+          }, 1200)
+          setTimeout(() => {
+            this.boss.skillCoolDown = false
+          }, 2000)
+        }
+      } else {
+        this.boss.anims.play('Thanos_idle', true)
+      }
+    }
+
+    if (this.boss.hp < 0) {
+      // trigger save leaderborad record
+      this.triggerOnce -= 1
+
+      // boss death anmiations
+      if (this.boss.facing === 'right') {
+        this.boss.flipX = false
+      } else if (this.boss.facing === 'left') {
+        this.boss.flipX = true
+      }
+      this.boss.alive = false
+      this.boss.anims.play('Thanos_die', true)
+      this.boss.bar.destroy()
+      this.tweens.add({
+        targets: this.boss,
+        alpha: { value: 0, duration: 3000, ease: 'Power1' }
+      })
+      setTimeout(() => {
+        this.boss.disableBody(true, true)
+        this.boss.destroy()
+      }, 3000)
+    }
   }
 
   // Iron Man's Special move, energy regeneration

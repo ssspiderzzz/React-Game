@@ -7,6 +7,7 @@ import {
   thorHammerReturn,
   knockBack,
   hitEffect,
+  hitEffectLightning,
   drawDamageText
 } from './helpers'
 import store from '../../store'
@@ -50,6 +51,10 @@ export default function create () {
   if (name === 'CaptainAmerica') initCaptainAmerica(this)
   if (name === 'Thor') initThor(this)
 
+  // boss
+  this.boss = {}
+  this.boss.alive = false
+
   // coins
   this.coins = this.physics.add.group({
     key: 'coin',
@@ -85,14 +90,14 @@ export default function create () {
     repeat: 0
   })
 
-  // slimes
-  this.slimes = this.physics.add.group({
+  // villains
+  this.villains = this.physics.add.group({
     key: 'slime_blue',
     repeat: 2,
     setXY: { x: 100, y: 650, stepX: 540 }
   })
-  this.slimes.create(160, 400, 'slime_red')
-  this.slimes.create(width - 160, 400, 'slime_red')
+  this.villains.create(160, 400, 'slime_red')
+  this.villains.create(width - 160, 400, 'slime_red')
   this.anims.create({
     key: 'slime_blue',
     frames: this.anims.generateFrameNumbers('slime', {
@@ -113,7 +118,7 @@ export default function create () {
     repeat: -1,
     yoyo: true
   })
-  this.slimes.children.iterate((slime, index) => {
+  this.villains.children.iterate((slime, index) => {
     slime.bar = this.add.graphics()
     slime.hurtable = true
     slime.hp = 100
@@ -177,6 +182,16 @@ export default function create () {
 
   // invisible walls
   this.invisibleWalls = this.physics.add.staticGroup()
+  this.invisibleWalls
+    .create(width / 2 - 128, 520, 'tiles', 1)
+    .setScale(0.1, 1)
+    .setAlpha(0)
+    .refreshBody()
+  this.invisibleWalls
+    .create(width / 2 + 128, 520, 'tiles', 1)
+    .setScale(0.1, 1)
+    .setAlpha(0)
+    .refreshBody()
   this.invisibleWalls
     .create(320, 420, 'tiles', 1)
     .setScale(0.1, 1)
@@ -273,6 +288,7 @@ export default function create () {
     this.cursors = this.joystickCursors
   }
 
+  // game physics
   this.physics.add.collider(this.player, this.platforms)
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.player, this.coins, (player, coin) => {
@@ -281,9 +297,9 @@ export default function create () {
     coin.disableBody(true, true)
     coin.destroy()
   })
-  this.physics.add.collider(this.slimes, this.platforms)
-  this.physics.add.collider(this.slimes, this.invisibleWalls)
-  this.physics.add.collider(this.player, this.slimes, (player, slime) => {
+  this.physics.add.collider(this.villains, this.platforms)
+  this.physics.add.collider(this.villains, this.invisibleWalls)
+  this.physics.add.collider(this.player, this.villains, (player, slime) => {
     if (!this.player.invincible) {
       let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
       this.player.hp -= floatSlimeDmg
@@ -311,12 +327,12 @@ export default function create () {
   )
 
   if (this.player.name === 'IronMan') {
-    this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
+    this.physics.add.overlap(this.beams, this.villains, (beam, slime) => {
       hitEffect(this, beam)
       beam.disableBody(true, true)
       slime.hp -= Math.floor(Math.random() * 15) + 15
     })
-    this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
+    this.physics.add.overlap(this.uniBeams, this.villains, (uniBeam, slime) => {
       slime.hp -= Math.floor(Math.random() * 1) + 1
     })
   }
@@ -327,14 +343,14 @@ export default function create () {
       () => {
         this.shields.children.iterate(shield => {
           captainShieldReturn(this.player, shield)
-          this.slimes.children.iterate(slime => {
+          this.villains.children.iterate(slime => {
             slime.hurtable = true
           })
         })
       },
       this
     )
-    this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
+    this.physics.add.overlap(this.shields, this.villains, (shield, slime) => {
       if (slime.hurtable) {
         slime.hurtable = false
         hitEffect(this, shield)
@@ -353,7 +369,7 @@ export default function create () {
   }
 
   if (this.player.name === 'Thor') {
-    this.physics.add.overlap(this.hammers, this.slimes, (hammer, slime) => {
+    this.physics.add.overlap(this.hammers, this.villains, (hammer, slime) => {
       if (hammer.damageable) {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
@@ -367,56 +383,16 @@ export default function create () {
       this.player.shootable = true
     })
     this.physics.add.overlap(
-      this.slimes,
+      this.villains,
       this.lightningRods,
       (slime, lightningRod) => {
         if (slime.hurtable) {
-          slime.hurtable = false
           slime.hp -= Math.floor(Math.random() * 100) + 30
-
-          let lightning = this.lightnings.create(
-            slime.x,
-            slime.y - 353,
-            'lightning'
-          )
-          lightning.followObject = slime
-          lightning.setScale(1, 2.5)
-          lightning.body.collideWorldBounds = false
-          lightning.body.allowGravity = false
-          lightning.anims.play('lightning', true)
-
-          this.tweens.add({
-            targets: lightning,
-            alphaTopLeft: {
-              value: 0,
-              duration: 500,
-              ease: 'Linear'
-            },
-            alphaTopRight: {
-              value: 0,
-              duration: 500,
-              ease: 'Linear'
-            },
-            alphaBottomLeft: {
-              value: 0,
-              duration: 2000,
-              ease: 'Linear'
-            },
-            alphaBottomRight: {
-              value: 0,
-              duration: 2000,
-              ease: 'Linear'
-            },
-            loop: 0
-          })
-
+          slime.hurtable = false
           setTimeout(() => {
             slime.hurtable = true
-          }, 200)
-
-          setTimeout(() => {
-            lightning.destroy()
-          }, 2000)
+          }, 300)
+          hitEffectLightning(this, slime)
         }
       }
     )
@@ -425,7 +401,7 @@ export default function create () {
   if (this.player.name === 'SpiderMan') {
     this.physics.add.collider(this.webs, this.platforms)
     this.physics.add.overlap(this.webs, this.coins)
-    this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
+    this.physics.add.overlap(this.webs, this.villains, (web, slime) => {
       let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
       newWeb_hit.body.allowGravity = false
       newWeb_hit.body.setSize(15, 15, 5, 5)
