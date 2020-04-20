@@ -333,7 +333,7 @@ export default function create () {
       slime.hp -= Math.floor(Math.random() * 15) + 15
     })
     this.physics.add.overlap(this.uniBeams, this.villains, (uniBeam, slime) => {
-      slime.hp -= Math.floor(Math.random() * 1) + 1
+      slime.hp -= Math.floor(Math.random() * 0.8) + 1
     })
   }
 
@@ -354,7 +354,7 @@ export default function create () {
       if (slime.hurtable) {
         slime.hurtable = false
         hitEffect(this, shield)
-        slime.hp -= Math.floor(Math.random() * 20) + 18
+        slime.hp -= Math.floor(Math.random() * 10) + 30
         setTimeout(() => {
           slime.hurtable = true
         }, 200)
@@ -374,7 +374,7 @@ export default function create () {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
         hitEffect(this, hammer)
-        slime.hp -= Math.floor(Math.random() * 20) + 25
+        slime.hp -= Math.floor(Math.random() * 20) + 20
       }
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
