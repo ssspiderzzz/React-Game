@@ -395,6 +395,22 @@ export default async function update (time, delta) {
             this.boss.skillCoolDown = false
           }, 2000)
         }
+
+        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
+          // thanos teleport skill
+          this.boss.body.x = 16 * 3
+          this.boss.body.y = 250
+          this.boss.snapping = true
+          this.boss.skillCoolDown = true
+          this.boss.anims.play('Thanos_snap', true)
+
+          setTimeout(() => {
+            this.boss.snapping = false
+          }, 1200)
+          setTimeout(() => {
+            this.boss.skillCoolDown = false
+          }, 2000)
+        }
       } else {
         this.boss.anims.play('Thanos_idle', true)
       }
