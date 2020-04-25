@@ -16,6 +16,12 @@ import { width, height } from '../index'
 export default function create () {
   let name = this.select
 
+  this.thanos_teleport_coords = [
+    { x: 48, y: 220 },
+    { x: width - 48, y: 220 },
+    { x: width / 2, y: 300 }
+  ]
+
   // timmer
   this.timeText = this.add
     .text(width / 2, 35)

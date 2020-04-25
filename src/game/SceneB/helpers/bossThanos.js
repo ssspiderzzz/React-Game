@@ -13,6 +13,7 @@ export default function bossThanos (scene) {
     .setSize(60, 90, 0, 0)
     .setOffset(25, 20)
     .setDepth(5)
+    .setOrigin(0.5)
   scene.boss.alive = true
   scene.boss.snapping = false
   scene.boss.infinityStones = {

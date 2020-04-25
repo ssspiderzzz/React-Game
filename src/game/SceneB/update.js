@@ -26,6 +26,24 @@ export default async function update (time, delta) {
   ) {
     this.startTimer = true
     this.triggerOnce--
+    // thanos' portal
+    let portal = this.add.image(640, 400, 'portal').setScale(0)
+    this.tweens.add({
+      targets: portal,
+      scale: { value: 1, duration: 2000, ease: 'Power1' },
+      angle: { value: 360, ease: 'linear', repeat: -1 }
+    })
+    // init thanos
+    setTimeout(() => {
+      bossThanos(this)
+      this.tweens.add({
+        targets: portal,
+        scale: { value: 0, duration: 2000, ease: 'Power1' }
+      })
+      setTimeout(() => {
+        portal.destroy()
+      }, 2500)
+    }, 1500)
   }
   if (this.startTimer) {
     this.timer += delta
@@ -381,25 +399,29 @@ export default async function update (time, delta) {
           this.boss.flipX = true
         }
 
-        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
-          this.boss.body.velocity.x = 0
-          this.boss.snapping = true
-          this.boss.skillCoolDown = true
-          this.boss.anims.play('Thanos_snap', true)
-          thanos_skill_A_shootAOE(this, this.boss, this.boss.facing)
+        // if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
+        //   this.boss.body.velocity.x = 0
+        //   this.boss.snapping = true
+        //   this.boss.skillCoolDown = true
+        //   this.boss.anims.play('Thanos_snap', true)
+        //   thanos_skill_A_shootAOE(this, this.boss, this.boss.facing)
 
-          setTimeout(() => {
-            this.boss.snapping = false
-          }, 1200)
-          setTimeout(() => {
-            this.boss.skillCoolDown = false
-          }, 2000)
-        }
+        //   setTimeout(() => {
+        //     this.boss.snapping = false
+        //   }, 1200)
+        //   setTimeout(() => {
+        //     this.boss.skillCoolDown = false
+        //   }, 2000)
+        // }
 
-        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
+        if (Math.random() < 0.1 && !this.boss.skillCoolDown) {
+          // thanos tele
+          let randomIndex = Math.floor(
+            Math.random() * this.thanos_teleport_coords.length
+          )
           // thanos teleport skill
-          this.boss.body.x = 16 * 3
-          this.boss.body.y = 250
+          this.boss.body.x = this.thanos_teleport_coords[randomIndex].x
+          this.boss.body.y = this.thanos_teleport_coords[randomIndex].y
           this.boss.snapping = true
           this.boss.skillCoolDown = true
           this.boss.anims.play('Thanos_snap', true)
