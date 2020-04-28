@@ -17,9 +17,13 @@ export default function create () {
   let name = this.select
 
   this.thanos_teleport_coords = [
-    { x: 48, y: 230 },
-    { x: width - 48, y: 230 },
-    { x: width / 2, y: 330 }
+    { x: width - 48, y: 50 },
+    { x: 20, y: 50 },
+    { x: 48, y: 250 },
+    { x: width - 48, y: 250 },
+    { x: width / 2, y: 350 },
+    { x: width - 48, y: 500 },
+    { x: 48, y: 500 }
   ]
 
   // timmer
