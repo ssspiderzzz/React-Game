@@ -420,15 +420,60 @@ export default async function update (time, delta) {
             Math.random() * this.thanos_teleport_coords.length
           )
           // thanos teleport skill
-          this.boss.body.x = this.thanos_teleport_coords[randomIndex].x
-          this.boss.body.y = this.thanos_teleport_coords[randomIndex].y
           this.boss.snapping = true
           this.boss.skillCoolDown = true
           this.boss.anims.play('Thanos_snap', true)
 
+          // portal in
+          let portal_in = this.add
+            .image(this.boss.body.x, this.boss.body.y + 50, 'portal')
+            .setScale(0)
+          this.tweens.add({
+            targets: portal_in,
+            scale: { value: 1, duration: 800, ease: 'Power1' },
+            angle: { value: 360, ease: 'linear', repeat: -1 }
+          })
+          setTimeout(() => {
+            this.tweens.add({
+              targets: portal_in,
+              scale: { value: 0, duration: 1600, ease: 'Power1' }
+            })
+            setTimeout(() => {
+              portal_in.destroy()
+            }, 3200)
+          }, 800)
+
+          this.boss.body.x = this.thanos_teleport_coords[randomIndex].x
+          this.boss.body.y = this.thanos_teleport_coords[randomIndex].y
+
+          //portal out
+          let portal_out = this.add
+            .image(
+              this.thanos_teleport_coords[randomIndex].x,
+              this.thanos_teleport_coords[randomIndex].y + 50,
+              'portal'
+            )
+            .setScale(0)
+          this.tweens.add({
+            targets: portal_out,
+            scale: { value: 1, duration: 800, ease: 'Power1' },
+            angle: { value: 360, ease: 'linear', repeat: -1 }
+          })
+
+          setTimeout(() => {
+            this.tweens.add({
+              targets: portal_out,
+              scale: { value: 0, duration: 800, ease: 'Power1' }
+            })
+            setTimeout(() => {
+              portal_out.destroy()
+            }, 2400)
+          }, 800)
+
           setTimeout(() => {
             this.boss.snapping = false
           }, 1200)
+
           setTimeout(() => {
             this.boss.skillCoolDown = false
           }, 2000)
