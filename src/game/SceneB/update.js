@@ -399,22 +399,22 @@ export default async function update (time, delta) {
           this.boss.flipX = true
         }
 
-        // if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
-        //   this.boss.body.velocity.x = 0
-        //   this.boss.snapping = true
-        //   this.boss.skillCoolDown = true
-        //   this.boss.anims.play('Thanos_snap', true)
-        //   thanos_skill_A_shootAOE(this, this.boss, this.boss.facing)
+        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
+          this.boss.body.velocity.x = 0
+          this.boss.snapping = true
+          this.boss.skillCoolDown = true
+          this.boss.anims.play('Thanos_snap', true)
+          thanos_skill_A_shootAOE(this, this.boss, this.boss.facing)
 
-        //   setTimeout(() => {
-        //     this.boss.snapping = false
-        //   }, 1200)
-        //   setTimeout(() => {
-        //     this.boss.skillCoolDown = false
-        //   }, 2000)
-        // }
+          setTimeout(() => {
+            this.boss.snapping = false
+          }, 1200)
+          setTimeout(() => {
+            this.boss.skillCoolDown = false
+          }, 2000)
+        }
 
-        if (Math.random() < 0.1 && !this.boss.skillCoolDown) {
+        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
           // thanos tele
           let randomIndex = Math.floor(
             Math.random() * this.thanos_teleport_coords.length
@@ -426,7 +426,7 @@ export default async function update (time, delta) {
 
           // portal in
           let portal_in = this.add
-            .image(this.boss.body.x, this.boss.body.y + 50, 'portal')
+            .image(this.boss.body.x, this.boss.body.y + 100, 'portal')
             .setScale(0)
           this.tweens.add({
             targets: portal_in,
@@ -450,7 +450,7 @@ export default async function update (time, delta) {
           let portal_out = this.add
             .image(
               this.thanos_teleport_coords[randomIndex].x,
-              this.thanos_teleport_coords[randomIndex].y + 50,
+              this.thanos_teleport_coords[randomIndex].y + 100,
               'portal'
             )
             .setScale(0)
