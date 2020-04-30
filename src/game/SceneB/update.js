@@ -49,35 +49,17 @@ export default async function update (time, delta) {
     this.timer += delta
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
   }
+
   if (
-    this.villains.children &&
+    this.boss.alive === false &&
     this.villains.children.size === 0 &&
     this.triggerOnce === 0
   ) {
-    this.triggerOnce -= 1
-
-    // thanos' portal
-    let portal = this.add.image(640, 400, 'portal').setScale(0)
-    this.tweens.add({
-      targets: portal,
-      scale: { value: 1, duration: 2000, ease: 'Power1' },
-      angle: { value: 360, ease: 'linear', repeat: -1 }
-    })
-    // init thanos
-    setTimeout(() => {
-      bossThanos(this)
-      this.tweens.add({
-        targets: portal,
-        scale: { value: 0, duration: 2000, ease: 'Power1' }
-      })
-      setTimeout(() => {
-        portal.destroy()
-      }, 2500)
-    }, 1500)
+    this.triggerOnce--
   }
 
-  if (this.triggerOnce === -2) {
-    this.triggerOnce -= 1
+  if (this.triggerOnce === -1) {
+    this.triggerOnce--
     this.startTimer = false
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
 
@@ -484,9 +466,6 @@ export default async function update (time, delta) {
     }
 
     if (this.boss.hp < 0) {
-      // trigger save leaderborad record
-      this.triggerOnce -= 1
-
       // boss death anmiations
       if (this.boss.facing === 'right') {
         this.boss.flipX = false
