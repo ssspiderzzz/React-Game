@@ -13,6 +13,7 @@ export default function bossThanos (scene) {
     .setSize(60, 90, 0, 0)
     .setOffset(25, 20)
     .setDepth(5)
+    .setOrigin(0.5)
   scene.boss.alive = true
   scene.boss.snapping = false
   scene.boss.infinityStones = {
@@ -34,7 +35,7 @@ export default function bossThanos (scene) {
   scene.physics.add.collider(scene.boss, scene.invisibleWalls)
   scene.physics.add.collider(scene.player, scene.boss, (player, boss) => {
     if (!scene.player.invincible) {
-      let floatbossDmg = Math.floor(Math.random() * 10) + 5
+      let floatbossDmg = Math.floor(Math.random() * 15) + 5
       scene.player.hp -= floatbossDmg
       drawDamageText(scene, player, floatbossDmg)
     } else {
@@ -47,10 +48,10 @@ export default function bossThanos (scene) {
     scene.physics.add.overlap(scene.beams, scene.boss, (thanos, beam) => {
       hitEffect(scene, beam)
       beam.disableBody(true, true)
-      thanos.hp -= (Math.floor(Math.random() * 15) + 15) / 2
+      thanos.hp -= (Math.floor(Math.random() * 15) + 15) / 6
     })
     scene.physics.add.overlap(scene.uniBeams, scene.boss, (thanos, uniBeam) => {
-      thanos.hp -= (Math.floor(Math.random() * 1) + 1) / 2
+      thanos.hp -= (Math.floor(Math.random() * 1) + 1) / 6
     })
   }
 
@@ -66,7 +67,7 @@ export default function bossThanos (scene) {
       if (thanos.hurtable) {
         thanos.hurtable = false
         hitEffect(scene, shield)
-        thanos.hp -= (Math.floor(Math.random() * 20) + 18) / 2
+        thanos.hp -= (Math.floor(Math.random() * 20) + 18) / 6
         setTimeout(() => {
           thanos.hurtable = true
         }, 200)
@@ -80,7 +81,7 @@ export default function bossThanos (scene) {
         hammer.damageable = false
         thorHammerReturn(scene.player, hammer)
         hitEffect(scene, hammer)
-        thanos.hp -= (Math.floor(Math.random() * 20) + 25) / 2
+        thanos.hp -= (Math.floor(Math.random() * 20) + 25) / 6
       }
     })
     scene.physics.add.overlap(
@@ -88,7 +89,7 @@ export default function bossThanos (scene) {
       scene.lightningRods,
       (thanos, lightningRod) => {
         if (thanos.hurtable) {
-          thanos.hp -= (Math.floor(Math.random() * 50) + 30) / 2
+          thanos.hp -= (Math.floor(Math.random() * 50) + 30) / 6
           thanos.hurtable = false
           setTimeout(() => {
             thanos.hurtable = true

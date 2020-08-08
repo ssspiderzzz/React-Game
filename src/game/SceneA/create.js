@@ -1,7 +1,10 @@
 import { API, graphqlOperation } from 'aws-amplify'
 import * as queries from '../../graphql/queries'
 import store from '../../store'
-import { TOGGLE_UI, TOGGLE_UI_ON } from '../../store/gameReducer.js'
+import {
+  TOGGLE_UI,
+  SET_PLAYER_NAME_WITHOUT_TOGGLE
+} from '../../store/gameReducer.js'
 import { leaderboardToggle } from './helpers'
 import { width, height } from '../index'
 
@@ -345,7 +348,13 @@ export default async function create () {
     playButtonBronze.setVisible(true)
     playButtonRed.setVisible(false)
     if (!store.getState().playerName) {
-      store.dispatch({ type: TOGGLE_UI_ON })
+      const guestNum = Math.floor(Math.random() * (10000 - 1000) + 1000)
+      store.dispatch({
+        type: SET_PLAYER_NAME_WITHOUT_TOGGLE,
+        playerName: `Guest ${guestNum}`
+      })
+      this.enterName.setText(store.getState().playerName)
+      this.enterName.setColor('gold')
     } else {
       this.tweens.add({
         targets: transitionBlack,

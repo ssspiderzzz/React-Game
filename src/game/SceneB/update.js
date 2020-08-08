@@ -26,18 +26,6 @@ export default async function update (time, delta) {
   ) {
     this.startTimer = true
     this.triggerOnce--
-  }
-  if (this.startTimer) {
-    this.timer += delta
-    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
-  }
-  if (
-    this.villains.children &&
-    this.villains.children.size === 0 &&
-    this.triggerOnce === 0
-  ) {
-    this.triggerOnce -= 1
-
     // thanos' portal
     let portal = this.add.image(640, 400, 'portal').setScale(0)
     this.tweens.add({
@@ -57,9 +45,21 @@ export default async function update (time, delta) {
       }, 2500)
     }, 1500)
   }
+  if (this.startTimer) {
+    this.timer += delta
+    this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
+  }
 
-  if (this.triggerOnce === -2) {
-    this.triggerOnce -= 1
+  if (
+    this.boss.alive === false &&
+    this.villains.children.size === 0 &&
+    this.triggerOnce === 0
+  ) {
+    this.triggerOnce--
+  }
+
+  if (this.triggerOnce === -1) {
+    this.triggerOnce--
     this.startTimer = false
     this.timeText.setText('Time: ' + (this.timer / 1000).toFixed(2) + 's')
 
@@ -395,15 +395,77 @@ export default async function update (time, delta) {
             this.boss.skillCoolDown = false
           }, 2000)
         }
+
+        if (Math.random() < 0.01 && !this.boss.skillCoolDown) {
+          // thanos tele
+          let randomIndex = Math.floor(
+            Math.random() * this.thanos_teleport_coords.length
+          )
+          // thanos teleport skill
+          this.boss.snapping = true
+          this.boss.skillCoolDown = true
+          this.boss.anims.play('Thanos_snap', true)
+
+          // portal in
+          let portal_in = this.add
+            .image(this.boss.body.x, this.boss.body.y + 100, 'portal')
+            .setScale(0)
+          this.tweens.add({
+            targets: portal_in,
+            scale: { value: 1, duration: 800, ease: 'Power1' },
+            angle: { value: 360, ease: 'linear', repeat: -1 }
+          })
+          setTimeout(() => {
+            this.tweens.add({
+              targets: portal_in,
+              scale: { value: 0, duration: 1600, ease: 'Power1' }
+            })
+            setTimeout(() => {
+              portal_in.destroy()
+            }, 3200)
+          }, 800)
+
+          this.boss.body.x = this.thanos_teleport_coords[randomIndex].x
+          this.boss.body.y = this.thanos_teleport_coords[randomIndex].y
+
+          //portal out
+          let portal_out = this.add
+            .image(
+              this.thanos_teleport_coords[randomIndex].x,
+              this.thanos_teleport_coords[randomIndex].y + 100,
+              'portal'
+            )
+            .setScale(0)
+          this.tweens.add({
+            targets: portal_out,
+            scale: { value: 1, duration: 800, ease: 'Power1' },
+            angle: { value: 360, ease: 'linear', repeat: -1 }
+          })
+
+          setTimeout(() => {
+            this.tweens.add({
+              targets: portal_out,
+              scale: { value: 0, duration: 800, ease: 'Power1' }
+            })
+            setTimeout(() => {
+              portal_out.destroy()
+            }, 2400)
+          }, 800)
+
+          setTimeout(() => {
+            this.boss.snapping = false
+          }, 1200)
+
+          setTimeout(() => {
+            this.boss.skillCoolDown = false
+          }, 2000)
+        }
       } else {
         this.boss.anims.play('Thanos_idle', true)
       }
     }
 
     if (this.boss.hp < 0) {
-      // trigger save leaderborad record
-      this.triggerOnce -= 1
-
       // boss death anmiations
       if (this.boss.facing === 'right') {
         this.boss.flipX = false
