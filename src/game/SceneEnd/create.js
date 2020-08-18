@@ -27,13 +27,13 @@ export default function create () {
   resume.on('pointerdown', () => {})
 
   restart.on('pointerdown', () => {
-    this.scene.stop('SceneDeath')
+    this.scene.stop('SceneEnd')
     this.scene.start('SceneB', { select: currentSelect })
   })
 
   exit.on('pointerdown', () => {
     this.anims.anims.clear()
-    this.scene.stop('SceneDeath')
+    this.scene.stop('SceneEnd')
     this.scene.stop('SceneB')
     this.scene.run('SceneA')
   })

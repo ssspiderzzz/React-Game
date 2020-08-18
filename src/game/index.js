@@ -4,7 +4,7 @@ import Preloader from './Preloader'
 import SceneA from './SceneA'
 import SceneB from './SceneB'
 import SceneC from './SceneC'
-import SceneDeath from './SceneDeath'
+import SceneEnd from './SceneEnd'
 import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js'
 
 export let width = 1280
@@ -44,5 +44,5 @@ export let config = {
       }
     ]
   },
-  scene: [InitLoader, Preloader, SceneA, SceneB, SceneC, SceneDeath]
+  scene: [InitLoader, Preloader, SceneA, SceneB, SceneC, SceneEnd]
 }

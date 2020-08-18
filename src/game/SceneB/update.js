@@ -76,6 +76,10 @@ export default async function update (time, delta) {
         }
       })
     )
+    setTimeout(() => {
+      this.scene.pause()
+      this.scene.launch('SceneEnd', { currentSelect: this.select })
+    }, 3000)
   }
 
   // player
@@ -314,7 +318,7 @@ export default async function update (time, delta) {
       }
       setTimeout(() => {
         this.scene.pause()
-        this.scene.launch('SceneDeath', { currentSelect: this.select })
+        this.scene.launch('SceneEnd', { currentSelect: this.select })
       }, 500)
     }
   }
