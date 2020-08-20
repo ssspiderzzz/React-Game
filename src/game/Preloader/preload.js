@@ -26,6 +26,7 @@ import red_projectile from '../../assets/red_projectile.png'
 import hit_effect from '../../assets/hit_effect.png'
 import pause from '../../assets/pause.png'
 import options from '../../assets/options.png'
+import options_gameover from '../../assets/options_gameover.png'
 import lightning from '../../assets/lightning700x700.png'
 import jarvis_circle from '../../assets/jarvis_circle.png'
 import tech_button_circle from '../../assets/tech_button_circle.png'
@@ -114,6 +115,7 @@ export default function preload () {
   this.load.image('thor_icon', thor_icon)
   this.load.image('pause', pause)
   this.load.image('options', options)
+  this.load.image('options_gameover', options_gameover)
   this.load.image('jarvis_circle', jarvis_circle)
   this.load.image('tech_button_circle', tech_button_circle)
   this.load.image('fullscreen', fullscreen)

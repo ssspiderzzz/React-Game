@@ -3,7 +3,9 @@ import { width, height } from '../index'
 export default function create () {
   let currentSelect = this.scene.settings.data.currentSelect
 
-  let options = this.add.image(width / 2, height / 2, 'options').setOrigin(0.5)
+  let options = this.add
+    .image(width / 2, height / 2, 'options_gameover')
+    .setOrigin(0.5)
   options.setDepth(99)
 
   let resume = this.add
