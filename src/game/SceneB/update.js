@@ -78,7 +78,10 @@ export default async function update (time, delta) {
     )
     setTimeout(() => {
       this.scene.pause()
-      this.scene.launch('SceneEnd', { currentSelect: this.select })
+      this.scene.launch('SceneEnd', {
+        currentSelect: this.select,
+        timeRecord: timeRecord
+      })
     }, 3000)
   }
 

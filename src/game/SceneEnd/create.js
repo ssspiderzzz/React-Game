@@ -2,16 +2,25 @@ import { width, height } from '../index'
 
 export default function create () {
   let currentSelect = this.scene.settings.data.currentSelect
+  let timeRecord = this.scene.settings.data.timeRecord
+    ? this.scene.settings.data.timeRecord
+    : ''
 
   let options = this.add
     .image(width / 2, height / 2, 'options_gameover')
     .setOrigin(0.5)
   options.setDepth(99)
 
-  let resume = this.add
-    .rectangle(width / 2, height / 2 - 70, 275, 75, 0x00000)
-    .setDepth(100)
-    .setAlpha(0.001)
+  if (timeRecord) {
+    this.add.text(width / 2, height / 2 - 70, `Your Record is ${timeRecord}!`, {
+      fontSize: 18,
+      align: 'center',
+      color: 'white',
+      stroke: 'black',
+      strokeThickness: 4
+    })
+  }
+
   let restart = this.add
     .rectangle(width / 2, height / 2 + 33, 275, 75, 0x00000)
     .setDepth(100)
@@ -22,11 +31,8 @@ export default function create () {
     .setAlpha(0.001)
 
   options.setInteractive()
-  resume.setInteractive()
   restart.setInteractive()
   exit.setInteractive()
-
-  resume.on('pointerdown', () => {})
 
   restart.on('pointerdown', () => {
     this.scene.stop('SceneEnd')
