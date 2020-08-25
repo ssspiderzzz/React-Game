@@ -12,13 +12,21 @@ export default function create () {
   options.setDepth(99)
 
   if (timeRecord) {
-    this.add.text(width / 2, height / 2 - 70, `Your Record is ${timeRecord}!`, {
-      fontSize: 18,
-      align: 'center',
-      color: 'white',
-      stroke: 'black',
-      strokeThickness: 4
-    })
+    this.add
+      .text(
+        width / 2,
+        height / 2 - 70,
+        `Your record is ${timeRecord} seconds!`,
+        {
+          fontSize: 18,
+          align: 'center',
+          color: 'white',
+          stroke: 'black',
+          strokeThickness: 4
+        }
+      )
+      .setOrigin(0.5)
+      .setDepth(100)
   }
 
   let restart = this.add
