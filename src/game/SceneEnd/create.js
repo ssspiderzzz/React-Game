@@ -27,6 +27,27 @@ export default function create () {
       )
       .setOrigin(0.5)
       .setDepth(100)
+  } else {
+    this.add
+      .text(
+        width / 2,
+        height / 2 - 70,
+        [
+          `Don't give up!`,
+          `I went forward in time...`,
+          `to view 4,000,605 alternate futures`,
+          `There is one way we can win!`
+        ],
+        {
+          fontSize: 18,
+          align: 'center',
+          color: 'white',
+          stroke: 'black',
+          strokeThickness: 4
+        }
+      )
+      .setOrigin(0.5)
+      .setDepth(100)
   }
 
   let restart = this.add
