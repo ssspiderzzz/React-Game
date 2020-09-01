@@ -174,6 +174,17 @@ export default async function create () {
     loop: 0
   })
 
+  // select your champion text
+  this.selectYourChampion = this.add
+    .text(width / 2, 250, ['Select your champion below'], {
+      fontSize: 22,
+      align: 'center',
+      color: 'white',
+      stroke: 'black',
+      strokeThickness: 5
+    })
+    .setOrigin(0.5)
+
   // face icons
   let iron_man_face = this.add
     .image(width / 2 - 150, 400, 'iron_man_face')
@@ -192,6 +203,7 @@ export default async function create () {
   this.selectName = this.add.text()
   iron_man_face.on('pointerdown', () => {
     this.select = 'IronMan'
+    this.selectYourChampion.destroy()
     this.selectName.destroy()
     this.selectName = this.add
       .text(width / 2 - 150, 300, ['Iron Man'], {
@@ -215,6 +227,7 @@ export default async function create () {
   })
   captain_america_face.on('pointerdown', () => {
     this.select = 'CaptainAmerica'
+    this.selectYourChampion.destroy()
     this.selectName.destroy()
     this.selectName = this.add
       .text(width / 2, 300, ['Captain America'], {
@@ -238,6 +251,7 @@ export default async function create () {
   })
   thor_face.on('pointerdown', () => {
     this.select = 'Thor'
+    this.selectYourChampion.destroy()
     this.selectName.destroy()
     this.selectName = this.add
       .text(width / 2 + 150, 300, ['Thor'], {

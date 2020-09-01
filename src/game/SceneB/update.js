@@ -76,6 +76,13 @@ export default async function update (time, delta) {
         }
       })
     )
+    setTimeout(() => {
+      this.scene.pause()
+      this.scene.launch('SceneEnd', {
+        currentSelect: this.select,
+        timeRecord: timeRecord
+      })
+    }, 3000)
   }
 
   // player
@@ -313,8 +320,8 @@ export default async function update (time, delta) {
         this.player.flipX = true
       }
       setTimeout(() => {
-        this.player.body.setVelocityX(0)
-        this.player.body.setVelocityY(-10)
+        this.scene.pause()
+        this.scene.launch('SceneEnd', { currentSelect: this.select })
       }, 500)
     }
   }
