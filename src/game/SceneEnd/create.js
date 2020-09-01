@@ -34,8 +34,8 @@ export default function create () {
         height / 2 - 70,
         [
           `Don't give up!`,
-          `I went forward in time...`,
-          `to view 4,000,605 alternate futures`,
+          `I went forward in time to view`,
+          `14,000,605 alternate futures`,
           `There is one way we can win!`
         ],
         {
