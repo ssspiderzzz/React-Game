@@ -160,28 +160,28 @@ export default function create () {
   this.platforms = this.physics.add.staticGroup()
 
   this.platforms
-    .create(width / 2, 550, 'tiles', 0)
+    .create(width / 2, 550, 'tiles', 6)
     .setScale(8, 1)
     .refreshBody()
   this.platforms
-    .create(160, 450, 'tiles', 0)
+    .create(160, 450, 'tiles', 6)
     .setScale(10, 1)
     .refreshBody()
   this.platforms
-    .create(width - 160, 450, 'tiles', 0)
+    .create(width - 160, 450, 'tiles', 6)
     .setScale(10, 1)
     .refreshBody()
 
   this.platforms
-    .create(width / 2, 350, 'tiles', 3)
+    .create(width / 2, 350, 'tiles', 11)
     .setScale(5, 1)
     .refreshBody()
   this.platforms
-    .create(16 * 6, 250, 'tiles', 3)
+    .create(16 * 6, 250, 'tiles', 11)
     .setScale(6, 1)
     .refreshBody()
   this.platforms
-    .create(width - 16 * 6, 250, 'tiles', 3)
+    .create(width - 16 * 6, 250, 'tiles', 11)
     .setScale(6, 1)
     .refreshBody()
 
