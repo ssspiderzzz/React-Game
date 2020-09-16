@@ -159,6 +159,20 @@ export default function create () {
   // platforms
   this.platforms = this.physics.add.staticGroup()
 
+  function makeTile (gameObj, fromX, toX, Y, tileIndex, tileSize) {
+    let long = toX - fromX
+    let numberOfTiles = long / tileSize
+
+    for (let i = 0; i <= numberOfTiles; i++) {
+      gameObj
+        .create(tileSize / 2 + tileSize * i, height - Y, 'tiles', tileIndex)
+        .setScale(1, 1)
+        .refreshBody()
+    }
+  }
+
+  makeTile(this.platforms, 0, width, 17.5, 1, 35)
+
   this.platforms
     .create(width / 2, 550, 'tiles', 6)
     .setScale(8, 1)
@@ -173,53 +187,53 @@ export default function create () {
     .refreshBody()
 
   this.platforms
-    .create(width / 2, 350, 'tiles', 11)
+    .create(width / 2, 350, 'tiles', 16)
     .setScale(5, 1)
     .refreshBody()
   this.platforms
-    .create(16 * 6, 250, 'tiles', 11)
+    .create(16 * 6, 250, 'tiles', 16)
     .setScale(6, 1)
     .refreshBody()
   this.platforms
-    .create(width - 16 * 6, 250, 'tiles', 11)
+    .create(width - 16 * 6, 250, 'tiles', 16)
     .setScale(6, 1)
     .refreshBody()
 
-  this.platforms
-    .create(0, height - 16, 'tiles', 1)
-    .setScale(width / 16, 1)
-    .refreshBody()
+  // this.platforms
+  //   .create(17.5, height - 17.5, 'tiles', 1)
+  //   .setScale(1, 1)
+  //   .refreshBody()
 
   // invisible walls
   this.invisibleWalls = this.physics.add.staticGroup()
   this.invisibleWalls
     .create(width / 2 - 128, 520, 'tiles', 1)
-    .setScale(0.1, 1)
+    .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(width / 2 + 128, 520, 'tiles', 1)
-    .setScale(0.1, 1)
+    .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(320, 420, 'tiles', 1)
-    .setScale(0.1, 1)
+    .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(width - 320, 420, 'tiles', 1)
-    .setScale(0.1, 1)
+    .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(420, height - 32, 'tiles', 1)
-    .setScale(0.1, 1)
+    .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(width - 420, height - 32, 'tiles', 1)
-    .setScale(0.1, 1)
+    .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
 
