@@ -159,33 +159,45 @@ export default function create () {
   // platforms
   this.platforms = this.physics.add.staticGroup()
 
-  function makeTile (gameObj, fromX, toX, Y, tileIndex, tileSize) {
+  function makeTile (gameObj, fromX, toX, Y, tileIndex, leftEnd, rightEnd) {
+    let tileSize = 35
     let long = toX - fromX
     let numberOfTiles = long / tileSize
 
     for (let i = 0; i <= numberOfTiles; i++) {
+      let tileEnds = 0
+      if (i === 0 && leftEnd) tileEnds += 2
+      if (i === numberOfTiles && rightEnd) tileEnds += 3
       gameObj
-        .create(tileSize / 2 + tileSize * i, height - Y, 'tiles', tileIndex)
+        .create(fromX + tileSize * i, height - Y, 'tiles', tileIndex + tileEnds)
         .setScale(1, 1)
         .refreshBody()
     }
   }
 
-  makeTile(this.platforms, 0, width, 17.5, 1, 35)
+  // floor
+  makeTile(this.platforms, 0, width, 17.5, 1)
 
-  this.platforms
-    .create(width / 2, 550, 'tiles', 6)
-    .setScale(8, 1)
-    .refreshBody()
-  this.platforms
-    .create(160, 450, 'tiles', 6)
-    .setScale(10, 1)
-    .refreshBody()
-  this.platforms
-    .create(width - 160, 450, 'tiles', 6)
-    .setScale(10, 1)
-    .refreshBody()
+  // mid platforms
+  let midWidth = width / 2
+  makeTile(this.platforms, midWidth - 140, midWidth + 140, 170, 6, true, true)
+  makeTile(this.platforms, 0, 350, 270, 6, false, true)
+  makeTile(this.platforms, width - 350, width, 270, 6, true, false)
 
+  // this.platforms
+  //   .create(width / 2, 550, 'tiles', 6)
+  //   .setScale(8, 1)
+  //   .refreshBody()
+  // this.platforms
+  //   .create(160, 450, 'tiles', 6)
+  //   .setScale(10, 1)
+  //   .refreshBody()
+  // this.platforms
+  //   .create(width - 160, 450, 'tiles', 6)
+  //   .setScale(10, 1)
+  //   .refreshBody()
+
+  // upper platforms
   this.platforms
     .create(width / 2, 350, 'tiles', 16)
     .setScale(5, 1)
