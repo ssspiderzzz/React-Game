@@ -184,36 +184,21 @@ export default function create () {
   makeTile(this.platforms, 0, 350, 270, 6, false, true)
   makeTile(this.platforms, width - 350, width, 270, 6, true, false)
 
-  // this.platforms
-  //   .create(width / 2, 550, 'tiles', 6)
-  //   .setScale(8, 1)
-  //   .refreshBody()
-  // this.platforms
-  //   .create(160, 450, 'tiles', 6)
-  //   .setScale(10, 1)
-  //   .refreshBody()
-  // this.platforms
-  //   .create(width - 160, 450, 'tiles', 6)
-  //   .setScale(10, 1)
-  //   .refreshBody()
-
   // upper platforms
-  this.platforms
-    .create(width / 2, 350, 'tiles', 16)
-    .setScale(5, 1)
-    .refreshBody()
-  this.platforms
-    .create(16 * 6, 250, 'tiles', 16)
-    .setScale(6, 1)
-    .refreshBody()
-  this.platforms
-    .create(width - 16 * 6, 250, 'tiles', 16)
-    .setScale(6, 1)
-    .refreshBody()
-
+  makeTile(this.platforms, midWidth - 105, midWidth + 105, 370, 16, true, true)
+  makeTile(this.platforms, 0, 210, 470, 16, false, true)
+  makeTile(this.platforms, width - 210, width, 470, 16, true, false)
   // this.platforms
-  //   .create(17.5, height - 17.5, 'tiles', 1)
-  //   .setScale(1, 1)
+  //   .create(width / 2, 350, 'tiles', 16)
+  //   .setScale(5, 1)
+  //   .refreshBody()
+  // this.platforms
+  //   .create(16 * 6, 250, 'tiles', 16)
+  //   .setScale(6, 1)
+  //   .refreshBody()
+  // this.platforms
+  //   .create(width - 16 * 6, 250, 'tiles', 16)
+  //   .setScale(6, 1)
   //   .refreshBody()
 
   // invisible walls
