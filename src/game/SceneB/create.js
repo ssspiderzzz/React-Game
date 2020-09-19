@@ -188,48 +188,50 @@ export default function create () {
   makeTile(this.platforms, midWidth - 105, midWidth + 105, 370, 16, true, true)
   makeTile(this.platforms, 0, 210, 470, 16, false, true)
   makeTile(this.platforms, width - 210, width, 470, 16, true, false)
-  // this.platforms
-  //   .create(width / 2, 350, 'tiles', 16)
-  //   .setScale(5, 1)
-  //   .refreshBody()
-  // this.platforms
-  //   .create(16 * 6, 250, 'tiles', 16)
-  //   .setScale(6, 1)
-  //   .refreshBody()
-  // this.platforms
-  //   .create(width - 16 * 6, 250, 'tiles', 16)
-  //   .setScale(6, 1)
-  //   .refreshBody()
 
   // invisible walls
   this.invisibleWalls = this.physics.add.staticGroup()
+  // floor
   this.invisibleWalls
-    .create(width / 2 - 128, 520, 'tiles', 1)
+    .create(420, height - 38, 'tiles', 1)
     .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(width / 2 + 128, 520, 'tiles', 1)
+    .create(width - 420, height - 38, 'tiles', 1)
+    .setScale(0.1, 0.1)
+    .setAlpha(0)
+    .refreshBody()
+  // lower mid platform
+  this.invisibleWalls
+    .create(width / 2 - 158, 530, 'tiles', 1)
     .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(320, 420, 'tiles', 1)
+    .create(width / 2 + 158, 530, 'tiles', 1)
+    .setScale(0.1, 0.1)
+    .setAlpha(0)
+    .refreshBody()
+  // lower side platforms
+  this.invisibleWalls
+    .create(368, 430, 'tiles', 1)
     .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(width - 320, 420, 'tiles', 1)
+    .create(width - 368, 430, 'tiles', 1)
+    .setScale(0.1, 0.1)
+    .setAlpha(0)
+    .refreshBody()
+  // upper side platfors
+  this.invisibleWalls
+    .create(228, 230, 'tiles', 1)
     .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(420, height - 32, 'tiles', 1)
-    .setScale(0.1, 0.1)
-    .setAlpha(0)
-    .refreshBody()
-  this.invisibleWalls
-    .create(width - 420, height - 32, 'tiles', 1)
+    .create(width - 228, 230, 'tiles', 1)
     .setScale(0.1, 0.1)
     .setAlpha(0)
     .refreshBody()
