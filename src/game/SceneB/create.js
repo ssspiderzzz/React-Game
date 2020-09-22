@@ -178,7 +178,7 @@ export default function create () {
   // floor
   makeTile(this.platforms, 0, width, 17.5, 1)
 
-  // mid platforms
+  // lower platforms
   let midWidth = width / 2
   makeTile(this.platforms, midWidth - 140, midWidth + 140, 150, 6, true, true)
   makeTile(this.platforms, 0, 350, 250, 6, false, true)
@@ -204,34 +204,34 @@ export default function create () {
     .refreshBody()
   // lower mid platform
   this.invisibleWalls
-    .create(width / 2 - 158, 530, 'tiles', 1)
+    .create(width / 2 - 175, 550, 'tiles', 1)
     .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(width / 2 + 158, 530, 'tiles', 1)
+    .create(width / 2 + 175, 550, 'tiles', 1)
     .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   // lower side platforms
   this.invisibleWalls
-    .create(368, 430, 'tiles', 1)
+    .create(385, 450, 'tiles', 1)
     .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(width - 368, 430, 'tiles', 1)
+    .create(width - 385, 450, 'tiles', 1)
     .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   // upper side platfors
   this.invisibleWalls
-    .create(228, 230, 'tiles', 1)
+    .create(245, 230, 'tiles', 1)
     .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(width - 228, 230, 'tiles', 1)
+    .create(width - 245, 230, 'tiles', 1)
     .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
