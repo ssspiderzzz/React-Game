@@ -284,7 +284,7 @@ export default async function update (time, delta) {
           }
         }
 
-        if (this.player.name === 'CaptainAmerica') {
+        if (this.player.name === 'CaptainAmerica' && this.player.shieldOn) {
           this.player.shootable = true
           this.player.invincible = false
         }
