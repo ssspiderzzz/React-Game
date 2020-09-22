@@ -142,8 +142,8 @@ export default function preload () {
     frameHeight: 80
   })
   this.load.spritesheet('tiles', tiles, {
-    frameWidth: 35,
-    frameHeight: 35
+    frameWidth: 70,
+    frameHeight: 70
   })
   this.load.spritesheet('coin', coin, {
     frameWidth: 84,

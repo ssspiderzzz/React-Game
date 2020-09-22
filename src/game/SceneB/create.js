@@ -160,7 +160,7 @@ export default function create () {
   this.platforms = this.physics.add.staticGroup()
 
   function makeTile (gameObj, fromX, toX, Y, tileIndex, leftEnd, rightEnd) {
-    let tileSize = 35
+    let tileSize = 70
     let long = toX - fromX
     let numberOfTiles = long / tileSize
 
@@ -170,7 +170,7 @@ export default function create () {
       if (i === numberOfTiles && rightEnd) tileEnds += 3
       gameObj
         .create(fromX + tileSize * i, height - Y, 'tiles', tileIndex + tileEnds)
-        .setScale(1, 1)
+        .setScale(1, 0.4)
         .refreshBody()
     }
   }
@@ -194,45 +194,45 @@ export default function create () {
   // floor
   this.invisibleWalls
     .create(420, height - 38, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(width - 420, height - 38, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   // lower mid platform
   this.invisibleWalls
     .create(width / 2 - 158, 530, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(width / 2 + 158, 530, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   // lower side platforms
   this.invisibleWalls
     .create(368, 430, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(width - 368, 430, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   // upper side platfors
   this.invisibleWalls
     .create(228, 230, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
     .create(width - 228, 230, 'tiles', 1)
-    .setScale(0.1, 0.1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
 
