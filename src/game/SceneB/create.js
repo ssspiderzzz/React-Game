@@ -180,12 +180,12 @@ export default function create () {
 
   // mid platforms
   let midWidth = width / 2
-  makeTile(this.platforms, midWidth - 140, midWidth + 140, 170, 6, true, true)
-  makeTile(this.platforms, 0, 350, 270, 6, false, true)
-  makeTile(this.platforms, width - 350, width, 270, 6, true, false)
+  makeTile(this.platforms, midWidth - 140, midWidth + 140, 150, 6, true, true)
+  makeTile(this.platforms, 0, 350, 250, 6, false, true)
+  makeTile(this.platforms, width - 350, width, 250, 6, true, false)
 
   // upper platforms
-  makeTile(this.platforms, midWidth - 105, midWidth + 105, 370, 16, true, true)
+  makeTile(this.platforms, midWidth - 105, midWidth + 105, 380, 16, true, true)
   makeTile(this.platforms, 0, 210, 470, 16, false, true)
   makeTile(this.platforms, width - 210, width, 470, 16, true, false)
 
