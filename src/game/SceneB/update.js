@@ -480,6 +480,7 @@ export default async function update (time, delta) {
         this.boss.flipX = true
       }
       this.boss.alive = false
+      this.boss.body.setEnable(false)
       this.boss.anims.play('Thanos_die', true)
       this.boss.bar.destroy()
       this.tweens.add({
