@@ -159,67 +159,80 @@ export default function create () {
   // platforms
   this.platforms = this.physics.add.staticGroup()
 
-  this.platforms
-    .create(width / 2, 550, 'tiles', 0)
-    .setScale(8, 1)
-    .refreshBody()
-  this.platforms
-    .create(160, 450, 'tiles', 0)
-    .setScale(10, 1)
-    .refreshBody()
-  this.platforms
-    .create(width - 160, 450, 'tiles', 0)
-    .setScale(10, 1)
-    .refreshBody()
+  function makeTile (gameObj, fromX, toX, Y, tileIndex, leftEnd, rightEnd) {
+    let tileSize = 70
+    let long = toX - fromX
+    let numberOfTiles = long / tileSize
 
-  this.platforms
-    .create(width / 2, 350, 'tiles', 3)
-    .setScale(5, 1)
-    .refreshBody()
-  this.platforms
-    .create(16 * 6, 250, 'tiles', 3)
-    .setScale(6, 1)
-    .refreshBody()
-  this.platforms
-    .create(width - 16 * 6, 250, 'tiles', 3)
-    .setScale(6, 1)
-    .refreshBody()
+    for (let i = 0; i <= numberOfTiles; i++) {
+      let tileEnds = 0
+      if (i === 0 && leftEnd) tileEnds += 2
+      if (i === numberOfTiles && rightEnd) tileEnds += 3
+      gameObj
+        .create(fromX + tileSize * i, height - Y, 'tiles', tileIndex + tileEnds)
+        .setScale(1, 0.4)
+        .refreshBody()
+    }
+  }
 
-  this.platforms
-    .create(0, height - 16, 'tiles', 1)
-    .setScale(width / 16, 1)
-    .refreshBody()
+  // floor
+  makeTile(this.platforms, 0, width, 17.5, 1)
+
+  // lower platforms
+  let midWidth = width / 2
+  makeTile(this.platforms, midWidth - 140, midWidth + 140, 150, 6, true, true)
+  makeTile(this.platforms, 0, 350, 250, 6, false, true)
+  makeTile(this.platforms, width - 350, width, 250, 6, true, false)
+
+  // upper platforms
+  makeTile(this.platforms, midWidth - 105, midWidth + 105, 380, 16, true, true)
+  makeTile(this.platforms, 0, 210, 470, 16, false, true)
+  makeTile(this.platforms, width - 210, width, 470, 16, true, false)
 
   // invisible walls
   this.invisibleWalls = this.physics.add.staticGroup()
+  // floor
   this.invisibleWalls
-    .create(width / 2 - 128, 520, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(420, height - 38, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(width / 2 + 128, 520, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(width - 420, height - 38, 'tiles', 1)
+    .setScale(0.05, 0.05)
+    .setAlpha(0)
+    .refreshBody()
+  // lower mid platform
+  this.invisibleWalls
+    .create(width / 2 - 175, 550, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(320, 420, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(width / 2 + 175, 550, 'tiles', 1)
+    .setScale(0.05, 0.05)
+    .setAlpha(0)
+    .refreshBody()
+  // lower side platforms
+  this.invisibleWalls
+    .create(385, 450, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(width - 320, 420, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(width - 385, 450, 'tiles', 1)
+    .setScale(0.05, 0.05)
+    .setAlpha(0)
+    .refreshBody()
+  // upper side platfors
+  this.invisibleWalls
+    .create(245, 230, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(420, height - 32, 'tiles', 1)
-    .setScale(0.1, 1)
-    .setAlpha(0)
-    .refreshBody()
-  this.invisibleWalls
-    .create(width - 420, height - 32, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(width - 245, 230, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
 

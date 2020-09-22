@@ -18,7 +18,7 @@ import iron_man_icon from '../../assets/characters/iron_man_icon.png'
 import captain_america_icon from '../../assets/characters/captain_america_icon.png'
 import thor_icon from '../../assets/characters/thor_icon.png'
 import spiderman from '../../assets/spiderman.png'
-import tiles from '../../assets/tiles.png'
+import tiles from '../../assets/tiles_spritesheet.png'
 import coin from '../../assets/coin.png'
 import slime from '../../assets/slime.png'
 import spiderandweb from '../../assets/spiderandweb.png'
@@ -142,8 +142,8 @@ export default function preload () {
     frameHeight: 80
   })
   this.load.spritesheet('tiles', tiles, {
-    frameWidth: 32,
-    frameHeight: 32
+    frameWidth: 70,
+    frameHeight: 70
   })
   this.load.spritesheet('coin', coin, {
     frameWidth: 84,
