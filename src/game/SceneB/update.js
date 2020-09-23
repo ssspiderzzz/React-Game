@@ -145,7 +145,7 @@ export default async function update (time, delta) {
         if (this.player.name === 'IronMan') {
           ironManShooter(this, this.player.facing)
         }
-        if (this.player.name === 'CaptainAmerica') {
+        if (this.player.name === 'CaptainAmerica' && this.player.shieldOn) {
           captainAmericaShooter(this, this.player.facing)
         }
         if (this.player.name === 'Thor') {
@@ -157,6 +157,20 @@ export default async function update (time, delta) {
 
         this.player.shootable = false
         this.player.body.setVelocityX(0)
+      } else if (
+        this.keyZ.isDown &&
+        this.player.name === 'CaptainAmerica' &&
+        !this.player.shootable &&
+        !this.player.shieldOn &&
+        this.player.meleeAttack
+      ) {
+        if (this.player.facing === 'right') {
+          this.player.flipX = false
+        } else if (this.player.facing === 'left') {
+          this.player.flipX = true
+        }
+        this.player.anims.play('melee', true)
+        this.player.meleeAttack = false
       }
 
       if (this.keyZ._justUp) {
@@ -168,6 +182,7 @@ export default async function update (time, delta) {
 
         if (this.player.name === 'CaptainAmerica') {
           // this.player.shootable = false
+          this.player.meleeAttack = true
         }
 
         if (
