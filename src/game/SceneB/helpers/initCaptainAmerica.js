@@ -50,8 +50,8 @@ export default function initCaptainAmerica (scene) {
   scene.anims.create({
     key: 'melee',
     frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
-      start: 12,
-      end: 12
+      start: 29,
+      end: 30
     }),
     frameRate: 7,
     repeat: 0
