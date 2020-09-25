@@ -73,6 +73,15 @@ export default function bossThanos (scene) {
         }, 200)
       }
     })
+    scene.physics.add.overlap(
+      scene.shockWaves,
+      scene.boss,
+      (thanos, shockWave) => {
+        hitEffect(scene, shockWave)
+        shockWave.disableBody(true, true)
+        thanos.hp -= (Math.floor(Math.random() * 5) + 5) / 6
+      }
+    )
   }
 
   if (scene.player.name === 'Thor') {
