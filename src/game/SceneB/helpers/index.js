@@ -97,12 +97,12 @@ export function captainAmericaShooter (scene, shootDirection) {
   setTimeout(() => {
     scene.player.shootCount = 0
     if (shootDirection === 'right') {
-      shootSpeed = 600
+      shootSpeed = 500
       shootX = 50
       flipX = false
     }
     if (shootDirection === 'left') {
-      shootSpeed = -600
+      shootSpeed = -500
       shootX = -50
       flipX = true
     }
