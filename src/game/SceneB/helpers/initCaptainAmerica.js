@@ -16,10 +16,12 @@ export default function initCaptainAmerica (scene) {
   scene.player.barMP = scene.add.graphics()
   scene.player.hp = 100
   scene.player.mp = 100
-  // CaptainAmerica throws shield
-  scene.shields = scene.physics.add.group()
-  // CaptainAmerica animations
 
+  // CaptainAmerica throws shield & melee shock waves
+  scene.shields = scene.physics.add.group()
+  scene.shockWaves = scene.physics.add.group()
+
+  // CaptainAmerica animations
   scene.anims.create({
     key: 'idle',
     frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
@@ -64,6 +66,15 @@ export default function initCaptainAmerica (scene) {
       end: 30
     }),
     frameRate: 7,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'shockWave',
+    frames: scene.anims.generateFrameNumbers('IronMan', {
+      start: 25,
+      end: 26
+    }),
+    frameRate: 3,
     repeat: 0
   })
   scene.anims.create({

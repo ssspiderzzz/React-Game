@@ -389,6 +389,16 @@ export default function create () {
       this.player.shootable = true
       this.player.shieldOn = true
     })
+
+    this.physics.add.overlap(
+      this.shockWaves,
+      this.villains,
+      (shockWave, slime) => {
+        hitEffect(this, shockWave)
+        shockWave.disableBody(true, true)
+        slime.hp -= Math.floor(Math.random() * 5) + 5
+      }
+    )
   }
 
   if (this.player.name === 'Thor') {

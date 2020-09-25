@@ -129,6 +129,47 @@ export function captainAmericaShooter (scene, shootDirection) {
   }, 100)
 }
 
+export function captainAmericaShockWave (scene, shootDirection) {
+  if (scene.player.mp > 5) {
+    let shootSpeed
+    let shootX
+    let flipX
+    let shootYDifference = 0
+    // energy cost for normal shoot
+    scene.player.mp -= 5
+
+    if (scene.player.shootCount === 1) {
+      shootYDifference = 5
+    }
+    if (shootDirection === 'right') {
+      shootSpeed = 550
+      shootX = 40
+      flipX = false
+    }
+    if (shootDirection === 'left') {
+      shootSpeed = -550
+      shootX = -40
+      flipX = true
+    }
+
+    let shockWave = scene.shockWaves.create(
+      scene.player.x + shootX,
+      scene.player.y + 10 + shootYDifference,
+      'shockWave'
+    )
+    shockWave.body.setSize(25, 10, 0, 0).setOffset(10, 20)
+    shockWave.body.collideWorldBounds = false
+    shockWave.body.allowGravity = false
+    shockWave.anims.play('shockWave', true)
+    shockWave.body.velocity.x = shootSpeed
+    shockWave.flipX = flipX
+    shockWave.setScale(1.5, 1.5)
+    setTimeout(() => {
+      shockWave.destroy()
+    }, 150)
+  }
+}
+
 export function thorShooter (scene, shootDirection, swingDuration) {
   let shootSpeed
   let shootX

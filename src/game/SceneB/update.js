@@ -2,6 +2,7 @@ import {
   ironManShooter,
   ironManUnibeam,
   captainAmericaShooter,
+  captainAmericaShockWave,
   thorShooter,
   thorThunder,
   spiderManShooter,
@@ -154,9 +155,11 @@ export default async function update (time, delta) {
             captainAmericaShooter(this, this.player.facing)
             this.player.anims.play('attack', true)
           } else if (this.player.shootCount === 0) {
+            captainAmericaShockWave(this, this.player.facing)
             this.player.anims.play('melee1', true)
             this.player.shootCount = 1
           } else if (this.player.shootCount === 1) {
+            captainAmericaShockWave(this, this.player.facing)
             this.player.anims.play('melee2', true)
             this.player.shootCount = 0
           }
