@@ -5,9 +5,10 @@ export default function initCaptainAmerica (scene) {
   scene.player.name = 'CaptainAmerica'
   scene.player.setSize(22, 45, 0, 0).setOffset(24, 10)
   scene.player.alive = true
-  scene.player.meleeAttack = false
   scene.player.shieldOn = true
   scene.player.shootable = true
+  scene.player.shootCount = -1
+  scene.player.meleeAttack = false
   scene.player.invincible = false
   scene.player.body.collideWorldBounds = true
   scene.player.facing = 'right'
@@ -48,9 +49,18 @@ export default function initCaptainAmerica (scene) {
     repeat: 0
   })
   scene.anims.create({
-    key: 'melee',
+    key: 'melee1',
     frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
       start: 29,
+      end: 29
+    }),
+    frameRate: 7,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'melee2',
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
+      start: 30,
       end: 30
     }),
     frameRate: 7,

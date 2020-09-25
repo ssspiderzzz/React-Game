@@ -105,13 +105,20 @@ export default async function update (time, delta) {
       } else {
         if (this.player.facing === 'right') {
           this.player.flipX = false
-          if (this.player.shootable) this.player.anims.play('idle', true)
-        }
-        if (this.player.facing === 'left') {
+        } else if (this.player.facing === 'left') {
           this.player.flipX = true
-          if (this.player.shootable) this.player.anims.play('idle', true)
         }
+        if (this.player.shootable) this.player.anims.play('idle', true)
         this.player.body.setVelocityX(0)
+      }
+
+      // Captain Special animation without shield
+      if (this.player.name === 'CaptainAmerica' && !this.player.shieldOn) {
+        if (this.player.shootCount === 0) {
+          this.player.anims.play('melee1', true)
+        } else if (this.player.shootCount === 1) {
+          this.player.anims.play('melee2', true)
+        }
       }
 
       // player jumps
@@ -132,45 +139,38 @@ export default async function update (time, delta) {
           this.player.flipX = true
         }
 
-        if (this.player.shootCount === 0) {
-          this.player.anims.play('attack', true)
-          this.player.shootCount = 1
-        } else if (this.player.shootCount === 1) {
-          this.player.anims.play('attack2', true)
-          this.player.shootCount = 0
-        } else {
-          this.player.anims.play('attack', true)
-        }
-
         if (this.player.name === 'IronMan') {
           ironManShooter(this, this.player.facing)
+          if (this.player.shootCount === 0) {
+            this.player.anims.play('attack', true)
+            this.player.shootCount = 1
+          } else if (this.player.shootCount === 1) {
+            this.player.anims.play('attack2', true)
+            this.player.shootCount = 0
+          }
         }
-        if (this.player.name === 'CaptainAmerica' && this.player.shieldOn) {
-          captainAmericaShooter(this, this.player.facing)
+        if (this.player.name === 'CaptainAmerica') {
+          if (this.player.shieldOn) {
+            captainAmericaShooter(this, this.player.facing)
+            this.player.anims.play('attack', true)
+          } else if (this.player.shootCount === 0) {
+            this.player.anims.play('melee1', true)
+            this.player.shootCount = 1
+          } else if (this.player.shootCount === 1) {
+            this.player.anims.play('melee2', true)
+            this.player.shootCount = 0
+          }
         }
         if (this.player.name === 'Thor') {
           this.player.thorSwing = true
+          this.player.anims.play('attack', true)
         }
         if (this.player.name === 'spiderman') {
           spiderManShooter(this, 20, 450)
+          this.player.anims.play('attack', true)
         }
-
         this.player.shootable = false
         this.player.body.setVelocityX(0)
-      } else if (
-        this.keyZ.isDown &&
-        this.player.name === 'CaptainAmerica' &&
-        !this.player.shootable &&
-        !this.player.shieldOn &&
-        this.player.meleeAttack
-      ) {
-        if (this.player.facing === 'right') {
-          this.player.flipX = false
-        } else if (this.player.facing === 'left') {
-          this.player.flipX = true
-        }
-        this.player.anims.play('melee', true)
-        this.player.meleeAttack = false
       }
 
       if (this.keyZ._justUp) {
@@ -181,8 +181,7 @@ export default async function update (time, delta) {
         }
 
         if (this.player.name === 'CaptainAmerica') {
-          // this.player.shootable = false
-          this.player.meleeAttack = true
+          this.player.shootable = true
         }
 
         if (
