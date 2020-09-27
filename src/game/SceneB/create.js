@@ -396,7 +396,7 @@ export default function create () {
       (shockWave, slime) => {
         hitEffect(this, shockWave)
         shockWave.disableBody(true, true)
-        slime.hp -= Math.floor(Math.random() * 5) + 5
+        slime.hp -= Math.floor(Math.random() * 7) + 5
       }
     )
   }
