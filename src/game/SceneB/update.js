@@ -124,7 +124,9 @@ export default async function update (time, delta) {
 
       // player jumps
       if (this.cursors.up.isDown && this.player.body.touching.down) {
-        this.player.body.setVelocityY(-400)
+        let jumpHeight = 400
+        if (this.player.name === 'IronMan') jumpHeight += 50
+        this.player.body.setVelocityY(-jumpHeight)
       }
 
       if (this.cursors.up._justUp && this.cursors.up.duration < 400) {
