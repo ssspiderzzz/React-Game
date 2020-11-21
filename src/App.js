@@ -19,9 +19,11 @@ export default function App (props) {
   ) {
     store.dispatch({ type: MOBILE_DEVICE })
   }
+  
+  console.log(process.env.aws_appsync_apiKey)
 
   Amplify.configure(awsconfig)
-
+  
   let game = new Phaser.Game(config)
 
   return (

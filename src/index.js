@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom'
 import App from './App'
 import axios from 'axios'
 import * as serviceWorker from './serviceWorker'
-
+console.log(process.env)
 if (process.env.REACT_APP_API_BASE_URL) {
   axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL
   axios.defaults.withCredentials = true
