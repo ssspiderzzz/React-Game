@@ -7,7 +7,7 @@ import yes_icon from '../assets/yes.png'
 import no_icon from '../assets/no.png'
 import './UI.css'
 
-function UI (props) {
+function UI(props) {
   const [name, setName] = useState('')
 
   const transitions = useTransition(props.showUi, null, {
@@ -16,13 +16,13 @@ function UI (props) {
     leave: { top: '-50%' }
   })
 
-  function onNameChange (e) {
+  function onNameChange(e) {
     if (e.target.value.length <= 20) {
       setName(e.target.value)
     }
   }
 
-  function handleSubmmit (playerName) {
+  function handleSubmmit(playerName) {
     store.dispatch({ type: SET_PLAYER_NAME, playerName: playerName })
     let enterName = props.game.scene.getScene('SceneA').enterName
     if (store.getState().playerName) {
@@ -32,7 +32,7 @@ function UI (props) {
     }
   }
 
-  function handleCancel () {
+  function handleCancel() {
     setName(store.getState().playerName)
     store.dispatch({ type: TOGGLE_UI })
   }
