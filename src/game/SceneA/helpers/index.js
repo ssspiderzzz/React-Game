@@ -13,7 +13,7 @@ export function leaderboardToggle (leaderboard, scene) {
       if (i.character === 'CaptainAmerica') icon = 'captain_america_icon'
       if (i.character === 'Thor') icon = 'thor_icon'
       let nameShow = i.name
-      if (nameShow.length >= 10) {
+      if (nameShow.length >= 11) {
         nameShow = nameShow.substring(0, 8) + '..'
       }
 

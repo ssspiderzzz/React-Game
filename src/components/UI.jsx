@@ -39,7 +39,6 @@ function UI (props) {
 
   return (
     <div>
-      {/* Top */}
       <div>
         {transitions.map(
           ({ item, key, props }) =>

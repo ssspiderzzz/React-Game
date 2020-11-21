@@ -1,12 +1,14 @@
 export default function initCaptainAmerica (scene) {
   scene.player = scene.physics.add
-    .sprite(512, 300, 'CaptainAmerica')
+    .sprite(640, 200, 'CaptainAmerica')
     .setScale(2, 2)
   scene.player.name = 'CaptainAmerica'
   scene.player.setSize(22, 45, 0, 0).setOffset(24, 10)
   scene.player.alive = true
   scene.player.shieldOn = true
   scene.player.shootable = true
+  scene.player.shootCount = -1
+  scene.player.meleeAttack = false
   scene.player.invincible = false
   scene.player.body.collideWorldBounds = true
   scene.player.facing = 'right'
@@ -14,10 +16,12 @@ export default function initCaptainAmerica (scene) {
   scene.player.barMP = scene.add.graphics()
   scene.player.hp = 100
   scene.player.mp = 100
-  // CaptainAmerica throws shield
-  scene.shields = scene.physics.add.group()
-  // CaptainAmerica animations
 
+  // CaptainAmerica throws shield & melee shock waves
+  scene.shields = scene.physics.add.group()
+  scene.shockWaves = scene.physics.add.group()
+
+  // CaptainAmerica animations
   scene.anims.create({
     key: 'idle',
     frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
@@ -44,6 +48,33 @@ export default function initCaptainAmerica (scene) {
       end: 12
     }),
     frameRate: 20,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'melee1',
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
+      start: 29,
+      end: 29
+    }),
+    frameRate: 7,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'melee2',
+    frames: scene.anims.generateFrameNumbers('CaptainAmerica', {
+      start: 30,
+      end: 30
+    }),
+    frameRate: 7,
+    repeat: 0
+  })
+  scene.anims.create({
+    key: 'shockWave',
+    frames: scene.anims.generateFrameNumbers('IronMan', {
+      start: 25,
+      end: 26
+    }),
+    frameRate: 3,
     repeat: 0
   })
   scene.anims.create({

@@ -6,6 +6,8 @@
   left: 50%;
   margin-left: -256px;
   margin-top: -153.5px;
+  border: solid;
+  border-color: cornflowerblue;
   border-radius: 25px;
   opacity: 0.8;
 }
@@ -58,6 +60,8 @@
     height: 30vw;
     margin-left: -25vw;
     margin-top: -15vw;
+    border: solid;
+    border-color: cornflowerblue;
     border-radius: 5vw;
   }
 

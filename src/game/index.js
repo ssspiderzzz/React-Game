@@ -1,13 +1,20 @@
 import Phaser from 'phaser'
+import InitLoader from './InitLoader'
+import Preloader from './Preloader'
 import SceneA from './SceneA'
 import SceneB from './SceneB'
 import SceneC from './SceneC'
+import SceneEnd from './SceneEnd'
+import VirtualJoystickPlugin from 'phaser3-rex-plugins/plugins/virtualjoystick-plugin.js'
+
+export let width = 1280
+export let height = 720
 
 export let config = {
   type: Phaser.AUTO,
-  width: 1024,
-  height: 768,
-  backgroundColor: 0x222222,
+  width: width,
+  height: height,
+  backgroundColor: 'white',
   dom: {
     createContainer: true
   },
@@ -28,6 +35,14 @@ export let config = {
       gravity: { y: 500 }
     }
   },
-
-  scene: [SceneA, SceneB, SceneC]
+  plugins: {
+    global: [
+      {
+        key: 'rexVirtualJoystick',
+        plugin: VirtualJoystickPlugin,
+        start: true
+      }
+    ]
+  },
+  scene: [InitLoader, Preloader, SceneA, SceneB, SceneC, SceneEnd]
 }

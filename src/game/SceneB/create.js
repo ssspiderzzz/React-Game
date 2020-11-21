@@ -7,31 +7,39 @@ import {
   thorHammerReturn,
   knockBack,
   hitEffect,
+  hitEffectLightning,
   drawDamageText
 } from './helpers'
+import store from '../../store'
+import { width, height } from '../index'
 
 export default function create () {
   let name = this.select
 
+  this.thanos_teleport_coords = [
+    { x: width - 48, y: 50 },
+    { x: 20, y: 50 },
+    { x: 48, y: 250 },
+    { x: width - 48, y: 250 },
+    { x: width / 2, y: 350 },
+    { x: width - 48, y: 500 },
+    { x: 48, y: 500 }
+  ]
+
   // timmer
   this.timeText = this.add
-    .text(512, 35)
+    .text(width / 2, 35)
     .setDepth(5)
     .setOrigin(0.5)
   this.timer = 0
   this.startTimer = false
   this.triggerOnce = 1
-  // background
-  this.add.image(0, 0, 'background').setOrigin(0, 0)
 
-  let pause = this.add.image(984, 40, 'pause').setOrigin(0.5)
-  pause.setScale(0.5, 0.5)
-  pause.setInteractive()
-  pause.on('pointerdown', () => {
-    this.scene.pause()
-    this.scene.launch('SceneC', { currentSelect: this.select })
-    transitionBlack.setAlpha(0.5)
-  })
+  // background
+  this.add
+    .image(0, 0, 'background')
+    .setOrigin(0, 0)
+    .setScale(0.66)
 
   this.events.on('resume', function () {
     transitionBlack.setAlpha(0)
@@ -40,7 +48,7 @@ export default function create () {
   // transition
   let transitionBlack = this.add.graphics()
   transitionBlack.fillStyle(0x000000)
-  transitionBlack.fillRect(0, 0, 1024, 768)
+  transitionBlack.fillRect(0, 0, width, height)
   transitionBlack.setAlpha(1)
   transitionBlack.setDepth(98)
   this.tweens.add({
@@ -53,11 +61,15 @@ export default function create () {
   if (name === 'CaptainAmerica') initCaptainAmerica(this)
   if (name === 'Thor') initThor(this)
 
+  // boss
+  this.boss = {}
+  this.boss.alive = false
+
   // coins
   this.coins = this.physics.add.group({
     key: 'coin',
     repeat: 9,
-    setXY: { x: 20, y: 0, stepX: 110 }
+    setXY: { x: 10, y: 0, stepX: (width - 20) / 9 }
   })
   this.anims.create({
     key: 'coin_spin',
@@ -88,14 +100,14 @@ export default function create () {
     repeat: 0
   })
 
-  // slimes
-  this.slimes = this.physics.add.group({
+  // villains
+  this.villains = this.physics.add.group({
     key: 'slime_blue',
     repeat: 2,
-    setXY: { x: 100, y: 650, stepX: 412 }
+    setXY: { x: 100, y: 650, stepX: 540 }
   })
-  this.slimes.create(160, 450, 'slime_red')
-  this.slimes.create(864, 450, 'slime_red')
+  this.villains.create(160, 400, 'slime_red')
+  this.villains.create(width - 160, 400, 'slime_red')
   this.anims.create({
     key: 'slime_blue',
     frames: this.anims.generateFrameNumbers('slime', {
@@ -116,7 +128,7 @@ export default function create () {
     repeat: -1,
     yoyo: true
   })
-  this.slimes.children.iterate((slime, index) => {
+  this.villains.children.iterate((slime, index) => {
     slime.bar = this.add.graphics()
     slime.hurtable = true
     slime.hp = 100
@@ -147,57 +159,80 @@ export default function create () {
   // platforms
   this.platforms = this.physics.add.staticGroup()
 
-  this.platforms
-    .create(1024 / 2, 600, 'tiles', 0)
-    .setScale(8, 1)
-    .refreshBody()
-  this.platforms
-    .create(160, 500, 'tiles', 0)
-    .setScale(10, 1)
-    .refreshBody()
-  this.platforms
-    .create(1024 - 160, 500, 'tiles', 0)
-    .setScale(10, 1)
-    .refreshBody()
+  function makeTile (gameObj, fromX, toX, Y, tileIndex, leftEnd, rightEnd) {
+    let tileSize = 70
+    let long = toX - fromX
+    let numberOfTiles = long / tileSize
 
-  this.platforms
-    .create(1024 / 2, 400, 'tiles', 3)
-    .setScale(3, 1)
-    .refreshBody()
-  this.platforms
-    .create((32 * 6) / 2, 300, 'tiles', 3)
-    .setScale(6, 1)
-    .refreshBody()
-  this.platforms
-    .create(1024 - (32 * 6) / 2, 300, 'tiles', 3)
-    .setScale(6, 1)
-    .refreshBody()
+    for (let i = 0; i <= numberOfTiles; i++) {
+      let tileEnds = 0
+      if (i === 0 && leftEnd) tileEnds += 2
+      if (i === numberOfTiles && rightEnd) tileEnds += 3
+      gameObj
+        .create(fromX + tileSize * i, height - Y, 'tiles', tileIndex + tileEnds)
+        .setScale(1, 0.4)
+        .refreshBody()
+    }
+  }
 
-  this.platforms
-    .create(0, 752, 'tiles', 1)
-    .setScale(64, 1)
-    .refreshBody()
+  // floor
+  makeTile(this.platforms, 0, width, 17.5, 1)
+
+  // lower platforms
+  let midWidth = width / 2
+  makeTile(this.platforms, midWidth - 140, midWidth + 140, 150, 6, true, true)
+  makeTile(this.platforms, 0, 350, 250, 6, false, true)
+  makeTile(this.platforms, width - 350, width, 250, 6, true, false)
+
+  // upper platforms
+  makeTile(this.platforms, midWidth - 105, midWidth + 105, 380, 16, true, true)
+  makeTile(this.platforms, 0, 210, 470, 16, false, true)
+  makeTile(this.platforms, width - 210, width, 470, 16, true, false)
 
   // invisible walls
   this.invisibleWalls = this.physics.add.staticGroup()
+  // floor
   this.invisibleWalls
-    .create(320, 470, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(420, height - 38, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(704, 470, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(width - 420, height - 38, 'tiles', 1)
+    .setScale(0.05, 0.05)
+    .setAlpha(0)
+    .refreshBody()
+  // lower mid platform
+  this.invisibleWalls
+    .create(width / 2 - 175, 550, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(320, 736, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(width / 2 + 175, 550, 'tiles', 1)
+    .setScale(0.05, 0.05)
+    .setAlpha(0)
+    .refreshBody()
+  // lower side platforms
+  this.invisibleWalls
+    .create(385, 450, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
   this.invisibleWalls
-    .create(704, 736, 'tiles', 1)
-    .setScale(0.1, 1)
+    .create(width - 385, 450, 'tiles', 1)
+    .setScale(0.05, 0.05)
+    .setAlpha(0)
+    .refreshBody()
+  // upper side platfors
+  this.invisibleWalls
+    .create(245, 230, 'tiles', 1)
+    .setScale(0.05, 0.05)
+    .setAlpha(0)
+    .refreshBody()
+  this.invisibleWalls
+    .create(width - 245, 230, 'tiles', 1)
+    .setScale(0.05, 0.05)
     .setAlpha(0)
     .refreshBody()
 
@@ -205,7 +240,78 @@ export default function create () {
   this.keyZ = this.input.keyboard.addKey('Z')
   this.keyX = this.input.keyboard.addKey('X')
   this.cursors = this.input.keyboard.createCursorKeys()
+  if (store.getState().mobileDevice) {
+    // virtual joystick
+    let joystick_x = 100
+    let joystick_y = height - 100
+    this.add
+      .image(joystick_x, joystick_y, 'jarvis_circle')
+      .setOrigin(0.5)
+      .setScale(0.23)
+      .setAlpha(0.5)
+    this.add
+      .text(width - 175, height - 75, 'Normal', {
+        fontSize: 18,
+        align: 'center',
+        color: 'CornflowerBlue',
+        stroke: 'black',
+        strokeThickness: 4
+      })
+      .setOrigin(0.5)
+      .setAlpha(0.5)
+    this.add
+      .text(width - 75, height - 175, 'Special', {
+        fontSize: 18,
+        align: 'center',
+        color: 'CornflowerBlue',
+        stroke: 'black',
+        strokeThickness: 4
+      })
+      .setOrigin(0.5)
+      .setAlpha(0.5)
 
+    let virtualZ = this.add
+      .image(width - 175, height - 75, 'tech_button_circle')
+      .setOrigin(0.5)
+      .setScale(0.1)
+      .setAlpha(0.5)
+      .setInteractive()
+    let virtualX = this.add
+      .image(width - 75, height - 175, 'tech_button_circle')
+      .setOrigin(0.5)
+      .setScale(0.1)
+      .setAlpha(0.5)
+      .setInteractive()
+    virtualZ.on('pointerover', () => {
+      this.keyZ.isDown = true
+    })
+    virtualX.on('pointerover', () => {
+      this.keyX.isDown = true
+    })
+    virtualZ.on('pointerout', () => {
+      this.keyZ.isDown = false
+      this.keyZ._justUp = true
+    })
+    virtualX.on('pointerout', () => {
+      this.keyX.isDown = false
+      this.keyX._justUp = true
+    })
+    let joystick = this.plugins.get('rexVirtualJoystick').add(this, {
+      x: joystick_x,
+      y: joystick_y,
+      radius: 50
+      // base: baseGameObject,
+      // thumb: thumbGameObject,
+      // dir: '8dir',
+      // forceMin: 16,
+      // fixed: true,
+      // enable: true
+    })
+    this.joystickCursors = joystick.createCursorKeys()
+    this.cursors = this.joystickCursors
+  }
+
+  // game physics
   this.physics.add.collider(this.player, this.platforms)
   this.physics.add.collider(this.coins, this.platforms)
   this.physics.add.collider(this.player, this.coins, (player, coin) => {
@@ -214,9 +320,9 @@ export default function create () {
     coin.disableBody(true, true)
     coin.destroy()
   })
-  this.physics.add.collider(this.slimes, this.platforms)
-  this.physics.add.collider(this.slimes, this.invisibleWalls)
-  this.physics.add.collider(this.player, this.slimes, (player, slime) => {
+  this.physics.add.collider(this.villains, this.platforms)
+  this.physics.add.collider(this.villains, this.invisibleWalls)
+  this.physics.add.collider(this.player, this.villains, (player, slime) => {
     if (!this.player.invincible) {
       let floatSlimeDmg = Math.floor(Math.random() * 10) + 5
       this.player.hp -= floatSlimeDmg
@@ -244,13 +350,13 @@ export default function create () {
   )
 
   if (this.player.name === 'IronMan') {
-    this.physics.add.overlap(this.beams, this.slimes, (beam, slime) => {
+    this.physics.add.overlap(this.beams, this.villains, (beam, slime) => {
       hitEffect(this, beam)
       beam.disableBody(true, true)
       slime.hp -= Math.floor(Math.random() * 15) + 15
     })
-    this.physics.add.overlap(this.uniBeams, this.slimes, (uniBeam, slime) => {
-      slime.hp -= Math.floor(Math.random() * 1) + 1
+    this.physics.add.overlap(this.uniBeams, this.villains, (uniBeam, slime) => {
+      slime.hp -= Math.floor(Math.random() * 0.8) + 1
     })
   }
 
@@ -260,18 +366,18 @@ export default function create () {
       () => {
         this.shields.children.iterate(shield => {
           captainShieldReturn(this.player, shield)
-          this.slimes.children.iterate(slime => {
+          this.villains.children.iterate(slime => {
             slime.hurtable = true
           })
         })
       },
       this
     )
-    this.physics.add.overlap(this.shields, this.slimes, (shield, slime) => {
+    this.physics.add.overlap(this.shields, this.villains, (shield, slime) => {
       if (slime.hurtable) {
         slime.hurtable = false
         hitEffect(this, shield)
-        slime.hp -= Math.floor(Math.random() * 20) + 18
+        slime.hp -= Math.floor(Math.random() * 10) + 30
         setTimeout(() => {
           slime.hurtable = true
         }, 200)
@@ -283,15 +389,25 @@ export default function create () {
       this.player.shootable = true
       this.player.shieldOn = true
     })
+
+    this.physics.add.overlap(
+      this.shockWaves,
+      this.villains,
+      (shockWave, slime) => {
+        hitEffect(this, shockWave)
+        shockWave.disableBody(true, true)
+        slime.hp -= Math.floor(Math.random() * 7) + 5
+      }
+    )
   }
 
   if (this.player.name === 'Thor') {
-    this.physics.add.overlap(this.hammers, this.slimes, (hammer, slime) => {
+    this.physics.add.overlap(this.hammers, this.villains, (hammer, slime) => {
       if (hammer.damageable) {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
         hitEffect(this, hammer)
-        slime.hp -= Math.floor(Math.random() * 20) + 25
+        slime.hp -= Math.floor(Math.random() * 20) + 20
       }
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
@@ -300,56 +416,16 @@ export default function create () {
       this.player.shootable = true
     })
     this.physics.add.overlap(
-      this.slimes,
+      this.villains,
       this.lightningRods,
       (slime, lightningRod) => {
         if (slime.hurtable) {
-          slime.hurtable = false
           slime.hp -= Math.floor(Math.random() * 100) + 30
-
-          let lightning = this.lightnings.create(
-            slime.x,
-            slime.y - 353,
-            'lightning'
-          )
-          lightning.followObject = slime
-          lightning.setScale(1, 2.5)
-          lightning.body.collideWorldBounds = false
-          lightning.body.allowGravity = false
-          lightning.anims.play('lightning', true)
-
-          this.tweens.add({
-            targets: lightning,
-            alphaTopLeft: {
-              value: 0,
-              duration: 500,
-              ease: 'Linear'
-            },
-            alphaTopRight: {
-              value: 0,
-              duration: 500,
-              ease: 'Linear'
-            },
-            alphaBottomLeft: {
-              value: 0,
-              duration: 2000,
-              ease: 'Linear'
-            },
-            alphaBottomRight: {
-              value: 0,
-              duration: 2000,
-              ease: 'Linear'
-            },
-            loop: 0
-          })
-
+          slime.hurtable = false
           setTimeout(() => {
             slime.hurtable = true
-          }, 200)
-
-          setTimeout(() => {
-            lightning.destroy()
-          }, 2000)
+          }, 300)
+          hitEffectLightning(this, slime)
         }
       }
     )
@@ -358,7 +434,7 @@ export default function create () {
   if (this.player.name === 'SpiderMan') {
     this.physics.add.collider(this.webs, this.platforms)
     this.physics.add.overlap(this.webs, this.coins)
-    this.physics.add.overlap(this.webs, this.slimes, (web, slime) => {
+    this.physics.add.overlap(this.webs, this.villains, (web, slime) => {
       let newWeb_hit = this.webs_hit.create(web.body.x, web.body.y, 'web_hit')
       newWeb_hit.body.allowGravity = false
       newWeb_hit.body.setSize(15, 15, 5, 5)
@@ -378,12 +454,37 @@ export default function create () {
   // static text
   this.moneyIcon = this.physics.add.staticGroup()
   this.moneyIcon
-    .create(25, 25, 'coin', 0)
-    .setScale(0.3, 0.3)
+    .create(30, 30, 'coin', 0)
+    .setOrigin(0.5)
+    .setScale(0.3)
     .refreshBody()
-  this.collectionText = this.add.text(60, 7, this.money, {
-    fontFamily: '"Roboto Condensed"',
-    fontSize: 33
+  this.collectionText = this.add
+    .text(80, 30, this.money, {
+      fontFamily: '"Roboto Condensed"',
+      fontSize: 33
+    })
+    .setOrigin(0.5)
+
+  // Pause button
+  let pause = this.add
+    .image(width - 30, 30, 'pause')
+    .setOrigin(0.5)
+    .setScale(0.3)
+    .setInteractive()
+  pause.on('pointerdown', () => {
+    this.scene.pause()
+    this.scene.launch('SceneC', { currentSelect: this.select })
+    transitionBlack.setAlpha(0.5)
+  })
+
+  // full screen setter
+  let fullscreen_icon = this.add
+    .image(width - 80, 30, 'fullscreen')
+    .setOrigin(0.5)
+    .setScale(0.06)
+    .setInteractive()
+  fullscreen_icon.on('pointerdown', function () {
+    this.scene.scale.toggleFullscreen()
   })
 }
 
