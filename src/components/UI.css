@@ -46,11 +46,14 @@
 }
 
 .no_icon {
+  cursor: pointer;
   height: 55px;
 }
 
 .yes_icon {
+  cursor: pointer;
   height: 55px;
+  margin-left: 10vw;
 }
 
 @media (max-width: 1024px) {

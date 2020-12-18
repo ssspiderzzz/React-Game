@@ -70,9 +70,6 @@ function UI(props) {
                     className='yes_icon'
                     alt='yes_icon'
                     src={yes_icon}
-                    style={{
-                      marginLeft: '10vw'
-                    }}
                     onClick={() => handleSubmmit(name)}
                   />
                 </div>
