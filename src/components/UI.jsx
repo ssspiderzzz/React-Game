@@ -22,7 +22,7 @@ function UI(props) {
     }
   }
 
-  function handleSubmmit(playerName) {
+  function handleSubmit(playerName) {
     store.dispatch({ type: SET_PLAYER_NAME, playerName: playerName })
     let enterName = props.game.scene.getScene('SceneA').enterName
     if (store.getState().playerName) {
@@ -70,7 +70,7 @@ function UI(props) {
                     className='yes_icon'
                     alt='yes_icon'
                     src={yes_icon}
-                    onClick={() => handleSubmmit(name)}
+                    onClick={() => handleSubmit(name)}
                   />
                 </div>
               </animated.div>
