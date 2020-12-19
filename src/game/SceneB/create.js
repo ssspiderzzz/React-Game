@@ -407,7 +407,7 @@ export default function create () {
         hammer.damageable = false
         thorHammerReturn(this.player, hammer)
         hitEffect(this, hammer)
-        slime.hp -= Math.floor(Math.random() * 20) + 20
+        slime.hp -= Math.floor(Math.random() * 20) + 30
       }
     })
     this.physics.add.collider(this.player, this.hammers, (player, hammer) => {
@@ -420,7 +420,7 @@ export default function create () {
       this.lightningRods,
       (slime, lightningRod) => {
         if (slime.hurtable) {
-          slime.hp -= Math.floor(Math.random() * 100) + 30
+          slime.hp -= Math.floor(Math.random() * 80) + 35
           slime.hurtable = false
           setTimeout(() => {
             slime.hurtable = true
